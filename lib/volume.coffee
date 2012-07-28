@@ -22,8 +22,9 @@ module.exports = class Volume extends Mesh
     @extract()
   
   extract: ->
-    ii = 0
-
+    faces = 0
+    adjacent = vec3.create()
+    
     for own cubeKey, cube of @voxels
       fm =
         front:  [+0, +0, +1]
@@ -34,18 +35,23 @@ module.exports = class Volume extends Mesh
         left:   [-1, +0, +0]
       
       for side, normal of fm
+        vec3.add normal, cube.position, adjacent
+        
+        if @voxels["#{adjacent[0]}:#{adjacent[1]}:#{adjacent[2]}"]
+          continue
+        
         template =
           vertices: cubeTemplate.vertices[side]
           normals: cubeTemplate.normals[side]
           coords: cube.type.coords[side] # cubeTemplate.coords[side]
           indices: cubeTemplate.indices[side]
-
+        
         color = [0, 0, 0, 1]
         
         for vertex in [0...template.vertices.length] by 3
-          @vertices.push template.vertices[vertex + 0] + cube.position[0] + @position[0]
-          @vertices.push template.vertices[vertex + 1] + cube.position[1] + @position[1]
-          @vertices.push template.vertices[vertex + 2] + cube.position[2] + @position[2]
+          @vertices.push template.vertices[vertex + 0] + cube.position[0] # + @position[0]
+          @vertices.push template.vertices[vertex + 1] + cube.position[1] # + @position[1]
+          @vertices.push template.vertices[vertex + 2] + cube.position[2] # + @position[2]
         
         for normal in template.normals
           @normals.push normal
@@ -53,13 +59,16 @@ module.exports = class Volume extends Mesh
         for coord in template.coords
           @coords.push coord
         
-        for index in template.indices
-          @indices.push index + (ii * 24)
+        for index in [0, 1, 2, 0, 2, 3] # template.indices
+          @indices.push index + (faces * 4)
         
         for i in [0...4]
           @colors.push color[0] ; @colors.push color[1] ; @colors.push color[2] ; @colors.push color[3]
-      
-      ii++
+        
+        faces++
+    
+    @faces = faces
+    @count = faces
   
   terraform: ->
     woods = []
@@ -114,7 +123,8 @@ module.exports = class Volume extends Mesh
             id: uuid()
             type: type or @blocks[Object.keys(@blocks)[Math.floor (Math.random() * Object.keys(@blocks).length)]]
             position: [i, j, k]
-          @voxels[cube.id] = cube
+          cube.key = "#{cube.position[0]}:#{cube.position[1]}:#{cube.position[2]}"
+          @voxels[cube.key] = cube
     
     for wood in woods
       for i in [wood.position[1]...wood.position[1] + 5]
@@ -122,7 +132,8 @@ module.exports = class Volume extends Mesh
           id: uuid()
           type: @blocks.wood
           position: [wood.position[0], i, wood.position[2]]
-        @voxels[cube.id] = cube
+        cube.key = "#{cube.position[0]}:#{cube.position[1]}:#{cube.position[2]}"
+        @voxels[cube.key] = cube
       
       for i in [-1..1]
         for j in [-1..1]
@@ -132,6 +143,5 @@ module.exports = class Volume extends Mesh
                 id: uuid()
                 type: @blocks.leaf
                 position: [wood.position[0] + i, wood.position[1] + j + 5, wood.position[2] + k]
-              @voxels[leaf.id] = leaf
-    
-    @count = (Object.keys @voxels).length
+              leaf.key = "#{leaf.position[0]}:#{leaf.position[1]}:#{leaf.position[1]}:#{leaf.position[2]}"
+              @voxels[leaf.key] = leaf

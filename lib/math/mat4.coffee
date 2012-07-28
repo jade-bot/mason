@@ -47,6 +47,82 @@ mat4.identity = (out) ->
   
   out
 
+mat4.set = (mat, dest) ->
+  dest[0] = mat[0]
+  dest[1] = mat[1]
+  dest[2] = mat[2]
+  dest[3] = mat[3]
+  dest[4] = mat[4]
+  dest[5] = mat[5]
+  dest[6] = mat[6]
+  dest[7] = mat[7]
+  dest[8] = mat[8]
+  dest[9] = mat[9]
+  dest[10] = mat[10]
+  dest[11] = mat[11]
+  dest[12] = mat[12]
+  dest[13] = mat[13]
+  dest[14] = mat[14]
+  dest[15] = mat[15]
+
+  dest
+
+mat4.multiply = (mat, mat2, dest) ->
+  dest = mat  unless dest
+  
+  # Cache the matrix values (makes for huge speed increases!)
+  a00 = mat[0]
+  a01 = mat[1]
+  a02 = mat[2]
+  a03 = mat[3]
+  a10 = mat[4]
+  a11 = mat[5]
+  a12 = mat[6]
+  a13 = mat[7]
+  a20 = mat[8]
+  a21 = mat[9]
+  a22 = mat[10]
+  a23 = mat[11]
+  a30 = mat[12]
+  a31 = mat[13]
+  a32 = mat[14]
+  a33 = mat[15]
+  
+  # Cache only the current line of the second matrix
+  b0 = mat2[0]
+  b1 = mat2[1]
+  b2 = mat2[2]
+  b3 = mat2[3]
+  dest[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30
+  dest[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31
+  dest[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32
+  dest[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33
+  b0 = mat2[4]
+  b1 = mat2[5]
+  b2 = mat2[6]
+  b3 = mat2[7]
+  dest[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30
+  dest[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31
+  dest[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32
+  dest[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33
+  b0 = mat2[8]
+  b1 = mat2[9]
+  b2 = mat2[10]
+  b3 = mat2[11]
+  dest[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30
+  dest[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31
+  dest[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32
+  dest[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33
+  b0 = mat2[12]
+  b1 = mat2[13]
+  b2 = mat2[14]
+  b3 = mat2[15]
+  dest[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30
+  dest[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31
+  dest[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32
+  dest[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33
+  dest
+
 mat4.translate = (mat, vec, out) ->
   x = vec[0]
   y = vec[1]

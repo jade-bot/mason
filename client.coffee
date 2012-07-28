@@ -4,12 +4,14 @@ require './lib/math'
 require './lib/shim'
 
 mason = require './mason'
-{Keyboard, Volume} = mason
+{Keyboard, Volume, Camera} = mason
 
 keyboard = new Keyboard
 keyboard.bind document
 
 blocks = require './blocks'
+
+camera = new Camera position: [0, 16, 10]
 
 gl = null
 shaderProgram = undefined
@@ -29,7 +31,7 @@ lightingDirection = [-0.25, -0.25, -1.0]
 directional = [0.5, 0.5, 0.5]
 ambient = [0.2, 0.2, 0.2]
 
-shaderSources = require 'shaders'
+shaders = require 'shaders'
 
 getShader = (gl, {type, source} = {}) ->
   shader = gl.createShader type
@@ -38,8 +40,8 @@ getShader = (gl, {type, source} = {}) ->
   return shader
 
 initShaders = ->
-  fragmentShader = getShader gl, type: gl.FRAGMENT_SHADER, source: shaderSources['fragment.glsl']
-  vertexShader = getShader gl, type: gl.VERTEX_SHADER, source: shaderSources['vertex.glsl']
+  fragmentShader = getShader gl, type: gl.FRAGMENT_SHADER, source: shaders['fragment.glsl']
+  vertexShader = getShader gl, type: gl.VERTEX_SHADER, source: shaders['vertex.glsl']
   
   shaderProgram = gl.createProgram()
   gl.attachShader shaderProgram, vertexShader
@@ -51,7 +53,7 @@ initShaders = ->
   
   shaderProgram.positionAttribute = gl.getAttribLocation shaderProgram, 'aPosition'
   gl.enableVertexAttribArray shaderProgram.positionAttribute
-
+  
   shaderProgram.normalAttribute = gl.getAttribLocation shaderProgram, 'aNormal'
   gl.enableVertexAttribArray shaderProgram.normalAttribute
   
@@ -120,24 +122,32 @@ initBuffers = (texture) ->
       volume.upload gl
       entities.push volume
 
-xUnit = [1, 0, 0]
-yUnit = [0, 1, 0]
+# xUnit = [1, 0, 0]
+# yUnit = [0, 1, 0]
 
-pos = [0, -12, -40]
+# pos = [0, -12, -40]
 
 drawScene = ->
   gl.viewport 0, 0, gl.viewportWidth, gl.viewportHeight
   
   gl.clear gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
   
+  camera.update()
+  
   mat4.perspective 45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix
   
   mat4.identity mvMatrix
-  mat4.translate mvMatrix, pos
-  mat4.rotate mvMatrix, degToRad(xRot), xUnit
-  mat4.rotate mvMatrix, degToRad(yRot), yUnit
+  # mat4.translate mvMatrix, pos
+  # mat4.rotate mvMatrix, degToRad(xRot), xUnit
+  # mat4.rotate mvMatrix, degToRad(yRot), yUnit
+
+  mvPushMatrix mvMatrix
   
   for entity in entities
+    entity.update()
+    
+    mat4.multiply camera.view, entity.model, mvMatrix
+
     gl.bindBuffer gl.ARRAY_BUFFER, entity.positionBuffer
     gl.vertexAttribPointer shaderProgram.positionAttribute, entity.positionBuffer.itemSize, gl.FLOAT, false, 0, 0
     gl.bindBuffer gl.ARRAY_BUFFER, entity.normalBuffer
@@ -199,8 +209,11 @@ animate = ->
   
   unless lastTime is 0
     elapsed = timeNow - lastTime
-    xRot += (xSpeed * elapsed) / 1000.0
-    yRot += (ySpeed * elapsed) / 1000.0
+    xRot = (xSpeed * elapsed) / 1000.0
+    yRot = (ySpeed * elapsed) / 1000.0
+    
+    camera.rotateGlobalY yRot
+    camera.rotateX xRot
     
     handleInput elapsed
   
@@ -228,5 +241,6 @@ document.addEventListener 'DOMContentLoaded', ->
   
   gl.clearColor 0.0, 0.0, 0.0, 0.75
   gl.enable gl.DEPTH_TEST
+  gl.enable gl.CULL_FACE
   
   tick()
