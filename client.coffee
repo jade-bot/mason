@@ -29,12 +29,6 @@ lightingDirection = [-0.25, -0.25, -1.0]
 directional = [0.5, 0.5, 0.5]
 ambient = [0.2, 0.2, 0.2]
 
-cubePositionBuffer = undefined
-cubeColorBuffer = undefined
-cubeNormalBuffer = undefined
-cubeCoordBuffer = undefined
-cubeIndexBuffer = undefined
-
 shaderSources = require 'shaders'
 
 getShader = (gl, {type, source} = {}) ->
@@ -120,9 +114,11 @@ degToRad = (degrees) ->
 entities = []
 
 initBuffers = (texture) ->
-  volume = new Volume texture: texture, blocks: blocks
-  volume.upload gl
-  entities.push volume
+  for i in [-1..1]
+    for k in [-1..1]
+      volume = new Volume texture: texture, blocks: blocks, position: [i * 16, 0, k * 16]
+      volume.upload gl
+      entities.push volume
 
 xUnit = [1, 0, 0]
 yUnit = [0, 1, 0]

@@ -43,9 +43,9 @@ module.exports = class Volume extends Mesh
         color = [0, 0, 0, 1]
         
         for vertex in [0...template.vertices.length] by 3
-          @vertices.push template.vertices[vertex + 0] + cube.position[0]
-          @vertices.push template.vertices[vertex + 1] + cube.position[1]
-          @vertices.push template.vertices[vertex + 2] + cube.position[2]
+          @vertices.push template.vertices[vertex + 0] + cube.position[0] + @position[0]
+          @vertices.push template.vertices[vertex + 1] + cube.position[1] + @position[1]
+          @vertices.push template.vertices[vertex + 2] + cube.position[2] + @position[2]
         
         for normal in template.normals
           @normals.push normal

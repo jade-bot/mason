@@ -1,8 +1,15 @@
+Entity = require './entity'
+
 module.exports = class Mesh extends Entity
   constructor: (args = {}) ->
+    super
+    
     @texture = args.texture
     
     @count = args.count
+    
+    @position = vec3.create args.position or []
+    @rotation = vec3.create args.rotation or []
   
   upload: (gl) ->
     @positionBuffer = gl.createBuffer()
