@@ -123,6 +123,18 @@ mat4.multiply = (mat, mat2, dest) ->
   dest[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33
   dest
 
+mat4.multiplyVec4 = (mat, vec, dest) ->
+  dest = vec  unless dest
+  x = vec[0]
+  y = vec[1]
+  z = vec[2]
+  w = vec[3]
+  dest[0] = mat[0] * x + mat[4] * y + mat[8] * z + mat[12] * w
+  dest[1] = mat[1] * x + mat[5] * y + mat[9] * z + mat[13] * w
+  dest[2] = mat[2] * x + mat[6] * y + mat[10] * z + mat[14] * w
+  dest[3] = mat[3] * x + mat[7] * y + mat[11] * z + mat[15] * w
+  dest
+
 mat4.translate = (mat, vec, out) ->
   x = vec[0]
   y = vec[1]

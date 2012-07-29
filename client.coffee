@@ -251,9 +251,59 @@ tick = ->
 
 document.addEventListener 'DOMContentLoaded', ->
   canvas = document.getElementById 'canvas'
-
+  
   canvas.setAttribute 'width', window.innerWidth
   canvas.setAttribute 'height', window.innerHeight
+  
+  look = null
+  start = null
+  
+  near = vec3.create()
+  far = vec3.create()
+  
+  mouse =
+    position: vec3.create()
+  
+  viewport = [0, 0, window.innerWidth, window.innerHeight]
+  
+  canvas.addEventListener 'mousedown', (event) ->
+    start = event
+    
+    mouse.position[0] = event.clientX
+    mouse.position[1] = event.clientY
+    mouse.position[2] = 0
+    
+    canvas.removeEventListener 'mousemove', look
+    
+    look = (event) ->
+      deltaX = (event.clientX - mouse.position[0]) * 0.01
+      deltaY = (event.clientY - mouse.position[1]) * 0.01
+      
+      avatar.rotateGlobalY -deltaX
+      avatar.rotateX -deltaY
+      
+      mouse.position[0] = event.clientX
+      mouse.position[1] = event.clientY
+      mouse.position[2] = 0
+    
+    canvas.addEventListener 'mousemove', look
+  
+  canvas.addEventListener 'mouseup', (event) ->
+    canvas.removeEventListener 'mousemove', look
+    
+    delta = [(start.clientX - event.clientX), (start.clientY - event.clientY), 0]
+    
+    if (vec3.length delta) < 0.1
+      mouse.position[1] = window.innerHeight - mouse.position[1]
+      
+      mouse.position[2] = 0
+      vec3.unproject mouse.position, mvMatrix, pMatrix, viewport, near
+      
+      mouse.position[2] = 1
+      vec3.unproject mouse.position, mvMatrix, pMatrix, viewport, far
+
+      console.log near
+      console.log far
   
   gl = canvas.getContext 'experimental-webgl', alpha: true
   gl.viewportWidth = canvas.width
