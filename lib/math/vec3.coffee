@@ -33,6 +33,13 @@ vec3.add = (vec, vec2, out) ->
   
   out
 
+vec3.set = (vec, dest) ->
+  dest[0] = vec[0]
+  dest[1] = vec[1]
+  dest[2] = vec[2]
+  
+  dest
+
 vec3.normalize = (vec, out) ->
   out = vec  unless out
 

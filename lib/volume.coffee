@@ -36,8 +36,10 @@ module.exports = class Volume extends Mesh
       
       for side, normal of fm
         vec3.add normal, cube.position, adjacent
+
+        next = @voxels["#{adjacent[0]}:#{adjacent[1]}:#{adjacent[2]}"]
         
-        if @voxels["#{adjacent[0]}:#{adjacent[1]}:#{adjacent[2]}"]
+        if next? and next.type isnt @blocks.bush
           continue
         
         template =
@@ -82,7 +84,7 @@ module.exports = class Volume extends Mesh
           if j is 9
             type = null
 
-            if Math.random() < 0.05
+            if Math.random() < 0.01
               type ?= @blocks.wood
             
             if Math.random() < 0.05
@@ -97,13 +99,16 @@ module.exports = class Volume extends Mesh
             if Math.random() < 0.05
               type ?= @blocks.furnace
 
+            if Math.random() < 0.05
+              type ?= @blocks.bush
+
             continue unless type?
           
-          type = @blocks.grass if j is 8
-          type = @blocks.dirt if j < 8
-          type = @blocks.stone if j < 6
+          type = @blocks.grass if j is 7
+          type = @blocks.dirt if j < 7
+          type = @blocks.stone if j < 5
           
-          if j < 6
+          if j < 5
             if Math.random() < 0.05
               type = @blocks.coal
 
@@ -113,7 +118,7 @@ module.exports = class Volume extends Mesh
             if Math.random() < 0.05
               type = @blocks.iron
             
-            continue if Math.random() < 0.25
+            continue if Math.random() < 0.1
 
           if type is @blocks.wood
             woods.push cube
@@ -127,7 +132,9 @@ module.exports = class Volume extends Mesh
           @voxels[cube.key] = cube
     
     for wood in woods
-      for i in [wood.position[1]...wood.position[1] + 5]
+      height = (Math.random() * 10) + 5
+      
+      for i in [wood.position[1]...wood.position[1] + height]
         cube =
           id: uuid()
           type: @blocks.wood
@@ -142,6 +149,6 @@ module.exports = class Volume extends Mesh
               leaf =
                 id: uuid()
                 type: @blocks.leaf
-                position: [wood.position[0] + i, wood.position[1] + j + 5, wood.position[2] + k]
+                position: [wood.position[0] + i, wood.position[1] + j + height, wood.position[2] + k]
               leaf.key = "#{leaf.position[0]}:#{leaf.position[1]}:#{leaf.position[1]}:#{leaf.position[2]}"
               @voxels[leaf.key] = leaf

@@ -7,6 +7,8 @@ module.exports = class Camera extends Mesh
     @projection = mat4.create()
     
     @view = mat4.create()
+    
+    @delta = [0, 1.6, 0]
   
   update: ->
     super

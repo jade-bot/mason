@@ -5,7 +5,8 @@ module.exports = class Mesh extends Entity
   tempMat4: mat4.create()
   tempQuat4: quat4.create()
   tempVec3: vec3.create()
-
+  tempVec32: vec3.create()
+  
   constructor: (args = {}) ->
     super
     
@@ -13,12 +14,21 @@ module.exports = class Mesh extends Entity
     
     @count ?= args.count
     
-    @position = vec3.create args.position or [0, 0, 0]
-    @rotation = quat4.create args.rotation or [0, 0, 0, 1]
-
+    @position ?= vec3.create args.position or [0, 0, 0]
+    @rotation ?= quat4.create args.rotation or [0, 0, 0, 1]
+    
+    @velocity ?= vec3.create()
+    
     @model = mat4.create()
+    
+    @scale ?= [1, 1, 1]
+    
+    @up = [0, 1, 0]
   
-  update: ->
+  update: (time = 0) ->
+    vec3.set @velocity, @tempVec3
+    vec3.scale @tempVec3, time
+    vec3.add @position, @tempVec3
     mat4.fromRotationTranslation @rotation, @position, @model
   
   lookAt: (target) ->

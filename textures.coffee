@@ -13,11 +13,17 @@ module.exports = textures =
     right: (1 / 16) * 4 - EPSILON
     bottom: (1 / 16) - EPSILON
   
-  leaf:
+  sapling:
     left: (1 / 16) * 15 + EPSILON
     top: EPSILON
     right: (1 / 16) * 16 - EPSILON
     bottom: (1 / 16) - EPSILON
+
+  leaf:
+    left: (1 / 16) * 4 + EPSILON
+    top: (1 / 16 * 3) + EPSILON
+    right: (1 / 16) * 5 - EPSILON
+    bottom: (1 / 16 * 4) - EPSILON
   
   wood:
     left: (1 / 16) * 4 + EPSILON
@@ -30,8 +36,6 @@ module.exports = textures =
     top: (1 / 16) + EPSILON
     right: (1 / 16) * 6 - EPSILON
     bottom: (1 / 16 * 2) - EPSILON
-  
-  
   
   dirt:
     left: (1 / 16) * 2 + EPSILON
@@ -116,6 +120,12 @@ module.exports = textures =
     top: EPSILON
     right: (1 / 16) * 2 - EPSILON
     bottom: (1 / 16) - EPSILON
+  
+  bush:
+    left: (1 / 16) * 7 + EPSILON
+    top: (1 / 16 * 2) + EPSILON
+    right: (1 / 16) * 8 - EPSILON
+    bottom: (1 / 16 * 3) - EPSILON
 
 textures.generateCoords = (texture) ->
   coords =

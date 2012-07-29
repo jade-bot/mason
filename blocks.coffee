@@ -21,6 +21,50 @@ module.exports = blocks =
 
   stone:
     coords: textures.generateCoords textures.stone
+
+  bush:
+    coords:
+      front: [
+        textures.bush.left, textures.bush.bottom
+        textures.bush.right, textures.bush.bottom
+        textures.bush.right, textures.bush.top
+        textures.bush.left, textures.bush.top
+      ]
+      
+      back: [
+        textures.bush.right, textures.bush.bottom
+        textures.bush.right, textures.bush.top
+        textures.bush.left, textures.bush.top
+        textures.bush.left, textures.bush.bottom
+      ]
+      
+      top: [
+        textures.bush.left, textures.bush.top
+        textures.bush.left, textures.bush.top
+        textures.bush.left, textures.bush.top
+        textures.bush.left, textures.bush.top
+      ]
+      
+      bottom: [
+        textures.bush.right, textures.bush.top
+        textures.bush.left, textures.bush.top
+        textures.bush.left, textures.bush.bottom
+        textures.bush.right, textures.bush.bottom
+      ]
+      
+      right: [
+        textures.bush.right, textures.bush.bottom
+        textures.bush.right, textures.bush.top
+        textures.bush.left, textures.bush.top
+        textures.bush.left, textures.bush.bottom
+      ]
+      
+      left: [
+        textures.bush.left, textures.bush.bottom
+        textures.bush.right, textures.bush.bottom
+        textures.bush.right, textures.bush.top
+        textures.bush.left, textures.bush.top
+      ]
   
   grass:
     coords:
