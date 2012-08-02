@@ -25,6 +25,7 @@ vec3.add = (vec, vec2, out) ->
     vec[0] += vec2[0]
     vec[1] += vec2[1]
     vec[2] += vec2[2]
+    
     return vec
 
   out[0] = vec[0] + vec2[0]
@@ -80,9 +81,9 @@ unprojectVec = new MatrixArray 4
 
 vec3.unproject = (vec, view, proj, viewport, dest) ->
   dest = vec unless dest
-
+  
   unprojectMat = mat4.create() unless unprojectMat
-
+  
   m = unprojectMat
   v = unprojectVec
   
@@ -90,16 +91,29 @@ vec3.unproject = (vec, view, proj, viewport, dest) ->
   v[1] = (vec[1] - viewport[1]) * 2.0 / viewport[3] - 1.0
   v[2] = 2.0 * vec[2] - 1.0
   v[3] = 1.0
-
+  
   mat4.multiply proj, view, m
-  return null unless mat4.inverse(m)
-
+  return null unless mat4.inverse m
+  
   mat4.multiplyVec4 m, v
-  return null if v[3] is 0.0
-
+  return null if v[3] is 0
+  
   dest[0] = v[0] / v[3]
   dest[1] = v[1] / v[3]
   dest[2] = v[2] / v[3]
+  
+  dest
+
+vec3.subtract = (vec, vec2, dest) ->
+  if not dest or vec is dest
+    vec[0] -= vec2[0]
+    vec[1] -= vec2[1]
+    vec[2] -= vec2[2]
+    return vec
+  
+  dest[0] = vec[0] - vec2[0]
+  dest[1] = vec[1] - vec2[1]
+  dest[2] = vec[2] - vec2[2]
 
   dest
 

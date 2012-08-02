@@ -1,0 +1,41 @@
+module.exports = (client) ->
+  dom = $ document.body
+  
+  properties = $ '<ul>'
+  properties.css
+    width: '25%'
+    height: '50%'
+    right: 0
+    bottom: 0
+    position: 'absolute'
+    color: 'rgb(200, 200, 200)'
+  properties.appendTo dom
+  
+  inspect = (entity) ->
+    properties.empty()
+    
+    for property in ['position']
+      properties.append $ "<li>#{JSON.stringify entity[property]}</li>"
+  
+  entities = $ '<ul>'
+  entities.css
+    width: '25%'
+    height: '50%'
+    left: 0
+    bottom: 0
+    position: 'absolute'
+    color: 'rgb(200, 200, 200)'
+  entities.appendTo dom
+  
+  for key, entity of client.simulation.entities then do (key, entity) =>
+    entity.element = $ "<li>#{entity.id}</li>"
+    
+    entities.append entity.element
+    
+    entity.element.click ->
+      for key, clearingEntity of client.simulation.entities
+        clearingEntity.selected = no
+      
+      entity.selected = yes
+      
+      inspect entity

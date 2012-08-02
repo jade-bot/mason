@@ -36,10 +36,10 @@ module.exports = class Volume extends Mesh
       
       for side, normal of fm
         vec3.add normal, cube.position, adjacent
-
+        
         next = @voxels["#{adjacent[0]}:#{adjacent[1]}:#{adjacent[2]}"]
         
-        if next? and next.type isnt @blocks.bush
+        if next? and not next?.type.transparent
           continue
         
         template =
@@ -76,14 +76,14 @@ module.exports = class Volume extends Mesh
     woods = []
     
     for i in [0...16]
-      for j in [0...16]
+      for j in [0...128]
         for k in [0...16]
-          if j > 9
+          if j > 64
             continue
           
-          if j is 9
+          if j is 64
             type = null
-
+            
             if Math.random() < 0.01
               type ?= @blocks.wood
             
@@ -102,13 +102,16 @@ module.exports = class Volume extends Mesh
             if Math.random() < 0.05
               type ?= @blocks.bush
 
+            if Math.random() < 0.05
+              type ?= @blocks.glass
+
             continue unless type?
           
-          type = @blocks.grass if j is 7
-          type = @blocks.dirt if j < 7
-          type = @blocks.stone if j < 5
+          type = @blocks.grass if j is 63
+          type = @blocks.dirt if j < 63
+          type = @blocks.stone if j < 50
           
-          if j < 5
+          if j < 50
             if Math.random() < 0.05
               type = @blocks.coal
 

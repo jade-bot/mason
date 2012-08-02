@@ -6,6 +6,7 @@ module.exports = blocks =
   
   leaf:
     coords: textures.generateCoords textures.leaf
+    # transparent: yes
 
   planks:
     coords: textures.generateCoords textures.planks
@@ -21,8 +22,13 @@ module.exports = blocks =
 
   stone:
     coords: textures.generateCoords textures.stone
-
+  
+  glass:
+    coords: textures.generateCoords textures.glass
+    transparent: yes
+  
   bush:
+    transparent: yes
     coords:
       front: [
         textures.bush.left, textures.bush.bottom

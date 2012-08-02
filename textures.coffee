@@ -96,18 +96,24 @@ module.exports = textures =
     top: (1 / 16 * 3) + EPSILON
     right: (1 / 16) * 15 - EPSILON
     bottom: (1 / 16 * 4) - EPSILON
-
+  
   gold:
     left: EPSILON
     top: (1 / 16 * 2) + EPSILON
     right: (1 / 16) - EPSILON
     bottom: (1 / 16 * 3) - EPSILON
-
+  
   iron:
     left: (1 / 16) + EPSILON
     top: (1 / 16 * 2) + EPSILON
     right: (1 / 16) * 2 - EPSILON
     bottom: (1 / 16 * 3) - EPSILON
+  
+  glass:
+    left: (1 / 16) + EPSILON
+    top: (1 / 16 * 3) + EPSILON
+    right: (1 / 16) * 2 - EPSILON
+    bottom: (1 / 16 * 4) - EPSILON
   
   coal:
     left: (1 / 16) * 2 + EPSILON

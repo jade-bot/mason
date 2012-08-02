@@ -5,7 +5,6 @@ module.exports = class Mesh extends Entity
   tempMat4: mat4.create()
   tempQuat4: quat4.create()
   tempVec3: vec3.create()
-  tempVec32: vec3.create()
   
   constructor: (args = {}) ->
     super
@@ -24,6 +23,15 @@ module.exports = class Mesh extends Entity
     @scale ?= [1, 1, 1]
     
     @up = [0, 1, 0]
+    
+    @color = [0, 0, 0, 1]
+    @selectedColor = [0, 1, 1, 1]
+
+    @vertices ?= []
+    @colors ?= []
+    @indices ?= []
+    @coords ?= []
+    @normals ?= []
   
   update: (time = 0) ->
     vec3.set @velocity, @tempVec3
@@ -101,3 +109,16 @@ module.exports = class Mesh extends Entity
     gl.bufferData gl.ELEMENT_ARRAY_BUFFER, (new Uint16Array @indices), gl.STATIC_DRAW
     @indexBuffer.itemSize = 1
     @indexBuffer.numItems = @indices.length
+
+# entities = []
+
+# bleh = {}
+# bleh.vertices = []
+# for i in [0...100]
+#   bleh.vertices.push Math.random(), Math.random(), Math.random()
+# bleh.count = bleh.vertices.length / 3
+# bleh.buffer = gl.createBuffer()
+# bleh.buffer.size = 3
+# gl.bindBuffer gl.ARRAY_BUFFER, bleh.buffer
+# gl.bufferData gl.ARRAY_BUFFER, (new Float32Array bleh.vertices), gl.STATIC_DRAW
+# entities.push bleh

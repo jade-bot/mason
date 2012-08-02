@@ -3,38 +3,60 @@ module.exports = quat4 = {}
 MatrixArray = require './type'
 
 quat4.create = (quat) ->
-  dest = new MatrixArray 4
+  out = new MatrixArray 4
 
   if quat
-    dest[0] = quat[0]
-    dest[1] = quat[1]
-    dest[2] = quat[2]
-    dest[3] = quat[3]
+    out[0] = quat[0]
+    out[1] = quat[1]
+    out[2] = quat[2]
+    out[3] = quat[3]
   else
-    dest[0] = dest[1] = dest[2] = dest[3] = 0
-  dest
+    out[0] = out[1] = out[2] = out[3] = 0
+  out
 
-quat4.multiply = (quat, quat2, dest) ->
-  dest = quat unless dest
+quat4.toAngleAxis = (src, out) ->
+  out = src  unless out
+  
+  # The quaternion representing the rotation is
+  #   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
+  sqrlen = src[0] * src[0] + src[1] * src[1] + src[2] * src[2]
+  if sqrlen > 0
+    out[3] = 2 * Math.acos(src[3])
+    invlen = glMath.invsqrt(sqrlen)
+    out[0] = src[0] * invlen
+    out[1] = src[1] * invlen
+    out[2] = src[2] * invlen
+  else
+    
+    # angle is 0 (mod 2*pi), so any axis will do
+    out[3] = 0
+    out[0] = 1
+    out[1] = 0
+    out[2] = 0
+  out
+
+quat4.multiply = (quat, quat2, out) ->
+  out = quat unless out
 
   qax = quat[0]
   qay = quat[1]
   qaz = quat[2]
   qaw = quat[3]
+
   qbx = quat2[0]
   qby = quat2[1]
   qbz = quat2[2]
   qbw = quat2[3]
 
-  dest[0] = qax * qbw + qaw * qbx + qay * qbz - qaz * qby
-  dest[1] = qay * qbw + qaw * qby + qaz * qbx - qax * qbz
-  dest[2] = qaz * qbw + qaw * qbz + qax * qby - qay * qbx
-  dest[3] = qaw * qbw - qax * qbx - qay * qby - qaz * qbz
+  out[0] = qax * qbw + qaw * qbx + qay * qbz - qaz * qby
+  out[1] = qay * qbw + qaw * qby + qaz * qbx - qax * qbz
+  out[2] = qaz * qbw + qaw * qbz + qax * qby - qay * qbx
+  out[3] = qaw * qbw - qax * qbx - qay * qby - qaz * qbz
 
-  dest
+  out
 
-quat4.multiplyVec3 = (quat, vec, dest) ->
-  dest = vec  unless dest
+quat4.multiplyVec3 = (quat, vec, out) ->
+  out = vec  unless out
   x = vec[0]
   y = vec[1]
   z = vec[2]
@@ -50,13 +72,13 @@ quat4.multiplyVec3 = (quat, vec, dest) ->
   iw = -qx * x - qy * y - qz * z
   
   # calculate result * inverse quat
-  dest[0] = ix * qw + iw * -qx + iy * -qz - iz * -qy
-  dest[1] = iy * qw + iw * -qy + iz * -qx - ix * -qz
-  dest[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx
-  dest
+  out[0] = ix * qw + iw * -qx + iy * -qz - iz * -qy
+  out[1] = iy * qw + iw * -qy + iz * -qx - ix * -qz
+  out[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx
+  out
 
-quat4.fromRotationMatrix = (mat, dest) ->
-  dest = quat4.create()  unless dest
+quat4.fromRotationMatrix = (mat, out) ->
+  out = quat4.create()  unless out
   
   # Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
   # article "Quaternion Calculus and Fast Animation".
@@ -66,11 +88,11 @@ quat4.fromRotationMatrix = (mat, dest) ->
     
     # |w| > 1/2, may as well choose w > 1/2
     fRoot = Math.sqrt(fTrace + 1.0) # 2w
-    dest[3] = 0.5 * fRoot
+    out[3] = 0.5 * fRoot
     fRoot = 0.5 / fRoot # 1/(4w)
-    dest[0] = (mat[7] - mat[5]) * fRoot
-    dest[1] = (mat[2] - mat[6]) * fRoot
-    dest[2] = (mat[3] - mat[1]) * fRoot
+    out[0] = (mat[7] - mat[5]) * fRoot
+    out[1] = (mat[2] - mat[6]) * fRoot
+    out[2] = (mat[3] - mat[1]) * fRoot
   else
     
     # |w| <= 1/2
@@ -81,12 +103,12 @@ quat4.fromRotationMatrix = (mat, dest) ->
     j = s_iNext[i]
     k = s_iNext[j]
     fRoot = Math.sqrt(mat[i * 3 + i] - mat[j * 3 + j] - mat[k * 3 + k] + 1.0)
-    dest[i] = 0.5 * fRoot
+    out[i] = 0.5 * fRoot
     fRoot = 0.5 / fRoot
-    dest[3] = (mat[k * 3 + j] - mat[j * 3 + k]) * fRoot
-    dest[j] = (mat[j * 3 + i] + mat[i * 3 + j]) * fRoot
-    dest[k] = (mat[k * 3 + i] + mat[i * 3 + k]) * fRoot
-  dest
+    out[3] = (mat[k * 3 + j] - mat[j * 3 + k]) * fRoot
+    out[j] = (mat[j * 3 + i] + mat[i * 3 + j]) * fRoot
+    out[k] = (mat[k * 3 + i] + mat[i * 3 + k]) * fRoot
+  out
 
 
 ###
@@ -94,23 +116,49 @@ Alias. See the description for quat4.fromRotationMatrix().
 ###
 mat3.toQuat4 = quat4.fromRotationMatrix
 
-quat4.fromAngleAxis = (angle, axis, dest) ->
-  dest = quat4.create() unless dest
+quat4.normalize = (quat, out) ->
+  out = quat unless out
+  
+  x = quat[0]
+  y = quat[1]
+  z = quat[2]
+  w = quat[3]
+  
+  len = Math.sqrt(x * x + y * y + z * z + w * w)
+  if len is 0
+    out[0] = 0
+    out[1] = 0
+    out[2] = 0
+    out[3] = 0
+    return out
+  
+  len = 1 / len
+  
+  out[0] = x * len
+  out[1] = y * len
+  out[2] = z * len
+  out[3] = w * len
+
+  out
+
+quat4.fromAngleAxis = (angle, axis, out) ->
+  out = quat4.create() unless out
   
   half = angle * 0.5
   s = Math.sin half
 
-  dest[3] = Math.cos half
+  out[3] = Math.cos half
   
-  dest[0] = s * axis[0]
-  dest[1] = s * axis[1]
-  dest[2] = s * axis[2]
+  out[0] = s * axis[0]
+  out[1] = s * axis[1]
+  out[2] = s * axis[2]
 
-  dest
+  out
 
-quat4.set = (quat, dest) ->
-  dest[0] = quat[0]
-  dest[1] = quat[1]
-  dest[2] = quat[2]
-  dest[3] = quat[3]
-  dest
+quat4.set = (quat, out) ->
+  out[0] = quat[0]
+  out[1] = quat[1]
+  out[2] = quat[2]
+  out[3] = quat[3]
+
+  out

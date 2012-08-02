@@ -16,7 +16,7 @@ app.configure =>
     # require: []
   
   bundle.use (fileify 'shaders', "#{__dirname}/shaders")
-
+  
   app.use bundle
   
 server = app.listen 1337
