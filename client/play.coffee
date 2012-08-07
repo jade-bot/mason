@@ -338,17 +338,16 @@ document.addEventListener 'DOMContentLoaded', ->
       traverse = require './traverse'
       traverse ray.start, ray.direction, (x, y, z) ->
         # console.log arguments...
-        l = new Line position: [x, y, z], texture: textures.terrain
-        l.scaffold()
-        l.upload gl
-        entities.push l
 
         # debugger
         key = "#{x}:#{y}:#{z}"
         voxel = volume.voxels[key]
         
-        # if voxel?
-        # alert voxel.type.key
+        if voxel?
+          # alert voxel.type.key
+          delete volume.voxels[voxel.key]
+          volume.extract()
+          volume.upload gl
         
         return voxel?
   

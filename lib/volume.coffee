@@ -5,6 +5,8 @@ cubeTemplate = require './cube'
 Mesh = require './mesh'
 
 module.exports = class Volume extends Mesh
+  adjacent: vec3.create()
+  
   constructor: (args = {}) ->
     super
     
@@ -18,26 +20,34 @@ module.exports = class Volume extends Mesh
     @indices = []
     @colors = []
     
+    @fm =
+      front:  [+0, +0, +1]
+      back:   [+0, +0, -1]
+      top:    [+0, +1, +0]
+      bottom: [+0, -1, +0]
+      right:  [+1, +0, +0]
+      left:   [-1, +0, +0]
+
+    @color = [0, 0, 0, 1]
+    
     @terraform()
+    
     @extract()
   
   extract: ->
+    @vertices.length = 0
+    @normals.length = 0
+    @coords.length = 0
+    @indices.length = 0
+    @colors.length = 0
+    
     faces = 0
-    adjacent = vec3.create()
     
     for own cubeKey, cube of @voxels
-      fm =
-        front:  [+0, +0, +1]
-        back:   [+0, +0, -1]
-        top:    [+0, +1, +0]
-        bottom: [+0, -1, +0]
-        right:  [+1, +0, +0]
-        left:   [-1, +0, +0]
-      
-      for side, normal of fm
-        vec3.add normal, cube.position, adjacent
+      for side, normal of @fm
+        vec3.add normal, cube.position, @adjacent
         
-        next = @voxels["#{adjacent[0]}:#{adjacent[1]}:#{adjacent[2]}"]
+        next = @voxels["#{@adjacent[0]}:#{@adjacent[1]}:#{@adjacent[2]}"]
         
         if next? and not next?.type.transparent
           continue
@@ -45,15 +55,13 @@ module.exports = class Volume extends Mesh
         template =
           vertices: cubeTemplate.vertices[side]
           normals: cubeTemplate.normals[side]
-          coords: cube.type.coords[side] # cubeTemplate.coords[side]
+          coords: cube.type.coords[side]
           indices: cubeTemplate.indices[side]
         
-        color = [0, 0, 0, 1]
-        
         for vertex in [0...template.vertices.length] by 3
-          @vertices.push template.vertices[vertex + 0] + cube.position[0] # + @position[0]
-          @vertices.push template.vertices[vertex + 1] + cube.position[1] # + @position[1]
-          @vertices.push template.vertices[vertex + 2] + cube.position[2] # + @position[2]
+          @vertices.push template.vertices[vertex + 0] + cube.position[0]
+          @vertices.push template.vertices[vertex + 1] + cube.position[1]
+          @vertices.push template.vertices[vertex + 2] + cube.position[2]
         
         for normal in template.normals
           @normals.push normal
@@ -61,11 +69,11 @@ module.exports = class Volume extends Mesh
         for coord in template.coords
           @coords.push coord
         
-        for index in [0, 1, 2, 0, 2, 3] # template.indices
+        for index in [0, 1, 2, 0, 2, 3]
           @indices.push index + (faces * 4)
         
         for i in [0...4]
-          @colors.push color[0] ; @colors.push color[1] ; @colors.push color[2] ; @colors.push color[3]
+          @colors.push @color...
         
         faces++
     
