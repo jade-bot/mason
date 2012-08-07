@@ -153,5 +153,5 @@ module.exports = class Volume extends Mesh
                 id: uuid()
                 type: @blocks.leaf
                 position: [wood.position[0] + i, wood.position[1] + j + height, wood.position[2] + k]
-              leaf.key = "#{leaf.position[0]}:#{leaf.position[1]}:#{leaf.position[1]}:#{leaf.position[2]}"
+              leaf.key = "#{leaf.position[0]}:#{leaf.position[1]}:#{leaf.position[2]}"
               @voxels[leaf.key] = leaf

@@ -1,6 +1,6 @@
 uuid = require 'node-uuid'
 
-{Keyboard, Volume, Camera, Avatar, Sphere} = mason = require '../mason'
+{Keyboard, Volume, Camera, Avatar, Sphere, Line} = mason = require '../mason'
 
 keyboard = new Keyboard
 keyboard.bind document
@@ -103,9 +103,9 @@ mvPopMatrix = ->
   mvMatrix = mvMatrixStack.pop()
 
 setMatrixUniforms = ->
-  gl.uniformMatrix4fv shaderProgram.pMatrixUniform, false, pMatrix
+  gl.uniformMatrix4fv shaderProgram.pMatrixUniform, false, camera.projection
   gl.uniformMatrix4fv shaderProgram.mvMatrixUniform, false, mvMatrix
-
+  
   normalMatrix = mat3.create()
   mat4.toInverseMat3 mvMatrix, normalMatrix
   mat3.transpose normalMatrix
@@ -117,6 +117,8 @@ degToRad = (degrees) ->
 entities = []
 
 avatar = null
+volume = null
+line = null
 
 initBuffers = (texture) ->
   # for i in [-1..1]
@@ -125,9 +127,13 @@ initBuffers = (texture) ->
   volume.upload gl
   entities.push volume
   
-  avatar = new Avatar texture: textures.avatar, position: [0, 64, 0], volume: volume
+  avatar = new Avatar texture: textures.avatar, position: [8.5, 64, 8.5], volume: volume
   avatar.upload gl
   entities.push avatar
+  
+  line = new Line texture: textures.terrain, points: [[], []]
+  line.upload gl
+  entities.push line
 
 tempVec3 = vec3.create()
 
@@ -143,15 +149,15 @@ drawScene = (time) ->
   
   # vec3.add camera.position, camera.delta
   
-  camera.translate 2, camera.delta
+  # camera.translate 2, camera.delta
   
   camera.update()
   
-  mat4.perspective 45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix
+  # mat4.perspective 45, window.innerWidth / window.innerHeight, 1, 1000, pMatrix
   
   mat4.identity mvMatrix
   
-  mvPushMatrix mvMatrix
+  # mvPushMatrix mvMatrix
   
   if blending
       gl.blendFunc gl.SRC_ALPHA, gl.ONE
@@ -200,7 +206,7 @@ drawScene = (time) ->
     
     gl.bindBuffer gl.ELEMENT_ARRAY_BUFFER, entity.indexBuffer
     setMatrixUniforms()
-    gl.drawElements gl.TRIANGLES, entity.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0
+    gl.drawElements entity.mode or gl.TRIANGLES, entity.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0
 
 handleInput = (delta) ->
   delta *= 0.05
@@ -240,9 +246,9 @@ animate = ->
     if keyboard.keys.keyCode[32]
       unless avatar.jumping
         avatar.jumping = yes
-
+        
         avatar.velocity[1] += 10
-
+        
         setTimeout ->
           avatar.jumping = no
         , 1000
@@ -268,6 +274,11 @@ document.addEventListener 'DOMContentLoaded', ->
   
   near = vec3.create()
   far = vec3.create()
+  ray =
+    start: vec3.create()
+    end: vec3.create()
+    direction: vec3.create()
+    length: 0
   
   mouse =
     position: vec3.create()
@@ -302,16 +313,44 @@ document.addEventListener 'DOMContentLoaded', ->
     delta = [(start.clientX - event.clientX), (start.clientY - event.clientY), 0]
     
     if (vec3.length delta) < 0.1
-      # mouse.position[1] = mouse.position[1]
+      mouse.position[0] = event.clientX
+      mouse.position[1] = event.clientY
+
+      mouse.position[1] = viewport[3] - mouse.position[1]
       
       mouse.position[2] = 0
-      vec3.unproject mouse.position, mvMatrix, pMatrix, viewport, near
+      vec3.unproject mouse.position, camera.view, camera.projection, viewport, near
       
       mouse.position[2] = 1
-      vec3.unproject mouse.position, mvMatrix, pMatrix, viewport, far
+      vec3.unproject mouse.position, camera.view, camera.projection, viewport, far
+      
+      vec3.set near, ray.start
+      vec3.set far, ray.end
+      vec3.subtract ray.end, ray.start, ray.direction
+      ray.length = vec3.length ray.direction
+      vec3.normalize ray.direction
 
-      console.log near
-      console.log far
+      vec3.set ray.start, line.points[0]
+      vec3.set ray.end, line.points[1]
+      line.extract()
+      line.upload gl
+      
+      traverse = require './traverse'
+      traverse ray.start, ray.direction, (x, y, z) ->
+        # console.log arguments...
+        l = new Line position: [x, y, z], texture: textures.terrain
+        l.scaffold()
+        l.upload gl
+        entities.push l
+
+        # debugger
+        key = "#{x}:#{y}:#{z}"
+        voxel = volume.voxels[key]
+        
+        # if voxel?
+        # alert voxel.type.key
+        
+        return voxel?
   
   canvas.addEventListener 'mousewheel', (event) ->
     delta = event.wheelDeltaY / 100

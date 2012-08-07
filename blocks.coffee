@@ -291,3 +291,6 @@ module.exports = blocks =
         textures.furnace_side.right, textures.furnace_side.top
         textures.furnace_side.left, textures.furnace_side.top
       ]
+
+for key, block of blocks
+  block.key = key

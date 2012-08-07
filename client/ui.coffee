@@ -1,5 +1,34 @@
-module.exports = (client) ->
+module.exports = (client, demos) ->
   dom = $ document.body
+
+  demoMenu = $ '<div>'
+  demoMenu.css
+    width: '100%'
+    height: '100%'
+    left: 0
+    top: 0
+    position: 'absolute'
+    color: 'rgb(200, 200, 200)'
+    'margin-top': 40
+  demoMenu.appendTo dom
+  
+  for demo in demos then do (demo) =>
+    el = $ '<li>'
+    el.text demo.key
+    el.appendTo demoMenu
+    
+    el.click ->
+      demoMenu.fadeOut()
+      
+      client.runDemo demo
+    
+    # thumbnail = $ '<img>'
+    # thumbnail.attr src: demo.thumbnail
+    # thumbnail.css position: 'absolute', left: 0
+    # thumbnail.appendTo el
+    
+    # unless demo.thumbnail
+    # demo.thumbnail = 
   
   properties = $ '<ul>'
   properties.css
