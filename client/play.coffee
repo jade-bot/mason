@@ -128,13 +128,13 @@ degToRad = (degrees) ->
 entities = []
 
 avatar = null
-volume = null
+window.volume = null
 line = null
 
 initBuffers = (texture) ->
   # for i in [-1..1]
   # for k in [-1..1]
-  volume = new Volume texture: textures.terrain, blocks: blocks # , position: [i * 16, 0, k * 16]
+  window.volume = volume = new Volume texture: textures.terrain, blocks: blocks # , position: [i * 16, 0, k * 16]
   volume.upload gl
   entities.push volume
   
@@ -254,15 +254,15 @@ animate = ->
     avatar.translateZ -speed if keyboard.keys.map.w
     avatar.translateZ speed if keyboard.keys.map.s
     
-    if keyboard.keys.keyCode[32]
-      unless avatar.jumping
-        avatar.jumping = yes
+    # if keyboard.keys.keyCode[32]
+    #   unless avatar.jumping
+    #     avatar.jumping = yes
         
-        avatar.velocity[1] += 10
+    #     avatar.velocity[1] += 10
         
-        setTimeout ->
-          avatar.jumping = no
-        , 1000
+    #     setTimeout ->
+    #       avatar.jumping = no
+    #     , 1000
     
     handleInput elapsed
   
