@@ -1,11 +1,9 @@
 uuid = require 'node-uuid'
 
-{Keyboard, Volume, Camera, Avatar, Sphere, Line} = mason = require '../mason'
+{Keyboard, Volume, Camera, Avatar, Sphere, Line, terraform} = mason = require '../mason'
 
 keyboard = new Keyboard
 keyboard.bind document
-
-blocks = require '../blocks'
 
 camera = new Camera
 
@@ -128,13 +126,15 @@ degToRad = (degrees) ->
 entities = []
 
 avatar = null
-window.volume = null
+volume = null
 line = null
 
 initBuffers = (texture) ->
   # for i in [-1..1]
   # for k in [-1..1]
-  window.volume = volume = new Volume texture: textures.terrain, blocks: blocks # , position: [i * 16, 0, k * 16]
+  volume = new Volume texture: textures.terrain # , position: [i * 16, 0, k * 16]
+  terraform volume
+  volume.extract()
   volume.upload gl
   entities.push volume
   

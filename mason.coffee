@@ -15,3 +15,5 @@ mason.Emitter = require './lib/emitter'
 mason.Sphere = require './lib/sphere'
 mason.Entity = require './lib/entity'
 mason.Line = require './lib/line'
+
+mason.terraform = require './lib/terraform'

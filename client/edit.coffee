@@ -30,6 +30,11 @@ demos.push new Demo
     physics = new Physics
     client.simulation.physics = physics
 
+demos.push new Demo
+  key: 'benchmark'
+  main: (client) ->
+    (require './benchmark')()
+
 document.addEventListener 'DOMContentLoaded', ->
   client = new Client
   
@@ -48,7 +53,3 @@ document.addEventListener 'DOMContentLoaded', ->
     client.simulation.entities[axes.id] = axes
     
     demo.main client
-    
-    setTimeout ->
-      console.log canvas.toDataURL()
-    , 2000
