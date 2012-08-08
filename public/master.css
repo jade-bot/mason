@@ -1,0 +1,17 @@
+.hud {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  
+  -webkit-transition: top 0.5s linear;
+}
+
+.hud.collapsed {
+  top: -100%;
+}
+
+.hud.expanded {
+  top: 40px;
+}

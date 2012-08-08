@@ -19,14 +19,6 @@ module.exports = class Volume extends Mesh
     @coords = []
     @indices = []
     @colors = []
-    
-    @fm =
-      front:  [+0, +0, +1]
-      back:   [+0, +0, -1]
-      top:    [+0, +1, +0]
-      bottom: [+0, -1, +0]
-      right:  [+1, +0, +0]
-      left:   [-1, +0, +0]
 
     @color = [0, 0, 0, 1]
     
@@ -44,7 +36,7 @@ module.exports = class Volume extends Mesh
     faces = 0
     
     for own cubeKey, cube of @voxels
-      for side, normal of @fm
+      for side, normal of cubeTemplate.faces
         vec3.add normal, cube.position, @adjacent
         
         next = @voxels["#{@adjacent[0]}:#{@adjacent[1]}:#{@adjacent[2]}"]

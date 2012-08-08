@@ -63,6 +63,14 @@ module.exports = cube = class Cube extends Mesh
       @data.push 1, 1
       @data.push 1, 0, 0, 1
 
+cube.faces =
+  front:  [+0, +0, +1]
+  back:   [+0, +0, -1]
+  top:    [+0, +1, +0]
+  bottom: [+0, -1, +0]
+  right:  [+1, +0, +0]
+  left:   [-1, +0, +0]
+
 cube.vertices =
   front: [
     +0.0, +0.0, +1.0

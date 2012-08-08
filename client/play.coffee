@@ -74,11 +74,22 @@ initShaders = ->
 
 handleLoadedTexture = (texture, image) ->
   gl.pixelStorei gl.UNPACK_FLIP_Y_WEBGL, off
+  
   gl.bindTexture gl.TEXTURE_2D, texture
+  
   gl.texImage2D gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image
+  
   gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST
   gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST
+  
+  # ext = gl.getExtension 'WEBKIT_EXT_texture_filter_anisotropic'
+  # if ext?
+  #   max_anisotropy = gl.getParameter ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT
+  #   max_anisotropy = Math.min 4, max_anisotropy
+  #   gl.texParameterf gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy
+  
   gl.generateMipmap gl.TEXTURE_2D
+
   gl.bindTexture gl.TEXTURE_2D, null
 
 initTexture = (textureModel) ->
@@ -329,7 +340,7 @@ document.addEventListener 'DOMContentLoaded', ->
       vec3.subtract ray.end, ray.start, ray.direction
       ray.length = vec3.length ray.direction
       vec3.normalize ray.direction
-
+      
       vec3.set ray.start, line.points[0]
       vec3.set ray.end, line.points[1]
       line.extract()
@@ -362,6 +373,9 @@ document.addEventListener 'DOMContentLoaded', ->
   gl = canvas.getContext 'experimental-webgl', alpha: true
   gl.viewportWidth = canvas.width
   gl.viewportHeight = canvas.height
+  
+  extensions = (require './extensions') gl
+  ui = (require './play_ui') extensions
   
   initShaders()
   initTexture textures.avatar
