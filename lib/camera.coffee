@@ -1,18 +1,24 @@
-Mesh = require './mesh'
+Body = require './body'
 
-module.exports = class Camera extends Mesh
+module.exports = class Camera extends Body
   constructor: (args = {}) ->
     super
     
-    @projection = mat4.create()
+    @fov ?= args.fov or 60
     
-    @view = mat4.create()
+    @projection ?= args.projection or mat4.create()
     
-    @delta = [0, 1.6, 0]
+    @view ?= args.view or mat4.create()
+    
+    Object.defineProperty this, 'aspect', get: ->
+      window.innerWidth / window.innerHeight
+    
+    @near ?= args.near or 1
+    @far ?= args.far or 1000
   
   update: ->
     super
     
-    mat4.perspective 60, (window.innerWidth / window.innerHeight), 1, 1000, @projection
+    mat4.perspective @fov, @aspect, @near, @far, @projection
     
     mat4.inverse @model, @view

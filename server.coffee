@@ -9,7 +9,7 @@ app.configure =>
   app.use express.static './public'
   
   bundle = browserify
-    entry: './client.coffee'
+    entry: './entry.coffee'
     debug: on
     ignore: ['shaders']
     # filter: require 'uglify-js'
