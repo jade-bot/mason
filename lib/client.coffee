@@ -3,6 +3,7 @@ Camera = require './camera'
 Simulation = require './simulation'
 Renderer = require './renderer'
 Keyboard = require './keyboard'
+Mouse = require './mouse'
 Library = require './library'
 
 module.exports = class Client extends Entity
@@ -15,6 +16,9 @@ module.exports = class Client extends Entity
     
     @keyboard ?= args.keyboard or new Keyboard
     @keyboard.bind document
+    
+    @mouse ?= args.mouse or new Mouse
+    @mouse.bind document
     
     @library ?= args.library or new Library arguments...
     

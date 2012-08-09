@@ -8,6 +8,10 @@ module.exports = class Simulation extends Entity
     @entities = []
     
     @origin = new Body
+    
+    setInterval =>
+      @emit 'tick'
+    , 1000 / 60
   
   add: ->
     @entities.push arguments...

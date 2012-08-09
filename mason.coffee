@@ -1,3 +1,5 @@
+require 'events-off'
+
 require './lib/math'
 require './lib/shim'
 
