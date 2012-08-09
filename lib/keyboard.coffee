@@ -12,6 +12,8 @@ module.exports = class Keyboard
       83: 's'
       65: 'a'
       68: 'd'
+    
+    @shift = off
   
   bind: (target) ->
     target.addEventListener 'keydown', (event) =>
@@ -19,9 +21,13 @@ module.exports = class Keyboard
 
       for field in @fields
         @keys[field][event[field]] = Date.now()
+      
+      @shift = event.shiftKey
     
     target.addEventListener 'keyup', (event) =>
       delete @keys.map[@map[event.keyCode]]
       
       for field in @fields
         delete @keys[field][event[field]]
+      
+      @shift = event.shiftKey

@@ -1,4 +1,4 @@
-module.exports = ({subject, mouse}) ->
+module.exports = ({subject, mouse}, tolerance = 0.1) ->
   look = null
   delta = vec3.create()
   
@@ -8,7 +8,6 @@ module.exports = ({subject, mouse}) ->
     if look? then mouse.off 'move', look
     
     look = (event) ->
-      console.log 'move'
       delta[0] = event.x - start.x
       delta[1] = event.y - start.y
       
@@ -19,19 +18,17 @@ module.exports = ({subject, mouse}) ->
       start = event
     
     mouse.on 'move', look
-  
-#   canvas.addEventListener 'mouseup', (event) ->
-#     canvas.removeEventListener 'mousemove', look
     
-#     delta = [(start.clientX - event.clientX), (start.clientY - event.clientY), 0]
+    mouse.on 'up', (event) ->
+      mouse.off 'move', look
+      
+      delta[0] = event.x - start.x
+      delta[1] = event.y - start.y
+      
+      if (vec3.length delta) < tolerance
+        subject.emit 'action', event
     
-#     if (vec3.length delta) < 0.1
-#       
-  
-#   canvas.addEventListener 'mousewheel', (event) ->
-#     delta = event.wheelDeltaY / 100
-    
-#     if delta > 0
-#       vec3.scale camera.delta, 1.1
-#     else
-#       vec3.scale camera.delta, 0.9
+    mouse.on 'wheel', (event) ->
+      delta = event.wheelDeltaY / 100
+      
+      vec3.scale camera.offset, if delta > 0 then 1.1 else 0.9
