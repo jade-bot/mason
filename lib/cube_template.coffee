@@ -23,3 +23,6 @@ template.faces = faces = [
   new Face vertices: [vertices[4], vertices[0], vertices[6], vertices[2]], normal: [+0, +0, -1]
   new Face vertices: [vertices[1], vertices[5], vertices[3], vertices[7]], normal: [+0, +0, +1]
 ]
+
+for key, index in ['left', 'right', 'bottom', 'top', 'back', 'front']
+  faces[index].key = key

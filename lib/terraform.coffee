@@ -3,7 +3,7 @@ uuid = require 'node-uuid'
 blocks = require '../blocks'
 
 module.exports = terraform = (volume) ->
-  woods = []
+  trees = []
   
   for i in [0...16]
     for j in [0...128]
@@ -15,7 +15,7 @@ module.exports = terraform = (volume) ->
           type = null
           
           if Math.random() < 0.01
-            type ?= blocks.wood
+            type ?= blocks.tree
           
           if Math.random() < 0.05
             type ?= blocks.chest
@@ -24,13 +24,13 @@ module.exports = terraform = (volume) ->
             type ?= blocks.crafting_table
           
           if Math.random() < 0.05
-            type ?= blocks.planks
+            type ?= blocks.wood
           
           if Math.random() < 0.05
             type ?= blocks.furnace
           
-          if Math.random() < 0.05
-            type ?= blocks.bush
+          # if Math.random() < 0.05
+          #   type ?= blocks.bush
           
           if Math.random() < 0.05
             type ?= blocks.glass
@@ -53,8 +53,8 @@ module.exports = terraform = (volume) ->
           
           continue if Math.random() < 0.1
         
-        if type is blocks.wood
-          woods.push cube
+        if type is blocks.tree
+          trees.push cube
           continue
         
         cube =
@@ -64,14 +64,14 @@ module.exports = terraform = (volume) ->
         cube.key = "#{cube.position[0]}:#{cube.position[1]}:#{cube.position[2]}"
         volume.voxels[cube.key] = cube
   
-  for wood in woods
+  for tree in trees
     height = (Math.random() * 10) + 5
     
-    for i in [wood.position[1]...wood.position[1] + height]
+    for i in [tree.position[1]...tree.position[1] + height]
       cube =
         id: uuid()
-        type: blocks.wood
-        position: [wood.position[0], i, wood.position[2]]
+        type: blocks.tree
+        position: [tree.position[0], i, tree.position[2]]
       cube.key = "#{cube.position[0]}:#{cube.position[1]}:#{cube.position[2]}"
       volume.voxels[cube.key] = cube
     
@@ -82,6 +82,6 @@ module.exports = terraform = (volume) ->
             leaf =
               id: uuid()
               type: blocks.leaf
-              position: [wood.position[0] + i, wood.position[1] + j + height, wood.position[2] + k]
+              position: [tree.position[0] + i, tree.position[1] + j + height, tree.position[2] + k]
             leaf.key = "#{leaf.position[0]}:#{leaf.position[1]}:#{leaf.position[2]}"
             volume.voxels[leaf.key] = leaf

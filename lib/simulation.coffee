@@ -1,4 +1,5 @@
 Body = require './body'
+Clock = require './clock'
 Entity = require './entity'
 
 module.exports = class Simulation extends Entity
@@ -9,9 +10,9 @@ module.exports = class Simulation extends Entity
     
     @origin = new Body
     
-    setInterval =>
-      @emit 'tick'
-    , 1000 / 60
+    @clock = new Clock
+    @clock.on 'fps', -> console.log arguments...
+    @clock.on 'tick', => @emit 'tick'
   
   add: ->
     @entities.push arguments...
