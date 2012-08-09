@@ -20,7 +20,8 @@ module.exports = class Client extends Entity
     
     @canvases ?= args.canvases or new Array
     
-    @initialize()
+    @library.on 'load', =>
+      @initialize()
   
   initialize: ->
     @canvas = @spawnCanvas()

@@ -58,14 +58,19 @@ module.exports = class Renderer extends Entity
     @gl.bindBuffer @gl.ARRAY_BUFFER, mount.buffer
     @gl.bufferData @gl.ARRAY_BUFFER, (new Float32Array mount.entity.data), @gl.STATIC_DRAW
   
-  uploadImage: (image) ->
+  uploadImage: (mount) ->
+    {entity} = mount
+    {material} = entity
+    
     texture = @gl.createTexture()
     
     @gl.pixelStorei @gl.UNPACK_FLIP_Y_WEBGL, off
     
     @gl.bindTexture @gl.TEXTURE_2D, texture
     
-    @gl.texImage2D @gl.TEXTURE_2D, 0, @gl.RGBA, @gl.RGBA, @gl.UNSIGNED_BYTE, image
+    debugger
+    
+    @gl.texImage2D @gl.TEXTURE_2D, 0, @gl.RGBA, @gl.RGBA, @gl.UNSIGNED_BYTE, material.image
     @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MAG_FILTER, @gl.NEAREST
     @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MIN_FILTER, @gl.NEAREST_MIPMAP_NEAREST
     
@@ -78,10 +83,14 @@ module.exports = class Renderer extends Entity
     @gl.generateMipmap @gl.TEXTURE_2D
     
     @gl.bindTexture @gl.TEXTURE_2D, null
+    
+    mount.texture = texture
   
   uploadMaterial: (mount) ->
     {entity} = mount
     {material} = entity
+    
+    @uploadImage mount
     
     program = @gl.createProgram()
     program.attributes = {}
@@ -96,6 +105,8 @@ module.exports = class Renderer extends Entity
     program.uniforms.model = @gl.getUniformLocation program, 'uModel'
     
     program.uniforms.color = @gl.getUniformLocation program, 'uColor'
+    
+    program.uniforms.sampler = @gl.getUniformLocation program, 'uSampler'
     
     program.attributes.position = @gl.getAttribLocation program, 'aPosition'
     @gl.enableVertexAttribArray program.attributes.position
@@ -122,21 +133,23 @@ module.exports = class Renderer extends Entity
     camera.update()
     
     for entity in simulation.entities
-      {buffer, program} = @mount entity
+      {texture, buffer, program} = @mount entity
       
-      @gl.uniformMatrix4fv program.uniforms.projection, false, camera.projection
-      @gl.uniformMatrix4fv program.uniforms.view, false, camera.view
-      @gl.uniformMatrix4fv program.uniforms.model, false, entity.model
+      {uniforms, attributes} = program
+      
+      @gl.uniformMatrix4fv uniforms.projection, false, camera.projection
+      @gl.uniformMatrix4fv uniforms.view, false, camera.view
+      @gl.uniformMatrix4fv uniforms.model, false, entity.model
       
       @gl.bindBuffer @gl.ARRAY_BUFFER, buffer
       
-      @gl.vertexAttribPointer program.attributes.position, 3, @gl.FLOAT, false, 36, 0
-      @gl.vertexAttribPointer program.attributes.coord,    2, @gl.FLOAT, false, 36, 12
-      @gl.vertexAttribPointer program.attributes.color,    4, @gl.FLOAT, false, 36, 20
+      @gl.vertexAttribPointer attributes.position, 3, @gl.FLOAT, false, 36, 0
+      @gl.vertexAttribPointer attributes.coord,    2, @gl.FLOAT, false, 36, 12
+      @gl.vertexAttribPointer attributes.color,    4, @gl.FLOAT, false, 36, 20
       
-      # @gl.activeTexture @gl.TEXTURE0
-      # @gl.bindTexture @gl.TEXTURE_2D, entity.texture.texture
-      # @gl.uniform1i shaderProgram.samplerUniform, 0
+      @gl.activeTexture @gl.TEXTURE0
+      @gl.bindTexture @gl.TEXTURE_2D, texture
+      @gl.uniform1i uniforms.sampler, 0
       
       @gl.drawArrays entity.drawMode, 0, entity.count
     

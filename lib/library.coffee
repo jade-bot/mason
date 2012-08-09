@@ -18,6 +18,8 @@ module.exports = class Library extends Entity
           vertex: @loadShader "#{data.program}.vertex.glsl"
           fragment: @loadShader "#{data.program}.fragment.glsl"
       
+      material.on 'load', => @emit 'load'
+      
       material.image = @loadImage data.image, (error) ->
         material.emit 'load'
   
