@@ -19,11 +19,17 @@ module.exports = class Body extends Entity
     @scale ?= args.scale or [1, 1, 1]
     
     @up ?= args.up or [0, 1, 0]
+    @right ?= args.right or [1, 0, 0]
+    @_right ?= [1, 0, 0]
+    @forward ?= args.forward or [0, 0, 1]
+    @_forward ?= [0, 0, 1]
     
     @sync()
     
   sync: ->
     mat4.fromRotationTranslation @rotation, @position, @model
+    quat4.multiplyVec3 @rotation, @_right, @right
+    quat4.multiplyVec3 @rotation, @_forward, @forward
   
   update: (time = 0) ->
     # movement

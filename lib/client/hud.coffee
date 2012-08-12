@@ -1,4 +1,6 @@
-{Machine, State, Transition} = require './state'
+State = require '../state'
+Machine = require '../state/machine'
+Transition = require '../state/transition'
 
 module.exports = class HUD extends Machine
   constructor: (args = {}) ->

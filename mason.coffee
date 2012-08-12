@@ -6,6 +6,8 @@ require './lib/shim'
 module.exports = mason = ->
 
 mason.Keyboard = require './lib/keyboard'
+mason.SparseVolume = require './lib/volume/sparse/volume'
+mason.SparseVolumeView = require './lib/volume/sparse/view'
 mason.Volume = require './lib/volume'
 mason.Camera = require './lib/camera'
 mason.Avatar = require './lib/avatar'
@@ -17,5 +19,3 @@ mason.Sphere = require './lib/sphere'
 mason.Entity = require './lib/entity'
 mason.Line = require './lib/line'
 mason.Material = require './lib/material'
-
-mason.terraform = require './lib/terraform'

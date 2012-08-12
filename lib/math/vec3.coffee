@@ -151,6 +151,9 @@ vec3.unproject = function (vec, view, proj, viewport, dest) {
   
 #   dest
 
+vec3.dot = (vec, vec2) ->
+  vec[0] * vec2[0] + vec[1] * vec2[1] + vec[2] * vec2[2]
+
 vec3.subtract = (vec, vec2, dest) ->
   if not dest or vec is dest
     vec[0] -= vec2[0]

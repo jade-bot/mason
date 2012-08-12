@@ -29,7 +29,7 @@ module.exports = class Renderer extends Entity
     tick()
   
   setup: ->
-    @gl = @canvas.getContext 'experimental-webgl', alpha: on
+    @gl = @canvas.getContext 'experimental-webgl', alpha: off
     
     @reset()
   
@@ -75,7 +75,7 @@ module.exports = class Renderer extends Entity
     # ext = @gl.getExtension 'WEBKIT_EXT_texture_filter_anisotropic'
     # if ext?
     #   max_anisotropy = @gl.getParameter ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT
-    #   max_anisotropy = Math.min 4, max_anisotropy
+    #   max_anisotropy = Math.min 1, max_anisotropy
     #   @gl.texParameterf @gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy
     
     @gl.generateMipmap @gl.TEXTURE_2D
@@ -130,10 +130,14 @@ module.exports = class Renderer extends Entity
     
     camera.update()
     
-    for entity in simulation.entities
+    for entity in simulation.entities then do (entity) =>
       {texture, buffer, program} = @mount entity
       
       {uniforms, attributes} = program
+      
+      entity.sync()
+      
+      @gl.useProgram program
       
       @gl.uniformMatrix4fv uniforms.projection, false, camera.projection
       @gl.uniformMatrix4fv uniforms.view, false, camera.view
@@ -151,4 +155,4 @@ module.exports = class Renderer extends Entity
       
       @gl.drawArrays entity.drawMode, 0, entity.count
     
-    @gl.finish()
+    # @gl.finish()

@@ -3,6 +3,8 @@ module.exports = ({subject, mouse}, tolerance = 0.1) ->
   delta = vec3.create()
   
   mouse.on 'down', (event) ->
+    return unless event.which is 1
+    
     start = event
     
     if look? then mouse.off 'move', look
@@ -20,6 +22,8 @@ module.exports = ({subject, mouse}, tolerance = 0.1) ->
     mouse.on 'move', look
     
     mouse.on 'up', (event) ->
+      return unless event.which is 1
+      
       mouse.off 'move', look
       
       delta[0] = event.x - start.x

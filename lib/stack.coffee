@@ -1,4 +1,4 @@
-{Entity} = require '../mason'
+Entity = require './entity'
 
 module.exports = class Stack extends Entity
   constructor: (args = {}) ->

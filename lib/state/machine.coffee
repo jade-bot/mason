@@ -1,18 +1,6 @@
-{Entity} = require '../mason'
-Stack = require './stack'
+Entity = require '../entity'
 
-class State extends Entity
-  constructor: (args = {}) ->
-    super
-    
-    @enter = args.enter
-    @exit = args.exit
-    
-    @key = args.key
-
-class Transition extends Entity
-  constructor: (args = {}) ->
-    super
+Stack = require '../stack'
 
 class Machine extends Entity
   constructor: (args = {}) ->
@@ -56,8 +44,3 @@ class Machine extends Entity
     @stack.push arguments...
 
   replaceState: -> @stack.swap arguments...
-
-module.exports =
-  Transition: Transition
-  State: State
-  Machine: Machine

@@ -47,6 +47,9 @@ module.exports = class Client extends Entity
     canvas.setAttribute 'width', width
     canvas.setAttribute 'height', height
     
+    canvas.addEventListener 'contextmenu', (event) ->
+      event.preventDefault() if event.which is 3
+    
     canvas.viewport = [0, 0, width, height]
     
     return canvas

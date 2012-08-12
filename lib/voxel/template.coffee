@@ -1,4 +1,4 @@
-Face = require './face'
+Face = require '../face'
 
 module.exports = template = {}
 

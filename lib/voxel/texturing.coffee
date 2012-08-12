@@ -1,6 +1,6 @@
-EPSILON = 0.0025
+EPSILON = 0.00125
 
-textures = require '../textures'
+textures = require '../../textures'
 
 size = 1 / 16
 

@@ -1,6 +1,14 @@
 textures = require './textures'
 
 module.exports = blocks =
+  books:
+    textures:
+      left: textures.books
+      right: textures.books
+      bottom: textures.wood
+      top: textures.wood
+      back: textures.books
+      front: textures.books
   bricks: {}
   chest:
     textures:
@@ -20,6 +28,7 @@ module.exports = blocks =
       top: textures.crafting_table.cap
       back: textures.crafting_table.back
       front: textures.crafting_table.front
+  diamond: {}
   dirt: {}
   furnace:
     textures:
@@ -42,6 +51,14 @@ module.exports = blocks =
   iron: {}
   lava: {}
   leaf: (transparent: yes)
+  piston:
+    textures:
+      left: textures.piston.side
+      right: textures.piston.side
+      bottom: textures.piston.bottom
+      top: textures.piston.top
+      back: textures.piston.side
+      front: textures.piston.side
   stone: {}
   tree:
     textures:

@@ -1,4 +1,6 @@
 module.exports =
+  books: [3, 2]
+  
   bricks: [7, 0]
   
   chest:
@@ -15,6 +17,8 @@ module.exports =
     side: [11, 3]
     front: [12, 3]
     back: [12, 3]
+  
+  diamond: [2, 3]
   
   dirt: [2, 0]
   
@@ -37,6 +41,11 @@ module.exports =
   lava: [15, 15]
   
   leaf: [4, 3]
+  
+  piston:
+    top: [11, 6]
+    side: [12, 6]
+    bottom: [13, 6]
   
   stone: [1, 0]
   
