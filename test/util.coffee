@@ -3,12 +3,12 @@ assert = require 'assert'
 support = require '../lib/support'
 
 describe 'support', ->
-  describe '#voxelToChunk()', ->
+  describe '#voxelVectorToChunk()', ->
     it 'should map voxels to chunks', ->
       test = (voxel, result) ->
-        console.log "support.voxelToChunk(#{JSON.stringify voxel}) is #{JSON.stringify result} ✓"
+        console.log "support.voxelVectorToChunk(#{JSON.stringify voxel}) is #{JSON.stringify result} ✓"
         chunk = [0, 0, 0]
-        support.voxelToChunk voxel, chunk
+        support.voxelVectorToChunk voxel, chunk
         assert.deepEqual chunk, result
         # console.log '✓'
   
@@ -38,12 +38,12 @@ describe 'support', ->
       
       test [-17, -17, -17], [-2, -2, -2]
   
-  describe '#voxelToChunkVoxel()', ->
+  describe '#voxelVectorToChunkVoxel()', ->
     it 'should map voxels to chunk-relative voxels', ->
       test = (voxel, result) ->
-        console.log "support.voxelToChunkVoxel(#{JSON.stringify voxel}) is #{JSON.stringify result} ✓"
+        console.log "support.voxelVectorToChunkVoxel(#{JSON.stringify voxel}) is #{JSON.stringify result} ✓"
         chunkVoxel = [0, 0, 0]
-        support.voxelToChunkVoxel voxel, chunkVoxel
+        support.voxelVectorToChunkVoxel voxel, chunkVoxel
         assert.deepEqual chunkVoxel, result
   
       test [1, 0, 0], [1, 0, 0]

@@ -62,25 +62,26 @@ module.exports = class Renderer extends Entity
     {entity} = mount
     {material} = entity
     
-    texture = @gl.createTexture()
-    
-    @gl.pixelStorei @gl.UNPACK_FLIP_Y_WEBGL, off
-    
-    @gl.bindTexture @gl.TEXTURE_2D, texture
-    
-    @gl.texImage2D @gl.TEXTURE_2D, 0, @gl.RGBA, @gl.RGBA, @gl.UNSIGNED_BYTE, material.image
-    @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MAG_FILTER, @gl.NEAREST
-    @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MIN_FILTER, @gl.NEAREST#NEAREST_MIPMAP_NEAREST
-    
-    # ext = @gl.getExtension 'WEBKIT_EXT_texture_filter_anisotropic'
-    # if ext?
-    #   max_anisotropy = @gl.getParameter ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT
-    #   max_anisotropy = Math.min 1, max_anisotropy
-    #   @gl.texParameterf @gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy
-    
-    @gl.generateMipmap @gl.TEXTURE_2D
-    
-    @gl.bindTexture @gl.TEXTURE_2D, null
+    if material.image?
+      texture = @gl.createTexture()
+      
+      @gl.pixelStorei @gl.UNPACK_FLIP_Y_WEBGL, off
+      
+      @gl.bindTexture @gl.TEXTURE_2D, texture
+      
+      @gl.texImage2D @gl.TEXTURE_2D, 0, @gl.RGBA, @gl.RGBA, @gl.UNSIGNED_BYTE, material.image
+      @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MAG_FILTER, @gl.NEAREST
+      @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MIN_FILTER, @gl.NEAREST#NEAREST_MIPMAP_NEAREST
+      
+      # ext = @gl.getExtension 'WEBKIT_EXT_texture_filter_anisotropic'
+      # if ext?
+      #   max_anisotropy = @gl.getParameter ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT
+      #   max_anisotropy = Math.min 1, max_anisotropy
+      #   @gl.texParameterf @gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy
+      
+      @gl.generateMipmap @gl.TEXTURE_2D
+      
+      @gl.bindTexture @gl.TEXTURE_2D, null
     
     mount.texture = texture
   
@@ -150,7 +151,7 @@ module.exports = class Renderer extends Entity
       @gl.vertexAttribPointer attributes.color,    4, @gl.FLOAT, false, 36, 20
       
       @gl.activeTexture @gl.TEXTURE0
-      @gl.bindTexture @gl.TEXTURE_2D, texture
+      @gl.bindTexture @gl.TEXTURE_2D, texture if texture?
       @gl.uniform1i uniforms.sampler, 0
       
       @gl.drawArrays entity.drawMode, 0, entity.count

@@ -29,33 +29,26 @@ module.exports = class Axes extends Mesh
     @colors = [
       [1, 0, 0, 1]
       [1, 0, 0, 1]
-
+      
       [0, 1, 1, 1]
       [0, 1, 1, 1]
-
+      
       [0, 1, 0, 1]
       [0, 1, 0, 1]
-
+      
       [1, 0, 1, 1]
       [1, 0, 1, 1]
-
+      
       [0, 0, 1, 1]
       [0, 0, 1, 1]
-
+      
       [1, 1, 0, 1]
       [1, 1, 0, 1]
     ]
     
+    @drawMode = WebGLRenderingContext.LINES
+    
     @extract()
-  
-  upload: (gl) ->
-    @buffer = gl.createBuffer()
-    gl.bindBuffer gl.ARRAY_BUFFER, @buffer
-    gl.bufferData gl.ARRAY_BUFFER, (new Float32Array @data), gl.STATIC_DRAW
-    @buffer.size = 3
-    @buffer.count = 12
-
-    @mode = gl.LINES
   
   extract: ->
     @data = []
@@ -65,3 +58,5 @@ module.exports = class Axes extends Mesh
       @data.push 0, 0
       color = @colors[index]
       @data.push color[0], color[1], color[2], color[3]
+    
+    @count = 12

@@ -12,5 +12,5 @@ void main(void) {
     discard;
   }
   
-  gl_FragColor = color;
+  gl_FragColor = mix(color, vColor, 0.5);
 }

@@ -2,15 +2,22 @@ blocks = require '../../blocks'
 
 Voxel = require '../voxel'
 
+# SimplexNoise = require '../noise'
+noise = new SimplexNoise
+
 module.exports = terraform = (min, max, volume) ->
   console.time 'terraform'
   
   for i in [min[0]...max[0]]
     for j in [min[1]...max[1]]
       for k in [min[2]...max[2]]
-        continue unless -32 < j < 32
         
-        volume.set i, j, k, new Voxel position: [i, j, k], type: blocks.stone
+        x = i / 16
+        y = j / 16
+        z = k / 16
+        
+        if (noise.noise3D x, y, z) > 0
+          volume.set i, j, k, 1
         
   #       if j is 64
   #         type = null

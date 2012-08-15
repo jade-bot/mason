@@ -4,11 +4,11 @@ textures = require '../../textures'
 
 size = 1 / 16
 
-module.exports = (face, voxel, out) ->
-  texture = textures[voxel.type.key]
+module.exports = (face, type, out) ->
+  texture = textures[type.key]
   
-  if voxel.type.textures?
-    texture = voxel.type.textures[face.key]
+  if type.textures?
+    texture = type.textures[face.key]
   
   out.left = (texture[0] * size) + EPSILON
   out.right = ((texture[0] + 1) * size) - EPSILON

@@ -10,6 +10,7 @@ app.configure =>
   
   bundle = browserify
     entry: './entry.coffee'
+    mount: '/browserify.js'
     debug: on
     ignore: ['shaders']
     # filter: require 'uglify-js'
@@ -18,6 +19,11 @@ app.configure =>
   bundle.use (fileify 'shaders', "#{__dirname}/shaders")
   
   app.use bundle
+  
+  app.use browserify
+    entry: './worker.coffee'
+    mount: '/worker.js'
+    debug: on
   
 server = app.listen 1337
 
