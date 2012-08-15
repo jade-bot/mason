@@ -61,8 +61,3 @@ describe 'support', ->
       test [-16, 0, 0], [0, 0, 0]
 
       test [-17, 0, 0], [15, 0, 0]
-
-
-
-describe 'support', ->
-  
