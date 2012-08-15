@@ -1,5 +1,7 @@
 extractVoxel = require '../voxel/extract'
 
+blocks = require '../../blocks'
+
 module.exports = extract = (min, max, volume, mesh) ->
   mesh.reset()
   
@@ -14,7 +16,7 @@ module.exports = extract = (min, max, volume, mesh) ->
         continue unless voxel?
         
         # skip air
-        continue if voxel is 0
+        continue if voxel is blocks.air
         extractVoxel voxel, i, j, k, volume, mesh
   
   # console.profileEnd 'extract'

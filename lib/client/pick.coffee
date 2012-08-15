@@ -1,4 +1,4 @@
-# module.exports = ({subject, camera, viewport, mouse}) ->
+module.exports = ({subject, camera, viewport, mouse}) ->
 #   ray =
 #     start: vec3.create()
 #     end: vec3.create()

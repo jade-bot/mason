@@ -2,7 +2,6 @@ blocks = require '../../blocks'
 
 Voxel = require '../voxel'
 
-# SimplexNoise = require '../noise'
 noise = new SimplexNoise
 
 module.exports = terraform = (min, max, volume) ->
@@ -16,8 +15,21 @@ module.exports = terraform = (min, max, volume) ->
         y = j / 16
         z = k / 16
         
-        if (noise.noise3D x, y, z) > 0
-          volume.set i, j, k, 1
+        if j < 16
+          
+          if (noise.noise3D x, y, z) < 0.25 and (noise.noise3D i / 8, j / 8, k / 8) < 0.25
+            # volume.set i, j, k, blocks.air
+          else
+            if Math.random() > 0.95
+              volume.set i, j, k, blocks.diamond
+            else
+              volume.set i, j, k, blocks.stone
+        
+        if 16 <= j < 31
+          volume.set i, j, k, blocks.dirt
+        
+        if j is 31
+          volume.set i, j, k, blocks.grass
         
   #       if j is 64
   #         type = null

@@ -3,10 +3,6 @@ texturing = require './texturing'
 
 blocks = require '../../blocks'
 
-block_map = []
-block_map[0] = null
-block_map[1] = blocks.stone
-
 adjacent = vec3.create()
 
 coords = {}
@@ -237,8 +233,6 @@ extractFace = (face, i, j, k, type, mesh, neighbors) ->
   mesh.count += 6
 
 module.exports = extract = (voxel, i, j, k, volume, mesh) ->
-  type = block_map[voxel]
-  
   for x in [-1..1]
     for y in [-1..1]
       for z in [-1..1]
@@ -247,7 +241,9 @@ module.exports = extract = (voxel, i, j, k, volume, mesh) ->
   
   for face in template.faces
     # continue unless (vec3.dot face.normal, camera.forward) > 0
-    neighbor = volume.get i + face.normal[0], j  + face.normal[1], k + face.normal[2]
+    neighbor = volume.get i + face.normal[0], j + face.normal[1], k + face.normal[2]
+    # continue if neighbor isnt null or neighbor is blocks.air
+    # console.log neighbor
     continue if neighbor?
     
-    extractFace face, i, j, k, type, mesh, neighbors
+    extractFace face, i, j, k, voxel, mesh, neighbors

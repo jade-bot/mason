@@ -1,6 +1,7 @@
 textures = require './textures'
 
 module.exports = blocks =
+  air: {}
   books:
     textures:
       left: textures.books
