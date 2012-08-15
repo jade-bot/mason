@@ -28,8 +28,6 @@ extractFace = (face, i, j, k, type, mesh, neighbors) ->
   
   shadow = 0.2
   
-  console.time 'light'
-  
   if face.key is 'left'
     if neighbors['-1:-1:0']
       al -= shadow
@@ -203,8 +201,6 @@ extractFace = (face, i, j, k, type, mesh, neighbors) ->
     
     if neighbors['1:1:-1']
       cl -= shadow
-  
-  console.timeEnd 'light'
   
   mesh.data.push a[0] + i, a[1] + j, a[2] + k
   mesh.data.push left, bottom
