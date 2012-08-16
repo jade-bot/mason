@@ -27,6 +27,8 @@ module.exports = class Client extends Entity
     
     @library.on 'load', =>
       @initialize()
+    
+    @io = io.connect()
   
   initialize: ->
     @canvas = @spawnCanvas()

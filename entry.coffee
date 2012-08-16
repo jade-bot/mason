@@ -4,6 +4,8 @@ resources =
   materials: require './materials'
   blocks: require './blocks'
   textures: require './textures'
+  models:
+    avatar: require './models/avatar'
 
 pages =
   edit: require './lib/client/edit'

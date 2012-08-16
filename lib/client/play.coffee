@@ -2,7 +2,7 @@ terraform = require '../volume/terraform'
 
 distribute = require './distribute'
 
-module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client}, resources) ->
+module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, Mesh}, resources) ->
   client = new Client resources: resources
   {simulation, library, camera, keyboard, mouse} = client
   
@@ -11,6 +11,12 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client},
   
   axes = new Axes material: library.materials.line
   simulation.add axes
+  
+  mesh = new Mesh
+  mesh.data = resources.models.avatar
+  mesh.material = library.materials.line
+  mesh.count = mesh.data.length / 9
+  simulation.add mesh
   
   spool = new Spool url: '/worker.js'
   
