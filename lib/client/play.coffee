@@ -6,19 +6,8 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client},
   client = new Client resources: resources
   {simulation, library, camera, keyboard, mouse} = client
   
-  camera.velocity = [0, 0, 0]
-  
-  gravity = [0, -9.81 / 2000, 0]
-  
+  camera.dynamic = yes
   camera.position = [16, 40, 16]
-  
-  simulation.on 'tick', ->
-    vec3.add camera.velocity, gravity
-    vec3.add camera.position, camera.velocity
-    
-    camera.emit 'request:movement'
-    
-    camera.update()
   
   axes = new Axes material: library.materials.line
   simulation.add axes
@@ -41,6 +30,7 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client},
     subject: camera
     keyboard: keyboard
     mouse: mouse
+    simulation: simulation
   
   (require './physics')
     subject: camera

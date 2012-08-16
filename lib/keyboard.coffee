@@ -1,4 +1,6 @@
-module.exports = class Keyboard
+Entity = require './entity'
+
+module.exports = class Keyboard extends Entity
   constructor: (args = {}) ->
     @fields = ['keyCode', 'which']
     
@@ -12,6 +14,7 @@ module.exports = class Keyboard
       83: 's'
       65: 'a'
       68: 'd'
+      32: ' '
     
     @shift = off
   
@@ -31,3 +34,7 @@ module.exports = class Keyboard
         delete @keys[field][event[field]]
       
       @shift = event.shiftKey
+    
+    target.addEventListener 'keypress', (event) =>
+      event.key = @map[event.keyCode]
+      @emit 'press', event

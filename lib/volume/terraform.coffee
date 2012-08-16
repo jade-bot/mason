@@ -25,11 +25,21 @@ module.exports = terraform = (min, max, volume) ->
             else
               volume.set i, j, k, blocks.stone
         
-        if 16 <= j < 31
-          volume.set i, j, k, blocks.dirt
-        
-        if j is 31
-          volume.set i, j, k, blocks.grass
+        # if 16 <= j < 31
+        # volume.set i, j, k, blocks.dirt
+        else
+          if j < ((noise.noise2D i / 16, k / 16) * 4 + 30)
+            volume.set i, j, k, blocks.dirt
+  
+  for i in [min[0]...max[0]]
+    for k in [min[2]...max[2]]
+      highest = 0
+      
+      for j in [min[1]...max[1]]
+        highest = j if volume.get i, j, k
+      
+      if (volume.get i, highest, k) is blocks.dirt
+        volume.set i, highest, k, blocks.grass
         
   #       if j is 64
   #         type = null

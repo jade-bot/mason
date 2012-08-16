@@ -12,8 +12,12 @@ sameCell = (a, b) ->
   return true
 
 module.exports = ({volume, simulation, subject}) ->
-  # subject.on 'move', ->
-  # console.log 'move'
+  simulation.gravity = [0, -9.81 / 1000, 0]
+  
+  simulation.on 'tick', ->
+    for entity in simulation.entities when entity.dynamic
+      vec3.add entity.velocity, simulation.gravity
+      vec3.add entity.position, entity.velocity
   
   position = [0, 0, 0]
   
