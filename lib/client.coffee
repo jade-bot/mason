@@ -29,6 +29,9 @@ module.exports = class Client extends Entity
       @initialize()
     
     @io = io.connect()
+    
+    @io.on 'login', (user) =>
+      @user = user
   
   initialize: ->
     @canvas = @spawnCanvas()

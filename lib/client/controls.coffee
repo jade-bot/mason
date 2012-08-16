@@ -1,6 +1,9 @@
-module.exports = ({simulation, subject}) ->
+module.exports = ({simulation, subject, client}) ->
   simulation.on 'tick', ->
     subject.emit 'request:movement'
+    if client.user?.mesh?
+      vec3.set subject.position, client.user.mesh.position
+    client.io.emit 'move', subject.position
     subject.update()
   
   (require './move') arguments...

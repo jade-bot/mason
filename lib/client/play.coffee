@@ -6,42 +6,64 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
   client = new Client resources: resources
   {simulation, library, camera, keyboard, mouse} = client
   
-  camera.dynamic = yes
+  # camera.dynamic = yes
   camera.position = [16, 40, 16]
   
   axes = new Axes material: library.materials.line
   simulation.add axes
   
-  mesh = new Mesh
-  mesh.data = resources.models.avatar
-  mesh.material = library.materials.line
-  mesh.count = mesh.data.length / 9
-  simulation.add mesh
+  modal = $ '#login'
+  modal.modal 'show'
   
-  spool = new Spool url: '/worker.js'
+  modal.find('.login-btn').click ->
+    modal.modal 'hide'
+    client.io.emit 'login',
+      alias: (modal.find '.alias').val()
+      secret: (modal.find '.secret').val()
   
-  volume = new SparseVolume
-  terraform [0, 0, 0], [32, 32, 32], volume
+  client.io.on 'login', (user) ->
+    volume = new SparseVolume
+    terraform [0, 0, 0], [32, 32, 32], volume
+    
+    volume_view = new SparseVolumeView
+      simulation: simulation
+      volume: volume
+      min: [0, 0, 0]
+      max: [16, 128, 16]
+      material: library.materials.terrain
+    
+    (require './controls')
+      subject: camera
+      keyboard: keyboard
+      mouse: mouse
+      simulation: simulation
+      client: client
   
-  distribute volume, spool
+  client.on 'avatar', (user, me = false) ->
+    mesh = new Mesh
+    mesh.scale = [0.5, 0.5, 0.5]
+    mesh.position = user.position
+    mesh.data = resources.models.avatar
+    mesh.material = library.materials.line
+    mesh.count = mesh.data.length / 9
+    mesh.user = user
+    simulation.add mesh
+    
+    client.io.on 'move', (id, position) ->
+      if user.id is id
+        vec3.set position, mesh.position
+    
+    if me
+      client.user.mesh = mesh
   
-  volume_view = new SparseVolumeView
-    simulation: simulation
-    volume: volume
-    min: [0, 0, 0]
-    max: [16, 128, 16]
-    material: library.materials.terrain
+  # spool = new Spool url: '/worker.js'
   
-  (require './controls')
-    subject: camera
-    keyboard: keyboard
-    mouse: mouse
-    simulation: simulation
+  # distribute volume, spool
   
-  (require './physics')
-    subject: camera
-    simulation: simulation
-    volume: volume
+  # (require './physics')
+  #   subject: camera
+  #   simulation: simulation
+  #   volume: volume
   
   # extensions = (require './extensions') gl
   # ui = (require './play_ui') extensions

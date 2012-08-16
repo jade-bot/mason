@@ -2,6 +2,25 @@ browserify = require 'browserify'
 express = require 'express'
 fileify = require 'fileify'
 socket_io = require 'socket.io'
+uuid = require 'node-uuid'
+
+db = {}
+
+db.users = {}
+
+db.users.pyro =
+  id: uuid()
+  alias: 'pyro'
+  email: 'pyro@feisty.io'
+  secret: 'secret'
+  position: [16, 40, 16]
+
+db.users.user =
+  id: uuid()
+  alias: 'user'
+  email: 'pyro@feisty.io'
+  secret: 'secret'
+  position: [16, 40, 16]
 
 app = express()
 
@@ -31,3 +50,17 @@ io = socket_io.listen server, 'log level': 1
 
 io.sockets.on 'connection', (socket) ->
   console.log 'socket'
+  
+  socket.on 'login', ({alias, secret}) ->
+    console.log alias, secret
+    
+    user = db.users[alias]
+    
+    socket.broadcast.emit 'avatar', user
+    socket.emit 'avatar', user, true
+    socket.emit 'login'
+    
+    socket.user = user
+  
+  socket.on 'move', (position) ->
+    socket.broadcast.emit 'move', socket.user?.id, position
