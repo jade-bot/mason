@@ -131,7 +131,7 @@ module.exports = class Renderer extends Entity
     
     camera.update()
     
-    for entity in simulation.entities then do (entity) =>
+    for entity in simulation.entities when entity.visible then do (entity) =>
       {texture, buffer, program} = @mount entity
       
       {uniforms, attributes} = program

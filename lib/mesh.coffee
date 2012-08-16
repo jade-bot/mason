@@ -11,6 +11,8 @@ module.exports = class Mesh extends Body
     @drawMode ?= args.drawMode or WebGLRenderingContext.TRIANGLES
     
     @count ?= args.count or 0
+    
+    @visible ?= yes
   
   reset: ->
     @data.length = 0

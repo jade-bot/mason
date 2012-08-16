@@ -13,6 +13,7 @@ module.exports = class Client extends Entity
     @simulation ?= args.simulation or new Simulation
     
     @camera ?= args.camera or new Camera
+    @simulation.add @camera
     
     @keyboard ?= args.keyboard or new Keyboard
     @keyboard.bind document

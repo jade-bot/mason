@@ -1,5 +1,6 @@
 module.exports = ({subject, mouse}, tolerance = 0.1) ->
   look = null
+  up = null
   delta = vec3.create()
   
   mouse.on 'down', (event) ->
@@ -21,7 +22,9 @@ module.exports = ({subject, mouse}, tolerance = 0.1) ->
     
     mouse.on 'move', look
     
-    mouse.on 'up', (event) ->
+    up = (event) ->
+      mouse.off 'up', up
+      
       return unless event.which is 1
       
       mouse.off 'move', look
@@ -32,7 +35,9 @@ module.exports = ({subject, mouse}, tolerance = 0.1) ->
       if (vec3.length delta) < tolerance
         subject.emit 'action', event
     
-    mouse.on 'wheel', (event) ->
-      delta = event.wheelDeltaY / 100
-      
-      vec3.scale camera.offset, if delta > 0 then 1.1 else 0.9
+    mouse.on 'up', up
+  
+  mouse.on 'wheel', (event) ->
+    delta = event.wheelDeltaY / 100
+    
+    vec3.scale camera.offset, if delta > 0 then 1.1 else 0.9
