@@ -55,7 +55,12 @@ db.users.ian =
 app = express()
 
 app.configure =>
+  app.set 'views', __dirname + '/views'
+  app.set 'view engine', 'ejs'
+  app.use express.favicon()
+  app.use express.logger('dev')
   app.use express.bodyParser()
+  app.use express.methodOverride()
   
   app.use express.static './public'
   
@@ -223,8 +228,17 @@ app.get '/privacy', (req, res) ->
 app.post '/', (req, res) ->
   [signature, data] = req.body.signed_request.split '.'
   
-  console.log (new Buffer data, 'base64').toString('ascii')
-  res.sendfile './public/index.html'
+  data = JSON.parse (new Buffer data, 'base64').toString('ascii')
+  if data.user_id
+    res.render 'index', js: ''
+  else
+    res.render 'index', js: """
+    var oauth_url = 'https://www.facebook.com/dialog/oauth/';
+    oauth_url += '?client_id=341506039271113';
+    oauth_url += '&redirect_uri=' + encodeURIComponent('http://apps.facebook.com/341506039271113/');
+    oauth_url += '&scope='
+    window.top.location = oauth_url;
+    """
 
 # server = app.listen 443
 server = https.createServer(
