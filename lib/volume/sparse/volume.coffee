@@ -11,6 +11,19 @@ module.exports = class SparseVolume extends Entity
     @_chunk = [0, 0, 0]
     
     @chunkType = require '../../chunk/array'
+    
+    @on 'set', (x, y, z, voxel) =>
+      support.voxelToChunk x, y, z, @_chunk
+      
+      for i in [-1..1]
+        for j in [-1..1]
+          for k in [-1..1]
+            return if i is 0 and j is 0 and k is 0
+            
+            chunk = @chunks[support.chunkKey @_chunk[0] + i, @_chunk[1] + j, @_chunk[2] + k]
+            
+            if chunk?
+              chunk.emit 'neighbor'
   
   pack: ->
     out = {}

@@ -22,6 +22,12 @@ module.exports = terraform = (min, max, volume) ->
           else
             if Math.random() > 0.95
               volume.set i, j, k, blocks.diamond
+            else if Math.random() > 0.95
+              volume.set i, j, k, blocks.iron
+            else if Math.random() > 0.95
+              volume.set i, j, k, blocks.gold
+            else if Math.random() > 0.95
+              volume.set i, j, k, blocks.coal
             else
               volume.set i, j, k, blocks.stone
         
