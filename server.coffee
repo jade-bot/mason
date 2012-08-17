@@ -55,7 +55,7 @@ db.users.ian =
 app = express()
 
 app.configure =>
-  app.set 'views', __dirname + '/views'
+  app.set 'views', (__dirname + '/views')
   app.set 'view engine', 'jade'
   
   app.use express.favicon()
