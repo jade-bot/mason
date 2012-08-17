@@ -73,4 +73,6 @@ io.sockets.on 'connection', (socket) ->
     socket.broadcast.emit 'move', socket.user?.id, position
   
   socket.on 'delete', (x, y, z) ->
+    volume.delete x, y, z
+    
     socket.broadcast.emit 'delete', x, y, z
