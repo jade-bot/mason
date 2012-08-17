@@ -230,9 +230,9 @@ app.post '/', (req, res) ->
   
   data = JSON.parse (new Buffer data, 'base64').toString('ascii')
   if data.user_id
-    res.render 'index', js: ''
+    res.render 'index.ejs', js: ''
   else
-    res.render 'index', js: """
+    res.render 'index.ejs', js: """
     var oauth_url = 'https://www.facebook.com/dialog/oauth/';
     oauth_url += '?client_id=341506039271113';
     oauth_url += '&redirect_uri=' + encodeURIComponent('http://apps.facebook.com/341506039271113/');
