@@ -50,22 +50,22 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
       volume: volume
       camera: camera
   
-  client.on 'avatar', (user, me = false) ->
-    mesh = new Mesh
-    mesh.scale = [0.5, 0.5, 0.5]
-    mesh.position = user.position
-    mesh.data = resources.models.avatar
-    mesh.material = library.materials.line
-    mesh.count = mesh.data.length / 9
-    mesh.user = user
-    simulation.add mesh
+  # client.on 'avatar', (user, me = false) ->
+  #   mesh = new Mesh
+  #   mesh.scale = [0.5, 0.5, 0.5]
+  #   mesh.position = user.position
+  #   mesh.data = resources.models.avatar
+  #   mesh.material = library.materials.line
+  #   mesh.count = mesh.data.length / 9
+  #   mesh.user = user
+  #   simulation.add mesh
     
-    client.io.on 'move', (id, position) ->
-      if user.id is id
-        vec3.set position, mesh.position
+  #   client.io.on 'move', (id, position) ->
+  #     if user.id is id
+  #       vec3.set position, mesh.position
     
-    if me
-      client.user.mesh = mesh
+  #   if me
+  #     client.user.mesh = mesh
   
   # spool = new Spool url: '/worker.js'
   

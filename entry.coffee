@@ -6,8 +6,8 @@ resources =
   textures: require './textures'
   models: {}
 
-$.ajax('/models/avatar.js').done (data) ->
-  resources.models.avatar = JSON.parse data
+# $.ajax('/models/avatar.js').done (data) ->
+#   resources.models.avatar = JSON.parse data
 
 pages =
   edit: require './lib/client/edit'
