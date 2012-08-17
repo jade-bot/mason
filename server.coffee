@@ -1,6 +1,8 @@
+https = require 'https'
 browserify = require 'browserify'
 express = require 'express'
 fileify = require 'fileify'
+fs = require 'fs'
 socket_io = require 'socket.io'
 uuid = require 'node-uuid'
 
@@ -218,8 +220,12 @@ app.get '/privacy', (req, res) ->
 
 app.post '/', (req, res) ->
   res.sendfile './public/index.html'
-  
-server = app.listen 80
+
+# server = app.listen 443
+server = https.createServer(
+  key: fs.readFileSync './privatekey.pem', 'utf8'
+  cert: fs.readFileSync './certificate.pem', 'utf8'
+, app).listen 443
 
 io = socket_io.listen server, 'log level': 1
 
