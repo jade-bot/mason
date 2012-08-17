@@ -6,7 +6,7 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
   client = new Client resources: resources
   {simulation, library, camera, keyboard, mouse} = client
   
-  # camera.dynamic = yes
+  camera.dynamic = yes
   camera.position = [16, 40, 16]
   
   axes = new Axes material: library.materials.line
@@ -25,6 +25,11 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
     volume = new SparseVolume
     terraform [0, 0, 0], [32, 32, 32], volume
     
+    (require './physics')
+      subject: camera
+      simulation: simulation
+      volume: volume
+    
     volume_view = new SparseVolumeView
       simulation: simulation
       volume: volume
@@ -38,6 +43,8 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
       mouse: mouse
       simulation: simulation
       client: client
+      volume: volume
+      camera: camera
   
   client.on 'avatar', (user, me = false) ->
     mesh = new Mesh
@@ -59,11 +66,6 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
   # spool = new Spool url: '/worker.js'
   
   # distribute volume, spool
-  
-  # (require './physics')
-  #   subject: camera
-  #   simulation: simulation
-  #   volume: volume
   
   # extensions = (require './extensions') gl
   # ui = (require './play_ui') extensions

@@ -54,7 +54,7 @@ module.exports = class Renderer extends Entity
     return shader
   
   uploadMesh: (mount) ->
-    mount.buffer ?= @gl.createBuffer()
+    mount.buffer = @gl.createBuffer()
     @gl.bindBuffer @gl.ARRAY_BUFFER, mount.buffer
     @gl.bufferData @gl.ARRAY_BUFFER, (new Float32Array mount.entity.data), @gl.STATIC_DRAW
   
@@ -121,7 +121,10 @@ module.exports = class Renderer extends Entity
   mount: (entity) ->
     mount = @lookup entity
     
-    @uploadMesh mount unless mount.buffer?
+    if not mount.buffer? or mount.entity.dirty
+      @uploadMesh mount
+      delete mount.entity.dirty
+    
     @uploadMaterial mount unless mount.program?
     
     return mount

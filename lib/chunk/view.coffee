@@ -15,5 +15,6 @@ module.exports = class ChunkView extends Mesh
     
     extract @min, @max, @volume, this
     
-    @chunk.on 'set', ->
+    @chunk.on 'set', =>
       extract @min, @max, @volume, this
+      @dirty = yes

@@ -41,3 +41,8 @@ module.exports = class ArrayChunk extends Entity
   
   getVector: (vector) ->
     @voxels[support.voxelIndex vector[0], vector[1], vector[2]]
+  
+  deleteVector: (vector) ->
+    index = support.voxelIndex vector[0], vector[1], vector[2]
+    @voxels[index] = null
+    @emit 'set', index, null

@@ -16,3 +16,4 @@ module.exports = class Mesh extends Body
   
   reset: ->
     @data.length = 0
+    @count = 0
