@@ -223,7 +223,7 @@ app.get '/privacy', (req, res) ->
 app.post '/', (req, res) ->
   [signature, data] = req.body.signed_request.split '.'
   
-  console.log (new Buffer payload, 'base64').toString('ascii')
+  console.log (new Buffer data, 'base64').toString('ascii')
   res.sendfile './public/index.html'
 
 # server = app.listen 443
