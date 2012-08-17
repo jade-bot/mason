@@ -3,6 +3,9 @@ require 'events-off'
 require './lib/math'
 require './lib/shim'
 
+if global?
+  global.SimplexNoise = require './public/noise'
+
 module.exports = mason = ->
 
 mason.Keyboard = require './lib/keyboard'
@@ -22,3 +25,5 @@ mason.Material = require './lib/material'
 mason.Spool = require './lib/spool'
 mason.Axes = require './lib/axes'
 mason.Mesh =require './lib/mesh'
+
+mason.terraform = require './lib/volume/terraform'

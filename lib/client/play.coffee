@@ -21,9 +21,13 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
       alias: (modal.find '.alias').val()
       secret: (modal.find '.secret').val()
   
-  client.io.on 'login', (user) ->
+  client.io.on 'login', (user, pack) ->
     volume = new SparseVolume
-    terraform [0, 0, 0], [32, 32, 32], volume
+    # terraform [0, 0, 0], [32, 32, 32], volume
+    
+    console.log pack
+    
+    volume.unpack pack
     
     (require './physics')
       subject: camera

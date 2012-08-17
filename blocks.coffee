@@ -74,3 +74,9 @@ module.exports = blocks =
 
 for key, block of blocks
   block.key = key
+
+Object.defineProperty blocks, 'map', value: {}
+
+for key, index in Object.keys blocks
+  blocks.map[index] = blocks[key]
+  blocks[key].index = index

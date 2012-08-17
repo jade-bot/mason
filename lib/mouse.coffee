@@ -1,4 +1,4 @@
-Entity = require '../entity'
+Entity = require './entity'
 
 module.exports = class Mouse extends Entity
   constructor: (args = {}) ->

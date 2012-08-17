@@ -2,6 +2,8 @@ Entity = require '../entity'
 
 support = require '../support'
 
+blocks = require '../../blocks'
+
 module.exports = class ArrayChunk extends Entity
   constructor: (args = {}) ->
     super
@@ -25,6 +27,19 @@ module.exports = class ArrayChunk extends Entity
       @address[1] * @size + @size
       @address[2] * @size + @size
     ]
+  
+  unpack: (pack) ->
+    @voxels.length = 0
+    
+    for voxel, index in pack
+      if voxel is 0
+        continue
+      else
+        @voxels[index] = blocks.map[voxel]
+  
+  pack: (out) ->
+    for voxel, index in @voxels
+      out[index] = voxel?.index or 0
   
   set: (x, y, z, voxel) ->
     index = support.voxelIndex x, y, z

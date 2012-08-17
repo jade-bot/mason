@@ -4,7 +4,12 @@ fileify = require 'fileify'
 socket_io = require 'socket.io'
 uuid = require 'node-uuid'
 
+{SparseVolume, terraform} = require './mason'
+
 db = {}
+
+db.volume = volume = new SparseVolume
+terraform [0, 0, 0], [32, 32, 32], volume
 
 db.users = {}
 
@@ -52,13 +57,15 @@ io.sockets.on 'connection', (socket) ->
   console.log 'socket'
   
   socket.on 'login', ({alias, secret}) ->
+    return unless alias in (Object.keys db.users) or secret isnt 'secret'
+    
     console.log alias, secret
     
     user = db.users[alias]
     
     socket.broadcast.emit 'avatar', user
     socket.emit 'avatar', user, true
-    socket.emit 'login'
+    socket.emit 'login', user, volume.pack()
     
     socket.user = user
   

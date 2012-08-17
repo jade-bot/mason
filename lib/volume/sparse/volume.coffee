@@ -12,6 +12,29 @@ module.exports = class SparseVolume extends Entity
     
     @chunkType = require '../../chunk/array'
   
+  pack: ->
+    out = {}
+    for key, chunk of @chunks
+      voxels = []
+      out[key] = pack =
+        key: chunk.key
+        pack: voxels
+        address: chunk.address
+      chunk.pack voxels
+    return out
+  
+  unpack: (pack) ->
+    for key, chunkPack of pack
+      chunk = new @chunkType
+        key: chunkPack.key
+        position: chunkPack.position
+        size: 16
+        address: chunkPack.address
+      
+      @chunks[chunk.key] = chunk
+      
+      chunk.unpack chunkPack.pack
+  
   trackingVoxel: (x, y, z) ->
     @chunks[support.voxelToChunkKey x, y, z]?
   

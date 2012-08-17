@@ -13,13 +13,13 @@ module.exports = class Renderer extends Entity
     @setup()
     
     @paused = no
-    window.addEventListener 'blur', =>
-      @paused = yes
-      @emit 'pause'
+    # window.addEventListener 'blur', =>
+    #   @paused = yes
+    #   @emit 'pause'
     
-    window.addEventListener 'focus', =>
-      @paused = no
-      @emit 'resume'
+    # window.addEventListener 'focus', =>
+    #   @paused = no
+    #   @emit 'resume'
     
     tick = =>
       requestAnimationFrame tick

@@ -26,7 +26,7 @@ extractFace = (face, i, j, k, type, mesh, neighbors) ->
   cl = 1
   dl = 1
   
-  shadow = 0.2
+  shadow = 0.33
   
   if face.key is 'left'
     if neighbors['-1:-1:0']
