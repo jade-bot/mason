@@ -10,3 +10,4 @@ dependencies:
   'socket.io': '*'
   browserify: '*'
   fileify: '*'
+  'events-off': '*'
