@@ -39,3 +39,15 @@ module.exports = ({volume, simulation, subject}) ->
     if content?
       subject.position[1] = cell[1] + 1 + 1.6
       subject.velocity[1] = 0
+    
+    position[0] = subject.position[0]
+    position[1] = subject.position[1] - 1.1
+    position[2] = subject.position[2]
+    
+    findCell position, cell
+    
+    content = volume.getVector cell
+    
+    if content?
+      subject.position[1] = cell[1] + 1 + 1.6
+      subject.velocity[1] = 0
