@@ -49,7 +49,7 @@ app.configure =>
     mount: '/worker.js'
     debug: on
   
-server = app.listen 1337
+server = app.listen 80
 
 io = socket_io.listen server, 'log level': 1
 
