@@ -55,6 +55,10 @@ server = app.listen 80
 
 io = socket_io.listen server, 'log level': 1
 
+grass = require './lib/server/grass'
+grass volume, (x, y, z, voxel) ->
+  io.sockets.emit 'set', x, y, z, voxel
+
 io.sockets.on 'connection', (socket) ->
   console.log 'socket'
   

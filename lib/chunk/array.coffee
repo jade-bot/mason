@@ -41,6 +41,37 @@ module.exports = class ArrayChunk extends Entity
     for voxel, index in @voxels
       out[index] = voxel?.index or 0
   
+  compress: (out) ->
+    index = 0
+    
+    bucket = [null, 0]
+    out.push bucket
+    
+    return unless @voxels.length > 0
+    
+    while index < (16 * 16 * 16)
+      voxel = @voxels[index]
+      
+      if voxel?
+        if voxel.index isnt bucket[0]
+          bucket = [voxel.index, 0]
+          out.push bucket
+      else
+        unless bucket[0] is null
+          bucket = [null, 0]
+          out.push bucket
+      
+      bucket[1]++
+      
+      index++
+    
+    parts = []
+    
+    for bucket in out
+      parts.push "#{bucket[0]}:#{bucket[1]}"
+    
+    return parts.join ','
+  
   set: (x, y, z, voxel) ->
     index = support.voxelIndex x, y, z
     @voxels[index] = voxel
