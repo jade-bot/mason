@@ -56,7 +56,7 @@ app = express()
 
 app.configure =>
   app.set 'views', (__dirname + '/views')
-  app.set 'view engine', 'jade'
+  # app.set 'view engine', 'jade'
   
   app.use express.favicon()
   app.use express.logger('dev')
@@ -231,9 +231,9 @@ app.post '/', (req, res) ->
   
   data = JSON.parse (new Buffer data, 'base64').toString('ascii')
   if data.user_id
-    res.render 'index.jade', js: ''
+    res.render 'index', js: ''
   else
-    res.render 'index.jade', js: """
+    res.render 'index', js: """
     var oauth_url = 'https://www.facebook.com/dialog/oauth/';
     oauth_url += '?client_id=341506039271113';
     oauth_url += '&redirect_uri=' + encodeURIComponent('http://apps.facebook.com/341506039271113/');
