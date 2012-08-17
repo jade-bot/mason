@@ -1,4 +1,4 @@
-module.exports = ({subject, mouse}, tolerance = 0.1) ->
+module.exports = ({subject, mouse}, tolerance = 0.001) ->
   look = null
   up = null
   delta = vec3.create()
@@ -7,6 +7,7 @@ module.exports = ({subject, mouse}, tolerance = 0.1) ->
     return unless event.which is 1
     
     start = event
+    initial = event
     
     if look? then mouse.off 'move', look
     
@@ -29,8 +30,8 @@ module.exports = ({subject, mouse}, tolerance = 0.1) ->
       
       mouse.off 'move', look
       
-      delta[0] = event.x - start.x
-      delta[1] = event.y - start.y
+      delta[0] = event.x - initial.x
+      delta[1] = event.y - initial.y
       
       if (vec3.length delta) < tolerance
         subject.emit 'action', event
