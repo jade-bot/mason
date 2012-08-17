@@ -11,6 +11,7 @@ module.exports = ({client, keyboard}) ->
     'z-index': 1000
     color: 'white'
     width: '100%'
+    '-webkit-user-select': 'none'
   
   chat = $ '<ul>'
   chat.appendTo chatFrame
@@ -42,12 +43,14 @@ module.exports = ({client, keyboard}) ->
         input.val ''
         input.hide()
         chatFrame.css opacity: 0.75
+        client.chatting = no
         show = no
       else
         input.show()
         input.focus()
         chatFrame.css opacity: 1
         show = yes
+        client.chatting = yes
   
   client.io.on 'chat', (alias, message) ->
     chat.append ($ "<li>#{alias}: #{message}</li>") unless message.length is 0
