@@ -5,8 +5,9 @@ module.exports = ({client, keyboard}) ->
     position: 'absolute'
     left: 0
     bottom: 0
-    height: '50%'
-    background: 'rgba(0, 0, 0, 0.5)'
+    height: '25%'
+    opacity: 0.75
+    background: 'rgba(0, 0, 0, 0.25)'
     'z-index': 1000
     color: 'white'
     width: '100%'
@@ -40,10 +41,12 @@ module.exports = ({client, keyboard}) ->
         client.io.emit 'chat', input.val()
         input.val ''
         input.hide()
+        chatFrame.css opacity: 0.75
         show = no
       else
         input.show()
         input.focus()
+        chatFrame.css opacity: 1
         show = yes
   
   client.io.on 'chat', (alias, message) ->
