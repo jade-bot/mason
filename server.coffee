@@ -221,10 +221,7 @@ app.get '/privacy', (req, res) ->
   """
 
 app.post '/', (req, res) ->
-  # console.log req
-  # console.log req.body
-  body = JSON.parse req.body
-  [signature, data] = body.signed_request.split '.'
+  [signature, data] = req.body.signed_request.split '.'
   
   console.log (new Buffer payload, 'base64').toString('ascii')
   res.sendfile './public/index.html'
