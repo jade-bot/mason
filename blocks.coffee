@@ -52,6 +52,14 @@ module.exports = blocks =
   iron: {}
   lava: {}
   leaf: (transparent: yes)
+  motor:
+    textures:
+      left: textures.motor.side
+      right: textures.motor.side
+      bottom: textures.motor.bottom
+      top: textures.motor.top
+      back: textures.motor.side
+      front: textures.motor.side
   piston:
     textures:
       left: textures.piston.side

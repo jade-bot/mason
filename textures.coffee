@@ -42,6 +42,11 @@ module.exports =
   
   leaf: [4, 3]
   
+  motor:
+    top: [14, 6]
+    side: [14, 6]
+    bottom: [13, 6]
+  
   piston:
     top: [11, 6]
     side: [12, 6]
