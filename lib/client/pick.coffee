@@ -26,14 +26,19 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
     vec3.normalize ray.direction
     
     traverse = require './traverse'
-    traverse ray.start, ray.direction, (x, y, z) ->
+    traverse ray.start, ray.direction, (x, y, z, face) ->
       x = Math.floor x ; y = Math.floor y ; z = Math.floor z
       
       voxel = volume.get x, y, z
       
       if voxel?
-        volume.delete x, y, z
-        client.io.emit 'delete', x, y, z
+        console.log event.which
+        if event.which is 1
+          volume.delete x, y, z
+          client.io.emit 'delete', x, y, z
+        else if event.which is 3
+          volume.set x + face[0], y + face[1], z + face[2], client.brush
+          client.io.emit 'set', x + face[0], y + face[1], z + face[2], client.brush.index
         
         return voxel
       else
@@ -41,3 +46,6 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
   
   client.io.on 'delete', (x, y, z) ->
     volume.delete x, y, z
+  
+  client.io.on 'set', (x, y, z, voxel) ->
+    volume.set x, y, z, blocks.map[voxel]

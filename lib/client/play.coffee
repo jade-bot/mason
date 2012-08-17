@@ -1,3 +1,5 @@
+blocks = require '../../blocks'
+
 terraform = require '../volume/terraform'
 
 distribute = require './distribute'
@@ -5,6 +7,8 @@ distribute = require './distribute'
 module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, Mesh}, resources) ->
   client = new Client resources: resources
   {simulation, library, camera, keyboard, mouse} = client
+  
+  client.brush = blocks.dirt
   
   camera.dynamic = yes
   camera.position = [16, 40, 16]
@@ -49,6 +53,12 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
       client: client
       volume: volume
       camera: camera
+  
+  for a in ($ '.toolbar a') then do (a) =>
+    a = $ a
+    a.click (event) =>
+      client.brush = blocks[a.text()]
+      false
   
   # client.on 'avatar', (user, me = false) ->
   #   mesh = new Mesh

@@ -6,6 +6,8 @@ uuid = require 'node-uuid'
 
 {SparseVolume, terraform} = require './mason'
 
+blocks = require './blocks'
+
 db = {}
 
 db.volume = volume = new SparseVolume
@@ -76,3 +78,8 @@ io.sockets.on 'connection', (socket) ->
     volume.delete x, y, z
     
     socket.broadcast.emit 'delete', x, y, z
+  
+  socket.on 'set', (x, y, z, voxel) ->
+    volume.set x, y, z, blocks.map[voxel]
+    
+    socket.broadcast.emit 'set', x, y, z, voxel
