@@ -219,6 +219,7 @@ app.get '/privacy', (req, res) ->
   """
 
 app.post '/', (req, res) ->
+  console.log req
   res.sendfile './public/index.html'
 
 # server = app.listen 443
