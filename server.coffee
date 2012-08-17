@@ -29,6 +29,27 @@ db.users.user =
   secret: 'secret'
   position: [16, 40, 16]
 
+db.users.jason =
+  id: uuid()
+  alias: 'jason'
+  email: 'jason@feisty.io'
+  secret: 'secret'
+  position: [16, 40, 16]
+
+db.users.luke =
+  id: uuid()
+  alias: 'luke'
+  email: 'luke@feisty.io'
+  secret: 'secret'
+  position: [16, 40, 16]
+
+db.users.ian =
+  id: uuid()
+  alias: 'ian'
+  email: 'ian@feisty.io'
+  secret: 'secret'
+  position: [16, 40, 16]
+
 app = express()
 
 app.configure =>
