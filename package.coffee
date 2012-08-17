@@ -8,3 +8,5 @@ dependencies:
   'node-uuid': '*'
   express: '~3'
   'socket.io': '*'
+  browserify: '*'
+  fileify: '*'
