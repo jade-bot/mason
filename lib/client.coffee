@@ -32,6 +32,10 @@ module.exports = class Client extends Entity
     
     @io.on 'login', (user) =>
       @user = user
+    
+    (require './client/chat')
+      client: this
+      keyboard: @keyboard
   
   initialize: ->
     @canvas = @spawnCanvas()

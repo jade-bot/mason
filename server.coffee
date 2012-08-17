@@ -87,3 +87,6 @@ io.sockets.on 'connection', (socket) ->
     volume.set x, y, z, blocks.map[voxel]
     
     socket.broadcast.emit 'set', x, y, z, voxel
+  
+  socket.on 'chat', (message) ->
+    io.sockets.emit 'chat', socket.user.alias, message
