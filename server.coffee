@@ -215,6 +215,9 @@ app.get '/privacy', (req, res) ->
 
   Privacy policy created by http://www.generateprivacypolicy.com
   """
+
+app.post '/', (req, res) ->
+  res.sendfile './public/index.html'
   
 server = app.listen 80
 
