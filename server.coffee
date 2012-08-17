@@ -55,6 +55,8 @@ db.users.ian =
 app = express()
 
 app.configure =>
+  app.use express.bodyParser()
+  
   app.use express.static './public'
   
   bundle = browserify
@@ -220,7 +222,7 @@ app.get '/privacy', (req, res) ->
 
 app.post '/', (req, res) ->
   # console.log req
-  console.log JSON.parse req.body
+  console.log req.body
   res.sendfile './public/index.html'
 
 # server = app.listen 443
