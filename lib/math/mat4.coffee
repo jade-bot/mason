@@ -236,7 +236,7 @@ mat4.perspective = (fovy, aspect, near, far, out) ->
   mat4.frustum -right, right, -top, top, near, far, out
 
 mat4.fromRotationTranslation = (quat, vec, out) ->
-  out = mat4.create()  unless out
+  out = mat4.create() unless out
   
   x = quat[0]
   y = quat[1]
