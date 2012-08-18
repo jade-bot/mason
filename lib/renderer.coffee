@@ -34,7 +34,7 @@ module.exports = class Renderer extends Entity
     @gl.clearColor 0, 0, 0, 0.9
     @gl.enable @gl.DEPTH_TEST
     @gl.enable @gl.CULL_FACE
-    @gl.blendFunc @gl.SRC_ALPHA, @gl.ONE
+    @gl.blendFunc @gl.SRC_ALPHA, @gl.ONE_MINUS_SRC_ALPHA
   
   lookup: (entity) ->
     @db[entity.id] ?= entity: entity
