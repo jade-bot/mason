@@ -31,10 +31,10 @@ module.exports = ->
       physics = new Physics
       client.simulation.physics = physics
 
-  demos.push new Demo
-    key: 'benchmark'
-    main: (client) ->
-      (require './benchmark')()
+  # demos.push new Demo
+  #   key: 'benchmark'
+  #   main: (client) ->
+  #     (require './benchmark')()
 
   document.addEventListener 'DOMContentLoaded', ->
     client = new Client

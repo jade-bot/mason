@@ -34,6 +34,9 @@ vec3.add = (vec, vec2, out) ->
   
   out
 
+vec3.str = (vec) ->
+  "[#{vec[0]}, #{vec[1]}, #{vec[2]}]"
+
 vec3.set = (vec, dest) ->
   dest[0] = vec[0]
   dest[1] = vec[1]
@@ -78,6 +81,13 @@ vec3.length = (vec) ->
   z = vec[2]
 
   Math.sqrt x * x + y * y + z * z
+
+vec3.lengthSquared = (vec) ->
+  x = vec[0]
+  y = vec[1]
+  z = vec[2]
+  
+  x * x + y * y + z * z
 
 `
 // Pre-allocated to prevent unecessary garbage collection

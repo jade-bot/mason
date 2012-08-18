@@ -25,6 +25,9 @@ module.exports = class SparseVolume extends Entity
             if chunk?
               chunk.emit 'neighbor'
   
+  empty: ->
+    @chunks = {}
+  
   pack: ->
     out = {}
     for key, chunk of @chunks

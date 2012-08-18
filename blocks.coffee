@@ -10,7 +10,7 @@ module.exports = blocks =
       top: textures.wood
       back: textures.books
       front: textures.books
-  bricks: {}
+  brick: {}
   chest:
     textures:
       left: textures.chest.side

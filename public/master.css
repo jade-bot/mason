@@ -8,6 +8,15 @@ ul {
   -webkit-pointer-events: none;
 }
 
+.toolbar {
+  -webkit-user-select: none;
+  height: 40px;
+}
+
+.toolbar li a {
+  padding: 4px 5px!important;
+}
+
 .toolbar .active {
   -webkit-box-shadow:0 0 15px #ffffff;
 }
@@ -15,6 +24,54 @@ ul {
 .icon-dirt {
   background-image: url(/terrain.png);
   background-position: -64px 0;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-grass {
+  background-image: url(/terrain.png);
+  background-position: -96px 0;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-books {
+  background-image: url(/terrain.png);
+  background-position: -96px -64px;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-wood {
+  background-image: url(/terrain.png);
+  background-position: -128px 0;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-brick {
+  background-image: url(/terrain.png);
+  background-position: -224px 0;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-glass {
+  background-image: url(/terrain.png);
+  background-position: -32px -96px;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-tree {
+  background-image: url(/terrain.png);
+  background-position: -160px -32px;
   width: 32px!important;
   height: 32px;
   background-size: 512px 512px;
@@ -36,6 +93,13 @@ ul {
   background-size: 512px 512px;
 }
 
+.icon-stone {
+  background-image: url(/terrain.png);
+  background-position: -32px 0;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
 
 .hud {
   height: 50%;

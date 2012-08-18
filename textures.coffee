@@ -1,7 +1,7 @@
 module.exports =
   books: [3, 2]
   
-  bricks: [7, 0]
+  brick: [7, 0]
   
   chest:
     cap: [9, 1]
