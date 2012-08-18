@@ -5,19 +5,14 @@ light = (neighbors, map, out) ->
   
   [i, j, k, l, m, n, o, p] = map
   
-  if neighbors[i]
-    al -= shadow
-    bl -= shadow
-  if neighbors[j]
-    cl -= shadow
-    dl -= shadow
-  if neighbors[k]
-    al -= shadow
-    cl -= shadow
-  if neighbors[l]
-    bl -= shadow
-    dl -= shadow
-  
+  al -= shadow if neighbors[i]
+  bl -= shadow if neighbors[i]
+  cl -= shadow if neighbors[j]
+  dl -= shadow if neighbors[j]
+  al -= shadow if neighbors[k]
+  cl -= shadow if neighbors[k]
+  bl -= shadow if neighbors[l]
+  dl -= shadow if neighbors[l]
   al -= shadow if neighbors[m]
   bl -= shadow if neighbors[n]
   cl -= shadow if neighbors[o]
