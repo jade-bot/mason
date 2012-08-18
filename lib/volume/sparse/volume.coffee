@@ -14,16 +14,18 @@ module.exports = class SparseVolume extends Entity
     @chunkType = require '../../chunk/array'
     
     @on 'set', (x, y, z, voxel) =>
+      support.voxelToChunk x, y, z, @_chunk
       support.voxelToChunkVoxel x, y, z, @_chunkVoxel
       
+      [a, b, c] = @_chunk 
       [i, j, k] = @_chunkVoxel
       
-      if i is  0 then @chunks[support.chunkKey i - 1, j, k]?.emit 'neighbor'
-      if i is 15 then @chunks[support.chunkKey i + 1, j, k]?.emit 'neighbor'
-      if j is  0 then @chunks[support.chunkKey i, j - 1, k]?.emit 'neighbor'
-      if j is 15 then @chunks[support.chunkKey i, j + 1, k]?.emit 'neighbor'
-      if k is  0 then @chunks[support.chunkKey i, j, k - 1]?.emit 'neighbor'
-      if k is 15 then @chunks[support.chunkKey i, j, k + 1]?.emit 'neighbor'
+      if i is  0 then @chunks[support.chunkKey a - 1, b, c]?.emit 'neighbor'
+      if i is 15 then @chunks[support.chunkKey a + 1, b, c]?.emit 'neighbor'
+      if j is  0 then @chunks[support.chunkKey a, b - 1, c]?.emit 'neighbor'
+      if j is 15 then @chunks[support.chunkKey a, b + 1, c]?.emit 'neighbor'
+      if k is  0 then @chunks[support.chunkKey a, b, c - 1]?.emit 'neighbor'
+      if k is 15 then @chunks[support.chunkKey a, b, c + 1]?.emit 'neighbor'
   
   empty: ->
     @chunks = {}
