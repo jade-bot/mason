@@ -33,15 +33,36 @@ html
     #login.modal.hide
       .modal-header
         button.close(type='button', data-dismiss='modal') ×
-        h3 Login
+        h3 auth
       .modal-body
-        p
-          input.alias(value='user')
-        p
-          input.secret(value='secret')
+        .row-fluid
+          .span6
+            p
+              label username or email
+              input.alias(value='user')
+            p
+              label password
+              input.secret(value='secret')
+            
+            p
+              a.btn.btn-primary.login-btn(href='#') Login
+              a.btn.forgot-btn(href='#') Forgot Password?
+          
+          .span6
+            p
+              label username
+              input.alias(value='')
+            p
+              label email
+              input.alias(value='')
+            p
+              label password
+              input.secret(type='password', value='')
+            p
+              a.btn.btn-primary.join-btn(href='#') Join
+        
       .modal-footer
-        a.btn.close-btn(href='#', data-dismiss='modal') Close
-        a.btn.btn-primary.login-btn(href='#') Login
+        
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
