@@ -1,4 +1,4 @@
-precision lowp float;
+precision highp float;
 
 uniform sampler2D uSampler;
 
@@ -8,7 +8,7 @@ varying vec4 vColor;
 void main(void) {
   vec4 color = texture2D(uSampler, vCoord);
   
-  if (color.a < 1.0) {
+  if (color.a < 0.1) {
     discard;
   }
   
