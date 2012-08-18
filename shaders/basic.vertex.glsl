@@ -7,6 +7,7 @@ uniform mat4 uView;
 uniform mat4 uModel;
 
 uniform vec4 uColor;
+uniform float uAlpha;
 
 varying vec2 vCoord;
 varying vec4 vColor;

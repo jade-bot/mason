@@ -13,6 +13,7 @@ module.exports = ({client, mouse}) ->
       ($ '.toolbar a i').removeClass 'active'
       (a.find 'i').addClass 'active'
       client.brush = blocks[a.data 'key']
+      client.emit 'tool'
       false
   
   mouse.on 'wheel', (event) ->
@@ -37,3 +38,5 @@ module.exports = ({client, mouse}) ->
     
     ($ '.toolbar a i').removeClass 'active'
     tools[selected].find('i').addClass 'active'
+    
+    client.emit 'tool'

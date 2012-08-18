@@ -45,13 +45,13 @@ module.exports = raycast = (origin, direction, callback, radius = 30) ->
   
   radius /= Math.sqrt (dx * dx) + (dy * dy) + (dz * dz)
   
-  console.log stepX, stepY, stepZ, dx, dy, dz, tDeltaX, tDeltaY, tDeltaZ
+  # console.log stepX, stepY, stepZ, dx, dy, dz, tDeltaX, tDeltaY, tDeltaZ
   
   while true # ((if stepX > 0 then x < wx else x >= 0)) and ((if stepY > 0 then y < wy else y >= 0)) and ((if stepZ > 0 then z < wz else z >= 0))
     # check inside world
     # unless x < 0 or y < 0 or z < 0 or x >= wx or y >= wy or z >= wz
     
-    console.log x, y, z
+    # console.log x, y, z
     
     break if callback x, y, z, face
     

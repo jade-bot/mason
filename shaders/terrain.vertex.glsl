@@ -7,6 +7,7 @@ uniform mat4 uView;
 uniform mat4 uModel;
 
 uniform vec4 uColor;
+uniform float uAlpha;
 
 varying vec2 vCoord;
 varying vec4 vColor;
@@ -14,8 +15,9 @@ varying vec4 vColor;
 void main(void) {
   vCoord = aCoord;
   vColor = aColor + uColor;
+  vColor.a = vColor.a * uAlpha;
   // vColor = uColor;
-
+  
   gl_PointSize = 2.0;
   
   gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);

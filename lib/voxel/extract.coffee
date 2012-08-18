@@ -57,14 +57,11 @@ module.exports = extract = (voxel, i, j, k, volume, mesh) ->
   for x in [-1..1]
     for y in [-1..1]
       for z in [-1..1]
-        unless y is 0 and y is 0 and z is 0
-          neighbors[support.chunkKey x, y, z] = volume.get i + x, j + y, k + z
+        continue if y is 0 and y is 0 and z is 0
+        neighbors[support.chunkKey x, y, z] = volume.get i + x, j + y, k + z
   
   for face in template.faces
     # continue unless (vec3.dot face.normal, camera.forward) > 0
     neighbor = volume.get i + face.normal[0], j + face.normal[1], k + face.normal[2]
-    # continue if neighbor isnt null or neighbor is blocks.air
-    # console.log neighbor
     continue if neighbor?
-    
     extractFace face, i, j, k, voxel, mesh, neighbors

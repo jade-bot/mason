@@ -9,24 +9,45 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
     direction: vec3.create()
     length: 0
   
-  subject.on 'action', (event) ->
-    mouse.position[0] = event.clientX
-    mouse.position[1] = event.clientY
+  scrub = []
+  
+  cast = (event, callback) ->
+    scrub[0] = event.clientX
+    scrub[1] = event.clientY
     
-    mouse.position[1] = viewport[3] - mouse.position[1]
+    scrub[1] = viewport[3] - scrub[1]
     
-    mouse.position[2] = 0
-    vec3.unproject mouse.position, camera.view, camera.projection, viewport, ray.start
+    scrub[2] = 0
+    vec3.unproject scrub, camera.view, camera.projection, viewport, ray.start
     
-    mouse.position[2] = 1
-    vec3.unproject mouse.position, camera.view, camera.projection, viewport, ray.end
+    scrub[2] = 1
+    vec3.unproject scrub, camera.view, camera.projection, viewport, ray.end
     
     vec3.subtract ray.end, ray.start, ray.direction
     ray.length = vec3.length ray.direction
     vec3.normalize ray.direction
     
     traverse = require './traverse'
-    traverse ray.start, ray.direction, (x, y, z, face) ->
+    traverse ray.start, ray.direction, callback
+  
+  event = {}
+  
+  setInterval ->
+    event.clientX = mouse.position[0]
+    event.clientY = mouse.position[1]
+    
+    cast event, (x, y, z, face) ->
+      x = Math.floor x ; y = Math.floor y ; z = Math.floor z
+      
+      voxel = volume.get x, y, z
+      
+      return unless voxel?
+      
+      subject.emit 'point', x + face[0], y + face[1], z + face[2]
+  , 1000 / 10
+  
+  subject.on 'action', (event) ->
+    cast event, (x, y, z, face) ->
       x = Math.floor x ; y = Math.floor y ; z = Math.floor z
       
       voxel = volume.get x, y, z

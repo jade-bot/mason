@@ -14,6 +14,8 @@ module.exports = class Renderer extends Entity
     
     @paused = no
     
+    @matrix = mat4.create()
+    
     tick = =>
       requestAnimationFrame tick
       
@@ -32,6 +34,7 @@ module.exports = class Renderer extends Entity
     @gl.clearColor 0, 0, 0, 0.9
     @gl.enable @gl.DEPTH_TEST
     @gl.enable @gl.CULL_FACE
+    @gl.blendFunc @gl.SRC_ALPHA, @gl.ONE
   
   lookup: (entity) ->
     @db[entity.id] ?= entity: entity
@@ -88,6 +91,8 @@ module.exports = class Renderer extends Entity
     
     program.uniforms.color = @gl.getUniformLocation program, 'uColor'
     
+    program.uniforms.alpha = @gl.getUniformLocation program, 'uAlpha'
+    
     program.uniforms.sampler = @gl.getUniformLocation program, 'uSampler'
     
     program.attributes.position = @gl.getAttribLocation program, 'aPosition'
@@ -140,4 +145,14 @@ module.exports = class Renderer extends Entity
       @gl.bindTexture @gl.TEXTURE_2D, texture if texture?
       @gl.uniform1i uniforms.sampler, 0
       
+      @gl.uniform1f uniforms.alpha, 0.5
+      
+      if entity.blend
+        @gl.disable @gl.DEPTH_TEST
+        @gl.enable @gl.BLEND
+      
       @gl.drawArrays entity.drawMode, 0, entity.count
+      
+      if entity.blend
+        @gl.enable @gl.DEPTH_TEST
+        @gl.disable @gl.BLEND
