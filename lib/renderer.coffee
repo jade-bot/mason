@@ -148,11 +148,13 @@ module.exports = class Renderer extends Entity
       @gl.uniform1f uniforms.alpha, 0.5
       
       if entity.blend
-        @gl.disable @gl.DEPTH_TEST
+        # @gl.disable @gl.DEPTH_TEST
+        @gl.depthMask off
         @gl.enable @gl.BLEND
       
       @gl.drawArrays entity.drawMode, 0, entity.count
       
       if entity.blend
-        @gl.enable @gl.DEPTH_TEST
+        @gl.depthMask on
+        # @gl.enable @gl.DEPTH_TEST
         @gl.disable @gl.BLEND

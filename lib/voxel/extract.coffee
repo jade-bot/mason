@@ -63,5 +63,5 @@ module.exports = extract = (voxel, i, j, k, volume, mesh) ->
   for face in template.faces
     # continue unless (vec3.dot face.normal, camera.forward) > 0
     neighbor = volume.get i + face.normal[0], j + face.normal[1], k + face.normal[2]
-    continue if neighbor?
+    continue if neighbor? and not neighbor.transparent
     extractFace face, i, j, k, voxel, mesh, neighbors
