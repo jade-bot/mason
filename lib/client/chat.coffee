@@ -1,6 +1,7 @@
 module.exports = ({client, keyboard}) ->
   chatFrame = $ '<div>'
   chatFrame.appendTo document.body
+  chatFrame.addClass 'chatFrame'
   chatFrame.css
     position: 'absolute'
     left: 0

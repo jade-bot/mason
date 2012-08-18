@@ -13,7 +13,7 @@ module.exports = class Camera extends Body
     Object.defineProperty this, 'aspect', get: ->
       window.innerWidth / window.innerHeight
     
-    @near ?= args.near or 1
+    @near ?= args.near or 0.1
     @far ?= args.far or 1000
   
   update: ->

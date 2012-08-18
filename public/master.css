@@ -3,6 +3,11 @@ ul {
   margin: 0;
 }
 
+.chatFrame {
+  pointer-events: none;
+  -webkit-pointer-events: none;
+}
+
 .toolbar .active {
   -webkit-box-shadow:0 0 15px #ffffff;
 }
