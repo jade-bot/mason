@@ -13,13 +13,6 @@ module.exports = class Renderer extends Entity
     @setup()
     
     @paused = no
-    # window.addEventListener 'blur', =>
-    #   @paused = yes
-    #   @emit 'pause'
-    
-    # window.addEventListener 'focus', =>
-    #   @paused = no
-    #   @emit 'resume'
     
     tick = =>
       requestAnimationFrame tick
@@ -41,16 +34,12 @@ module.exports = class Renderer extends Entity
     @gl.enable @gl.CULL_FACE
   
   lookup: (entity) ->
-    @db[entity.id] ?=
-      buffer: null
-      program: null
-      entity: entity
+    @db[entity.id] ?= entity: entity
   
   getShader: (type, source) ->
     shader = @gl.createShader type
     @gl.shaderSource shader, source
     @gl.compileShader shader
-    
     return shader
   
   uploadMesh: (mount) ->
@@ -71,13 +60,7 @@ module.exports = class Renderer extends Entity
       
       @gl.texImage2D @gl.TEXTURE_2D, 0, @gl.RGBA, @gl.RGBA, @gl.UNSIGNED_BYTE, material.image
       @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MAG_FILTER, @gl.NEAREST
-      @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MIN_FILTER, @gl.NEAREST#NEAREST_MIPMAP_NEAREST
-      
-      # ext = @gl.getExtension 'WEBKIT_EXT_texture_filter_anisotropic'
-      # if ext?
-      #   max_anisotropy = @gl.getParameter ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT
-      #   max_anisotropy = Math.min 1, max_anisotropy
-      #   @gl.texParameterf @gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy
+      @gl.texParameteri @gl.TEXTURE_2D, @gl.TEXTURE_MIN_FILTER, @gl.NEAREST
       
       @gl.generateMipmap @gl.TEXTURE_2D
       
@@ -158,5 +141,3 @@ module.exports = class Renderer extends Entity
       @gl.uniform1i uniforms.sampler, 0
       
       @gl.drawArrays entity.drawMode, 0, entity.count
-    
-    # @gl.finish()
