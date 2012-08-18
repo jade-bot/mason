@@ -1,4 +1,5 @@
 template = require './template'
+lighting = require './lighting'
 texturing = require './texturing'
 
 blocks = require '../../blocks'
@@ -6,6 +7,8 @@ blocks = require '../../blocks'
 adjacent = vec3.create()
 
 coords = {}
+
+light = {}
 
 neighbors = {}
 
@@ -21,186 +24,8 @@ extractFace = (face, i, j, k, type, mesh, neighbors) ->
   
   alpha = 1
   
-  al = 1
-  bl = 1
-  cl = 1
-  dl = 1
-  
-  shadow = 0.25
-  
-  if face.key is 'left'
-    if neighbors['-1:-1:0']
-      al -= shadow
-      bl -= shadow
-    
-    if neighbors['-1:1:0']
-      cl -= shadow
-      dl -= shadow
-    
-    if neighbors['-1:0:-1']
-      al -= shadow
-      cl -= shadow
-    
-    if neighbors['-1:0:1']
-      bl -= shadow
-      dl -= shadow
-    
-    if neighbors['-1:-1:-1']
-      al -= shadow
-    
-    if neighbors['-1:-1:1']
-      bl -= shadow
-    
-    if neighbors['-1:1:-1']
-      cl -= shadow
-    
-    if neighbors['-1:1:1']
-      dl -= shadow
-  
-  if face.key is 'right'
-    if neighbors['1:-1:0']
-      al -= shadow
-      bl -= shadow
-    
-    if neighbors['1:1:0']
-      cl -= shadow
-      dl -= shadow
-    
-    if neighbors['1:0:-1']
-      dl -= shadow
-      bl -= shadow
-    
-    if neighbors['1:0:1']
-      al -= shadow
-      cl -= shadow
-    
-    if neighbors['1:-1:-1']
-      bl -= shadow
-    
-    if neighbors['1:-1:1']
-      al -= shadow
-    
-    if neighbors['1:1:-1']
-      dl -= shadow
-    
-    if neighbors['1:1:1']
-      cl -= shadow
-  
-  if face.key is 'top'
-    if neighbors['-1:1:0']
-      al -= shadow
-      cl -= shadow
-    
-    if neighbors['1:1:0']
-      bl -= shadow
-      dl -= shadow
-    
-    if neighbors['0:1:-1']
-      cl -= shadow
-      dl -= shadow
-    
-    if neighbors['0:1:1']
-      al -= shadow
-      bl -= shadow
-    
-    if neighbors['-1:1:-1']
-      cl -= shadow
-    
-    if neighbors['-1:1:1']
-      al -= shadow
-    
-    if neighbors['1:1:-1']
-      dl -= shadow
-    
-    if neighbors['1:1:1']
-      bl -= shadow
-  
-  if face.key is 'bottom'
-    if neighbors['-1:-1:0']
-      bl -= shadow
-      dl -= shadow
-    
-    if neighbors['1:-1:0']
-      al -= shadow
-      cl -= shadow
-    
-    if neighbors['0:-1:-1']
-      cl -= shadow
-      dl -= shadow
-    
-    if neighbors['0:-1:1']
-      al -= shadow
-      bl -= shadow
-    
-    if neighbors['-1:-1:-1']
-      dl -= shadow
-    
-    if neighbors['-1:-1:1']
-      bl -= shadow
-    
-    if neighbors['1:-1:-1']
-      cl -= shadow
-    
-    if neighbors['1:-1:1']
-      al -= shadow
-  
-  if face.key is 'front'
-    if neighbors['-1:0:1']
-      al -= shadow
-      cl -= shadow
-    
-    if neighbors['1:0:1']
-      bl -= shadow
-      dl -= shadow
-    
-    if neighbors['0:-1:1']
-      al -= shadow
-      bl -= shadow
-    
-    if neighbors['0:1:1']
-      cl -= shadow
-      dl -= shadow
-    
-    if neighbors['-1:-1:1']
-      al -= shadow
-    
-    if neighbors['-1:1:1']
-      cl -= shadow
-    
-    if neighbors['1:-1:1']
-      bl -= shadow
-    
-    if neighbors['1:1:1']
-      dl -= shadow
-  
-  if face.key is 'back'
-    if neighbors['-1:0:-1']
-      bl -= shadow
-      dl -= shadow
-      
-    if neighbors['1:0:-1']
-      al -= shadow
-      cl -= shadow
-    
-    if neighbors['0:-1:-1']
-      al -= shadow
-      bl -= shadow
-    
-    if neighbors['0:1:-1']
-      cl -= shadow
-      dl -= shadow
-    
-    if neighbors['-1:-1:-1']
-      bl -= shadow
-    
-    if neighbors['1:-1:-1']
-      al -= shadow
-    
-    if neighbors['-1:1:-1']
-      dl -= shadow
-    
-    if neighbors['1:1:-1']
-      cl -= shadow
+  lighting face, neighbors, light
+  {al, bl, cl, dl} = light
   
   mesh.data.push a[0] + i, a[1] + j, a[2] + k
   mesh.data.push left, bottom
