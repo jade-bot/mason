@@ -28,3 +28,6 @@ module.exports = class Mouse extends Entity
       @buttons[event.which] = off
       
       @emit 'up', event
+    
+    element.addEventListener 'mousewheel', (event) =>
+      @emit 'wheel', event

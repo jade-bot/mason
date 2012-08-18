@@ -53,43 +53,10 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
       client: client
       volume: volume
       camera: camera
-  
-  for a in ($ '.toolbar a') then do (a) =>
-    a = $ a
-    a.click (event) =>
-      ($ '.toolbar a i').removeClass 'active'
-      (a.find 'i').addClass 'active'
-      client.brush = blocks[a.data 'key']
-      false
-  
-  mouse.on 'wheel', (event) ->
-    delta = event.wheelDeltaY
     
-    if delta > 0
-      delta = 1
-    if delta < 0
-      delta = -1
-  
-  # client.on 'avatar', (user, me = false) ->
-  #   mesh = new Mesh
-  #   mesh.scale = [0.5, 0.5, 0.5]
-  #   mesh.position = user.position
-  #   mesh.data = resources.models.avatar
-  #   mesh.material = library.materials.line
-  #   mesh.count = mesh.data.length / 9
-  #   mesh.user = user
-  #   simulation.add mesh
-    
-  #   client.io.on 'move', (id, position) ->
-  #     if user.id is id
-  #       vec3.set position, mesh.position
-    
-  #   if me
-  #     client.user.mesh = mesh
+    (require './ui')
+      mouse: mouse
+      client: client
   
   # spool = new Spool url: '/worker.js'
-  
   # distribute volume, spool
-  
-  # extensions = (require './extensions') gl
-  # ui = (require './play_ui') extensions

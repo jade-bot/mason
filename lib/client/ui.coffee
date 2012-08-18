@@ -1,70 +1,39 @@
-module.exports = (client, demos) ->
-  dom = $ document.body
+blocks = require '../../blocks'
 
-  demoMenu = $ '<div>'
-  demoMenu.css
-    width: '100%'
-    height: '100%'
-    left: 0
-    top: 0
-    position: 'absolute'
-    color: 'rgb(200, 200, 200)'
-    'margin-top': 40
-  demoMenu.appendTo dom
+module.exports = ({client, mouse}) ->
+  selected = 0
+  tools = {}
   
-  for demo in demos then do (demo) =>
-    el = $ '<li>'
-    el.text demo.key
-    el.appendTo demoMenu
-    
-    el.click ->
-      demoMenu.fadeOut()
-      
-      client.runDemo demo
-    
-    # thumbnail = $ '<img>'
-    # thumbnail.attr src: demo.thumbnail
-    # thumbnail.css position: 'absolute', left: 0
-    # thumbnail.appendTo el
-    
-    # unless demo.thumbnail
-    # demo.thumbnail = 
+  toolItems = $ '.toolbar a'
   
-  properties = $ '<ul>'
-  properties.css
-    width: '25%'
-    height: '50%'
-    right: 0
-    bottom: 0
-    position: 'absolute'
-    color: 'rgb(200, 200, 200)'
-  properties.appendTo dom
+  for a, index in ($ '.toolbar a') then do (a) =>
+    a = $ a
+    tools[index] = a
+    a.click (event) =>
+      ($ '.toolbar a i').removeClass 'active'
+      (a.find 'i').addClass 'active'
+      client.brush = blocks[a.data 'key']
+      false
   
-  inspect = (entity) ->
-    properties.empty()
+  mouse.on 'wheel', (event) ->
+    console.log 'tool'
     
-    for property in ['position']
-      properties.append $ "<li>#{JSON.stringify entity[property]}</li>"
-  
-  entities = $ '<ul>'
-  entities.css
-    width: '25%'
-    height: '50%'
-    left: 0
-    bottom: 0
-    position: 'absolute'
-    color: 'rgb(200, 200, 200)'
-  entities.appendTo dom
-  
-  for key, entity of client.simulation.entities then do (key, entity) =>
-    entity.element = $ "<li>#{entity.id}</li>"
+    delta = event.wheelDeltaY
     
-    entities.append entity.element
+    if delta > 0
+      delta = 1
+    if delta < 0
+      delta = -1
     
-    entity.element.click ->
-      for key, clearingEntity of client.simulation.entities
-        clearingEntity.selected = no
-      
-      entity.selected = yes
-      
-      inspect entity
+    selected += delta
+    
+    # selected %= toolItems.length
+    if selected < 0
+      selected = toolItems.length - 1
+    if selected is toolItems.length
+      selected = 0
+    
+    client.brush = blocks[tools[selected].data 'key']
+    
+    ($ '.toolbar a i').removeClass 'active'
+    tools[selected].find('i').addClass 'active'
