@@ -68,39 +68,28 @@ module.exports = class SparseVolume extends Entity
       address: support.voxelToChunk x, y, z
       key: support.voxelToChunkKey x, y, z
     @chunks[chunk.key] = chunk
-    
     @emit 'track', chunk
-    
     return chunk
   
   delete: (x, y, z) ->
     chunk = @voxelChunk x, y, z
-    
     return unless chunk?
-    
     support.voxelToChunkVoxel x, y, z, @_chunk
     chunk.deleteVector @_chunk
-    
     @emit 'set', x, y, z, null
   
   set: (x, y, z, voxel) ->
     chunk = @voxelChunk x, y, z
-    
     unless chunk? then chunk = @track x, y, z
-    
     support.voxelToChunkVoxel x, y, z, @_chunk
     chunk.setVector @_chunk, voxel
-    
     @emit 'set', x, y, z, voxel, chunk
   
   setVector: (vector, voxel) ->
     chunk = @voxelVectorChunk vector
-    
     unless chunk? then chunk = @track vector[0], vector[1], vector[2]
-    
     support.voxelVectorToChunkVoxel vector, @_chunk
     chunk.setVector @_chunk, voxel
-    
     @emit 'set', vector[0], vector[1], vector[2], voxel, chunk
   
   get: (x, y, z) ->
