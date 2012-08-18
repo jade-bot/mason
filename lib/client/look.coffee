@@ -35,8 +35,3 @@ module.exports = ({subject, mouse}, tolerance = 0.001) ->
         subject.emit 'action', event
     
     mouse.on 'up', up
-  
-  mouse.on 'wheel', (event) ->
-    delta = event.wheelDeltaY / 100
-    
-    vec3.scale camera.offset, if delta > 0 then 1.1 else 0.9

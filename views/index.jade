@@ -64,11 +64,15 @@ html
         .container
           ul.nav.toolbar
             li
-              a(href='#') dirt
+              a(href='#', data-key='dirt')
+                i.icon-dirt.active
             li
-              a(href='#') chest
+              a(href='#', data-key='chest')
+                i.icon-chest
             li
-              a(href='#') motor
+              a(href='#', data-key='motor')
+                i.icon-motor
+    
     canvas#canvas.canvas(width='500', height='500')
     
     script!= js

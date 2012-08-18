@@ -3,6 +3,35 @@ ul {
   margin: 0;
 }
 
+.toolbar .active {
+  -webkit-box-shadow:0 0 15px #ffffff;
+}
+
+.icon-dirt {
+  background-image: url(/terrain.png);
+  background-position: -64px 0;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-chest {
+  background-image: url(/terrain.png);
+  background-position: -352px -32px;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+.icon-motor {
+  background-image: url(/terrain.png);
+  background-position: -448px -192px;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
+
 .hud {
   height: 50%;
   width: 100%;

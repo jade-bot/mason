@@ -63,6 +63,8 @@ app.configure =>
   app.use express.bodyParser()
   app.use express.methodOverride()
   
+  app.use app.router
+  
   app.use express.static './public'
   
   bundle = browserify
@@ -225,6 +227,9 @@ app.get '/privacy', (req, res) ->
 
   Privacy policy created by http://www.generateprivacypolicy.com
   """
+
+app.get '/', (req, res) ->
+  res.render 'index', js: ''
 
 app.post '/', (req, res) ->
   [signature, data] = req.body.signed_request.split '.'

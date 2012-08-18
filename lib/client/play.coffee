@@ -57,8 +57,18 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
   for a in ($ '.toolbar a') then do (a) =>
     a = $ a
     a.click (event) =>
-      client.brush = blocks[a.text()]
+      ($ '.toolbar a i').removeClass 'active'
+      (a.find 'i').addClass 'active'
+      client.brush = blocks[a.data 'key']
       false
+  
+  mouse.on 'wheel', (event) ->
+    delta = event.wheelDeltaY
+    
+    if delta > 0
+      delta = 1
+    if delta < 0
+      delta = -1
   
   # client.on 'avatar', (user, me = false) ->
   #   mesh = new Mesh

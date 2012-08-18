@@ -11,3 +11,4 @@ dependencies:
   browserify: '*'
   fileify: '*'
   'events-off': '*'
+  jade: '*'
