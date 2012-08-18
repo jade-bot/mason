@@ -11,7 +11,7 @@ module.exports = terraform = (min, max, volume) ->
     for j in [min[1]...max[1]]
       for k in [min[2]...max[2]]
         if j < 16
-          if (noise.noise3D x / 16, y / 16, z / 16) > 0.25 or (noise.noise3D i / 8, j / 8, k / 8) > 0.25
+          if (noise.noise3D i / 16, j / 16, k / 16) > 0.25 or (noise.noise3D i / 8, j / 8, k / 8) > 0.25
             if Math.random() > 0.95
               volume.set i, j, k, blocks.diamond
             else if Math.random() > 0.95
