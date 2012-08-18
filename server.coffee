@@ -236,7 +236,7 @@ app.post '/', (req, res) ->
     res.render 'index', js: """
     var oauth_url = 'https://www.facebook.com/dialog/oauth/';
     oauth_url += '?client_id=350767991667577';
-    oauth_url += '&redirect_uri=' + encodeURIComponent('https://apps.facebook.com/feistyio/');
+    oauth_url += '&redirect_uri=' + encodeURIComponent('https://feisty.io/play');
     oauth_url += '&scope='
     window.top.location = oauth_url;
     """
