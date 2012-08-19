@@ -8,7 +8,8 @@ module.exports = (volume, callback) ->
     
     interval = setInterval ->
       if Math.random() > 0.5
-        # volume.set x, y, z, blocks.grass.index
+        if (volume.get x, y, z) is blocks.dirt
+        volume.set x, y, z, blocks.grass
         callback x, y, z, blocks.grass.index
         clearInterval interval
     , 1000 * 1
