@@ -16,7 +16,6 @@ void main(void) {
   vCoord = aCoord;
   vColor = aColor + uColor;
   vColor.a = vColor.a * uAlpha;
-  // vColor = uColor;
   
   gl_PointSize = 2.0;
   

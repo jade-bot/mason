@@ -1,6 +1,6 @@
 blocks = require '../../blocks'
 
-module.exports = (volume, callback) ->
+module.exports = (volume) ->
   volume.on 'set', (x, y, z, voxel) ->
     return unless voxel is blocks.dirt
     
@@ -10,7 +10,6 @@ module.exports = (volume, callback) ->
       if (volume.get x, y, z) is blocks.dirt
         if Math.random() > 0.5
           volume.set x, y, z, blocks.grass
-          callback x, y, z, blocks.grass.index
       
       else
         clearInterval interval

@@ -26,6 +26,9 @@ module.exports = class SparseVolume extends Entity
       if j is 15 then @chunks[support.chunkKey a, b + 1, c]?.emit 'neighbor'
       if k is  0 then @chunks[support.chunkKey a, b, c - 1]?.emit 'neighbor'
       if k is 15 then @chunks[support.chunkKey a, b, c + 1]?.emit 'neighbor'
+    
+    @on 'set', => @emit 'change'
+    @on 'delete', => @emit 'change'
   
   empty: ->
     @chunks = {}
@@ -76,7 +79,7 @@ module.exports = class SparseVolume extends Entity
     return unless chunk?
     support.voxelToChunkVoxel x, y, z, @_chunk
     chunk.deleteVector @_chunk
-    @emit 'set', x, y, z, null
+    @emit 'delete', x, y, z
   
   set: (x, y, z, voxel) ->
     chunk = @voxelChunk x, y, z
