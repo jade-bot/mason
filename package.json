@@ -9,6 +9,7 @@
     "browserify": "*",
     "fileify": "*",
     "events-off": "*",
-    "jade": "*"
+    "jade": "*",
+    "nodemailer": "*"
   }
 }
