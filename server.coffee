@@ -52,7 +52,7 @@ app.configure =>
 
 app.get '/', (req, res) -> res.render 'index'
 
-server = app.listen 1337
+server = app.listen 80
 
 io = socket_io.listen server, 'log level': 1
 
