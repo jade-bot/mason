@@ -31,3 +31,9 @@ users.ian = new User
   email: 'ian@feisty.io'
   secret: 'secret'
   position: [16, 40, 16]
+
+users.abbeysaurus = new User
+  alias: 'abbeysaurus'
+  email: 'abbeymiranda@gmail.com'
+  secret: 'donkies'
+  position: [16, 40, 16]
