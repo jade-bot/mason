@@ -1,5 +1,20 @@
 textures = require './textures'
 
+normalTextures = (texture) ->
+  left: texture.side
+  right: texture.side
+  bottom: texture.bottom
+  top: texture.top
+  back: texture.side
+  front: texture.side
+frontandCappedTexture = (texture) ->
+  left: texture.side
+  right: texture.side
+  bottom: texture.cap
+  top: texture.cap
+  back: texture.side
+  front: texture.front
+
 module.exports = blocks =
   air: {}
   books:
@@ -11,14 +26,7 @@ module.exports = blocks =
       back: textures.books
       front: textures.books
   brick: {}
-  chest:
-    textures:
-      left: textures.chest.side
-      right: textures.chest.side
-      bottom: textures.chest.cap
-      top: textures.chest.cap
-      back: textures.chest.side
-      front: textures.chest.front
+  chest: (textures: frontandCappedTexture textures.chest)
   coal: {}
   cobblestone: {}
   crafting_table:
@@ -31,44 +39,16 @@ module.exports = blocks =
       front: textures.crafting_table.front
   diamond: {}
   dirt: {}
-  furnace:
-    textures:
-      left: textures.furnace.side
-      right: textures.furnace.side
-      bottom: textures.furnace.cap
-      top: textures.furnace.cap
-      back: textures.furnace.side
-      front: textures.furnace.front
+  furnace: (textures: frontandCappedTexture textures.furnace)
   glass: (transparent: yes)
   gold: {}
-  grass:
-    textures:
-      left: textures.grass.side
-      right: textures.grass.side
-      bottom: textures.grass.bottom
-      top: textures.grass.top
-      back: textures.grass.side
-      front: textures.grass.side
+  grass: (textures: normalTextures textures.grass)
   iron: {}
   lava: {}
   leaf: (transparent: yes)
   mail: {}
-  motor:
-    textures:
-      left: textures.motor.side
-      right: textures.motor.side
-      bottom: textures.motor.bottom
-      top: textures.motor.top
-      back: textures.motor.side
-      front: textures.motor.side
-  piston:
-    textures:
-      left: textures.piston.side
-      right: textures.piston.side
-      bottom: textures.piston.bottom
-      top: textures.piston.top
-      back: textures.piston.side
-      front: textures.piston.side
+  motor: (textures: normalTextures textures.motor)
+  piston: (textures: normalTextures textures.piston)
   stone: {}
   tree:
     textures:
@@ -81,11 +61,11 @@ module.exports = blocks =
   water: {}
   wood: {}
 
-for key, block of blocks
-  block.key = key
+block.key = key for key, block of blocks
 
 Object.defineProperty blocks, 'map', value: {}
 
 for key, index in Object.keys blocks
-  blocks.map[index] = blocks[key]
-  blocks[key].index = index
+  block = blocks[key]
+  block.index = index
+  blocks.map[index] = block
