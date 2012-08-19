@@ -53,7 +53,6 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
       voxel = volume.get x, y, z
       
       if voxel?
-        console.log event.which
         if event.which is 1
           volume.delete x, y, z
           client.io.emit 'delete', x, y, z
@@ -66,9 +65,7 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
         return
   
   client.io.on 'delete', (x, y, z) ->
-    console.log 'delete'
     volume.delete x, y, z
   
   client.io.on 'set', (x, y, z, voxel) ->
-    console.log 'set'
     volume.set x, y, z, blocks.map[voxel]

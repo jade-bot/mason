@@ -11,7 +11,7 @@ module.exports = class Simulation extends Entity
     @origin = new Body
     
     @clock = new Clock
-    @clock.on 'fps', -> console.log arguments...
+    # @clock.on 'fps', -> console.log arguments...
     @clock.on 'tick', => @emit 'tick'
   
   add: ->

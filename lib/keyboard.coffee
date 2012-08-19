@@ -36,6 +36,5 @@ module.exports = class Keyboard extends Entity
       @shift = event.shiftKey
     
     target.addEventListener 'keypress', (event) =>
-      console.log event.keyCode
       event.key = @map[event.keyCode]
       @emit 'press', event
