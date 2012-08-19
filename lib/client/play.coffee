@@ -22,15 +22,34 @@ module.exports = ({SparseVolumeView, SparseVolume, Spool, Avatar, Axes, Client, 
   modal.find('.login-btn').click ->
     modal.modal 'hide'
     client.io.emit 'login',
-      alias: (modal.find '.alias').val()
-      secret: (modal.find '.secret').val()
+      alias: (modal.find '.login-pane .alias').val()
+      secret: (modal.find '.login-pane .secret').val()
+  
+  loading = $ """
+  <div class="progress progress-striped active">
+    <div class="bar" style="width: 40%;"></div>
+  </div>
+  """
+  
+  modal.find('.join-btn').click ->
+    modal.find('.join-pane').append loading
+    
+    client.io.emit 'join',
+      alias: (modal.find '.join-pane .alias').val()
+      email: (modal.find '.join-pane .email').val()
+      secret: (modal.find '.join-pane .secret').val()
+  
+  client.io.on 'join', (user) ->
+    client.io.emit 'login',
+      alias: user.alias
+      secret: user.secret
   
   client.io.on 'login', (user, pack) ->
+    loading.remove()
+    
+    modal.modal 'hide'
+    
     volume = new SparseVolume
-    # terraform [0, 0, 0], [32, 32, 32], volume
-    
-    console.log pack
-    
     volume.unpack pack
     
     (require './physics')

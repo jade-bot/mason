@@ -12,3 +12,4 @@ dependencies:
   fileify: '*'
   'events-off': '*'
   jade: '*'
+  'nodemailer': '*'

@@ -1,6 +1,6 @@
 html
   head
-    title mason
+    title ToE: Theory of Everything
     link(href='/bootstrap/css/bootstrap.css', rel='stylesheet')
     style
       body {
@@ -36,7 +36,7 @@ html
         h3 auth
       .modal-body
         .row-fluid
-          .span6
+          .span6.login-pane
             p
               label username or email
               input.alias(value='user')
@@ -48,13 +48,13 @@ html
               a.btn.btn-primary.login-btn(href='#') Login
               a.btn.forgot-btn(href='#') Forgot Password?
           
-          .span6
+          .span6.join-pane
             p
               label username
               input.alias(value='')
             p
               label email
-              input.alias(value='')
+              input.email(value='')
             p
               label password
               input.secret(type='password', value='')

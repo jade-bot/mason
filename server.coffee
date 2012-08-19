@@ -5,8 +5,9 @@ fileify = require 'fileify'
 fs = require 'fs'
 socket_io = require 'socket.io'
 uuid = require 'node-uuid'
+mail = require './lib/server/mail'
 
-{SparseVolume, terraform} = require './mason'
+{SparseVolume, terraform, User} = require './mason'
 
 blocks = require './blocks'
 
@@ -69,8 +70,8 @@ io.sockets.on 'connection', (socket) ->
     
     user = db.users[alias]
     
-    socket.broadcast.emit 'avatar', user
-    socket.emit 'avatar', user, true
+    # socket.broadcast.emit 'avatar', user
+    # socket.emit 'avatar', user, true
     socket.emit 'login', user, volume.pack()
     
     socket.user = user
@@ -90,3 +91,17 @@ io.sockets.on 'connection', (socket) ->
   
   socket.on 'chat', (message) ->
     io.sockets.emit 'chat', socket.user.alias, message
+  
+  socket.on 'join', ({alias, email, secret}) ->
+    user = new User alias: alias, email: email, secret: secret
+    
+    if db.users[user.alias]?
+      console.log 'user exists'
+      
+      socket.emit 'error', 'user exists'
+    else
+      db.users[user.alias] = user
+      
+      mail.join user
+      
+      socket.emit 'join', user
