@@ -1,15 +1,17 @@
+blocks = require '../../blocks'
+
+traverse = require './traverse'
+
+ray =
+  start: vec3.create()
+  end: vec3.create()
+  direction: vec3.create()
+  length: 0
+
 module.exports = ({subject, camera, client, mouse, volume}) ->
   {viewport} = client.canvas
   
-  blocks = require '../../blocks'
-  
-  ray =
-    start: vec3.create()
-    end: vec3.create()
-    direction: vec3.create()
-    length: 0
-  
-  scrub = []
+  scrub = vec3.create()
   
   cast = (event, callback) ->
     scrub[0] = event.clientX
@@ -27,7 +29,6 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
     ray.length = vec3.length ray.direction
     vec3.normalize ray.direction
     
-    traverse = require './traverse'
     traverse ray.start, ray.direction, callback
   
   event = {}
@@ -56,13 +57,13 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
         if event.which is 1
           volume.delete x, y, z
           client.io.emit 'delete', x, y, z
-        else if event.which is 3
+        
+        if event.which is 3
           volume.set x + face[0], y + face[1], z + face[2], client.brush
           client.io.emit 'set', x + face[0], y + face[1], z + face[2], client.brush.index
         
         return voxel
-      else
-        return
+      else return
   
   client.io.on 'delete', (x, y, z) ->
     volume.delete x, y, z
