@@ -26,6 +26,7 @@ module.exports = class Client extends Entity
     @canvases ?= args.canvases or new Array
     
     @library.on 'load', =>
+      # (require './texture_renderer') @library
       @initialize()
     
     @io = io.connect()

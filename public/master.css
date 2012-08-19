@@ -85,6 +85,14 @@ ul {
   background-size: 512px 512px;
 }
 
+.icon-mail {
+  background-image: url(/terrain.png);
+  background-position: -384px -128px;
+  width: 32px!important;
+  height: 32px;
+  background-size: 512px 512px;
+}
+
 .icon-motor {
   background-image: url(/terrain.png);
   background-position: -448px -192px;

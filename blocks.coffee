@@ -52,6 +52,7 @@ module.exports = blocks =
   iron: {}
   lava: {}
   leaf: (transparent: yes)
+  mail: {}
   motor:
     textures:
       left: textures.motor.side
