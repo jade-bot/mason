@@ -1,6 +1,6 @@
-module.exports = util = {}
+module.exports = support = {}
 
-util.spin = (entity) ->
+support.spin = (entity) ->
   return setInterval ->
     volume.rotateY 1 / 60
     volume.sync()
@@ -10,44 +10,41 @@ CX = 16
 CY = 16
 CZ = 16
 
-util.voxelVectorToChunkKey = (vector) ->
+support.voxelVectorToChunkKey = (vector) ->
   cx = Math.floor vector[0] / CX
   cy = Math.floor vector[1] / CY
   cz = Math.floor vector[2] / CZ
   
   return "#{cx}:#{cy}:#{cz}"
 
-util.voxelToChunkKey = (x, y, z) ->
+support.voxelToChunkKey = (x, y, z) ->
   cx = Math.floor x / CX
   cy = Math.floor y / CY
   cz = Math.floor z / CZ
   
   return "#{cx}:#{cy}:#{cz}"
 
-util.chunkKey = (x, y, z) ->
-  return "#{x}:#{y}:#{z}"
+support.chunkKey = (x, y, z) -> "#{x}:#{y}:#{z}"
 
-util.chunkKeyVector = (chunk) ->
-  return "#{chunk[0]}:#{chunk[1]}:#{chunk[2]}"
+support.chunkKeyVector = (chunk) -> "#{chunk[0]}:#{chunk[1]}:#{chunk[2]}"
 
-util.voxelIndex = (x, y, z) ->
-  return x + (y * CX) + (z * CX * CY)
+support.voxelIndex = (x, y, z) -> x + (y * CX) + (z * CX * CY)
 
-util.voxelToChunk = (x, y, z, chunk = []) ->
+support.voxelToChunk = (x, y, z, chunk = []) ->
   chunk[0] = Math.floor x / CX
   chunk[1] = Math.floor y / CY
   chunk[2] = Math.floor z / CZ
   
   return chunk
   
-util.voxelVectorToChunk = (voxel, chunk = []) ->
+support.voxelVectorToChunk = (voxel, chunk = []) ->
   chunk[0] = Math.floor voxel[0] / CX
   chunk[1] = Math.floor voxel[1] / CY
   chunk[2] = Math.floor voxel[2] / CZ
   
   return chunk
 
-util.voxelVectorToChunkVoxel = (vector, chunkVoxel = []) ->
+support.voxelVectorToChunkVoxel = (vector, chunkVoxel = []) ->
   [x, y, z] = vector
   
   x %= CX
@@ -60,7 +57,7 @@ util.voxelVectorToChunkVoxel = (vector, chunkVoxel = []) ->
   
   return chunkVoxel
 
-util.voxelToChunkVoxel = (x, y, z, chunkVoxel = []) ->
+support.voxelToChunkVoxel = (x, y, z, chunkVoxel = []) ->
   x %= CX
   y %= CY
   z %= CZ
