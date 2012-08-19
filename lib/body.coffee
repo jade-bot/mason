@@ -10,6 +10,7 @@ module.exports = class Body extends Entity
     super
     
     @position ?= args.position or [0, 0, 0]
+    
     @rotation ?= args.rotation or [0, 0, 0, 1]
     
     @velocity ?= args.velocity or vec3.create()
@@ -19,25 +20,22 @@ module.exports = class Body extends Entity
     @scale ?= args.scale or [1, 1, 1]
     
     @up ?= args.up or [0, 1, 0]
+    @_up ?= [0, 1, 0]
     @right ?= args.right or [1, 0, 0]
     @_right ?= [1, 0, 0]
     @forward ?= args.forward or [0, 0, 1]
     @_forward ?= [0, 0, 1]
     
     @sync()
-    
-  sync: ->
+  
+  sync: (time) ->
     mat4.fromRotationTranslation @rotation, @position, @model
+    quat4.multiplyVec3 @rotation, @_up, @up
     quat4.multiplyVec3 @rotation, @_right, @right
     quat4.multiplyVec3 @rotation, @_forward, @forward
   
   update: (time = 0) ->
-    # movement
-    # vec3.set @velocity, tempVec3
-    # vec3.scale tempVec3, time
-    # vec3.add @position, tempVec3
-    
-    @sync()
+    @sync time
   
   lookTo: (position) ->
     mat4.lookAt @position, position, @up, tempMat4
