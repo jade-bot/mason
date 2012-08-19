@@ -1,3 +1,5 @@
+blocks = require '../../blocks'
+
 module.exports = ({io, db}) ->
   {volume, users} = db
   

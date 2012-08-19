@@ -66,7 +66,9 @@ module.exports = ({subject, camera, client, mouse, volume}) ->
         return
   
   client.io.on 'delete', (x, y, z) ->
+    console.log 'delete'
     volume.delete x, y, z
   
   client.io.on 'set', (x, y, z, voxel) ->
+    console.log 'set'
     volume.set x, y, z, blocks.map[voxel]

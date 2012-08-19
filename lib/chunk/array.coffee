@@ -27,6 +27,9 @@ module.exports = class ArrayChunk extends Entity
       @address[1] * @size + @size
       @address[2] * @size + @size
     ]
+    
+    @on 'set', => @emit 'change'
+    @on 'delete', => @emit 'change'
   
   unpack: (pack) ->
     @voxels.length = 0
@@ -91,4 +94,4 @@ module.exports = class ArrayChunk extends Entity
   deleteVector: (vector) ->
     index = support.voxelIndex vector[0], vector[1], vector[2]
     @voxels[index] = null
-    @emit 'set', index, null
+    @emit 'delete', index, null

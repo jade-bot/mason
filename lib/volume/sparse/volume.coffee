@@ -13,7 +13,7 @@ module.exports = class SparseVolume extends Entity
     
     @chunkType = require '../../chunk/array'
     
-    @on 'set', (x, y, z, voxel) =>
+    @on 'change', (x, y, z, voxel) =>
       support.voxelToChunk x, y, z, @_chunk
       support.voxelToChunkVoxel x, y, z, @_chunkVoxel
       
