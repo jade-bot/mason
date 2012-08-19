@@ -56,14 +56,11 @@ module.exports = class SparseVolume extends Entity
       
       chunk.unpack chunkPack.pack
   
-  trackingVoxel: (x, y, z) ->
-    @chunks[support.voxelToChunkKey x, y, z]?
+  trackingVoxel: (x, y, z) -> @chunks[support.voxelToChunkKey x, y, z]?
   
-  voxelChunk: (x, y, z) ->
-    return @chunks[support.voxelToChunkKey x, y, z]
+  voxelChunk: (x, y, z) -> @chunks[support.voxelToChunkKey x, y, z]
   
-  voxelVectorChunk: (vector) ->
-    return @chunks[support.voxelVectorToChunkKey vector]
+  voxelVectorChunk: (vector) -> @chunks[support.voxelVectorToChunkKey vector]
   
   track: (x, y, z) ->
     chunk = new @chunkType
@@ -83,28 +80,26 @@ module.exports = class SparseVolume extends Entity
   
   set: (x, y, z, voxel) ->
     chunk = @voxelChunk x, y, z
-    unless chunk? then chunk = @track x, y, z
+    chunk ?= @track x, y, z
     support.voxelToChunkVoxel x, y, z, @_chunk
     chunk.setVector @_chunk, voxel
     @emit 'set', x, y, z, voxel, chunk
   
   setVector: (vector, voxel) ->
     chunk = @voxelVectorChunk vector
-    unless chunk? then chunk = @track vector[0], vector[1], vector[2]
+    chunk ?= @track vector[0], vector[1], vector[2]
     support.voxelVectorToChunkVoxel vector, @_chunk
     chunk.setVector @_chunk, voxel
     @emit 'set', vector[0], vector[1], vector[2], voxel, chunk
   
   get: (x, y, z) ->
-    chunkKey = support.voxelToChunkKey x, y, z
-    chunk = @chunks[chunkKey]
+    chunk = @voxelChunk x, y, z
     return unless chunk?
     support.voxelToChunkVoxel x, y, z, @_chunk
     chunk.getVector @_chunk
   
   getVector: (vector) ->
-    chunkKey = support.voxelVectorToChunkKey vector
-    chunk = @chunks[chunkKey]
+    chunk = @voxelVectorChunk vector
     return unless chunk?
     support.voxelVectorToChunkVoxel vector, @_chunk
     chunk.getVector @_chunk
