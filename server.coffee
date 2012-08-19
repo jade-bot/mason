@@ -5,18 +5,8 @@ fileify = require 'fileify'
 fs = require 'fs'
 socket_io = require 'socket.io'
 uuid = require 'node-uuid'
-mail = require './lib/server/mail'
-
-{SparseVolume, terraform, User} = require './mason'
-
-blocks = require './blocks'
 
 db = (require './lib/server/database')()
-
-db.volume = volume = new SparseVolume
-terraform [0, 0, 0], [32, 32, 32], volume
-
-(require './lib/server/grass') volume
 
 app = express()
 

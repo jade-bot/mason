@@ -1,5 +1,7 @@
 redis = require 'redis'
 
+{SparseVolume, terraform} = require '../../mason'
+
 module.exports = ->
   db = {}
   db.map = {}
@@ -18,5 +20,10 @@ module.exports = ->
     db.add user
     db.users ?= {}
     db.users[user.alias] = user
+  
+  db.volume = volume = new SparseVolume
+  terraform [0, 0, 0], [32, 32, 32], volume
+  
+  (require './grass') volume
   
   return db

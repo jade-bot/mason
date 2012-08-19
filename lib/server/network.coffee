@@ -1,5 +1,7 @@
 blocks = require '../../blocks'
 
+mail = require './mail'
+
 module.exports = ({io, db}) ->
   {volume, users} = db
   
