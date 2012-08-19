@@ -7,24 +7,18 @@ intbound = (s, ds) ->
     
     return (1 - s) / ds
 
-signum = (x) ->
-  return (if x > 0 then 1 else (if x < 0 then -1 else 0))
+signum = (x) -> if x > 0 then 1 else (if x < 0 then -1 else 0)
 
-mod = (value, modulus) ->
-  return (value % modulus + modulus) % modulus
+mod = (value, modulus) -> (value % modulus + modulus) % modulus
 
-wx = 128
-wy = 128
-wz = 128
+wx = wy = wz = 128
 
 module.exports = raycast = (origin, direction, callback, radius = 30) ->
   x = Math.floor origin[0]
   y = Math.floor origin[1]
   z = Math.floor origin[2]
   
-  dx = direction[0]
-  dy = direction[1]
-  dz = direction[2]
+  [dx, dy, dz] = direction
   
   stepX = signum dx
   stepY = signum dy
@@ -45,13 +39,9 @@ module.exports = raycast = (origin, direction, callback, radius = 30) ->
   
   radius /= Math.sqrt (dx * dx) + (dy * dy) + (dz * dz)
   
-  # console.log stepX, stepY, stepZ, dx, dy, dz, tDeltaX, tDeltaY, tDeltaZ
-  
   while true # ((if stepX > 0 then x < wx else x >= 0)) and ((if stepY > 0 then y < wy else y >= 0)) and ((if stepZ > 0 then z < wz else z >= 0))
     # check inside world
     # unless x < 0 or y < 0 or z < 0 or x >= wx or y >= wy or z >= wz
-    
-    # console.log x, y, z
     
     break if callback x, y, z, face
     

@@ -6,7 +6,6 @@ module.exports = extract = (min, max, volume, mesh) ->
   mesh.reset()
   
   console.time 'extract'
-  # console.profile 'extract'
   
   for i in [min[0]...max[0]]
     for j in [min[1]...max[1]]
@@ -19,5 +18,4 @@ module.exports = extract = (min, max, volume, mesh) ->
         continue if voxel is blocks.air
         extractVoxel voxel, i, j, k, volume, mesh
   
-  # console.profileEnd 'extract'
   console.timeEnd 'extract'
