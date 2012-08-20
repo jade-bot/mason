@@ -10,7 +10,7 @@ resources =
 #   resources.models.avatar = JSON.parse data
 
 pages =
-  edit: require './lib/client/edit'
+  # edit: require './lib/client/edit'
   play: require './lib/client/play'
 
 document.addEventListener 'DOMContentLoaded', ->

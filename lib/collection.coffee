@@ -5,6 +5,8 @@ module.exports = class Collection extends Set
     super
     
     @model = args.model
+    
+    @key ?= args.key if args.key?
   
   new: (args = {}) ->
     model = @create args

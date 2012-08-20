@@ -27,7 +27,7 @@ app.configure =>
     entry: './entry.coffee'
     mount: '/browserify.js'
     debug: on
-    ignore: ['shaders']
+    ignore: ['shaders', 'redis', 'hiredis']
     # filter: require 'uglify-js'
     # require: []
   

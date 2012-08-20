@@ -1,5 +1,6 @@
-Character = require '../character'
 Collection = require '../collection'
+
+persist = require '../persist'
 
 module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
   {db} = client
@@ -9,7 +10,7 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
   
   characterModal = $ '#character'
   characterModal.data 'update', ->
-    if character = client.db.selectedCharacter
+    if character = db.selectedCharacter
       characterModal.find('.name').val character.name
   
   createCharacterModal = $ '#create-character'
@@ -22,15 +23,7 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
       alias: (modal.find '.login-pane .alias').val()
       secret: (modal.find '.login-pane .secret').val()
   
-  loading = $ """
-  <div class="progress progress-striped active">
-    <div class="bar" style="width: 40%;"></div>
-  </div>
-  """
-  
   modal.find('.join-btn').click ->
-    modal.find('.join-pane').append loading
-    
     client.io.emit 'join',
       alias: (modal.find '.join-pane .alias').val()
       email: (modal.find '.join-pane .email').val()
@@ -42,53 +35,15 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
       secret: user.secret
   
   client.io.on 'login', (user, ids) ->
-    client.db.online = new Collection id: ids.online
+    db.online = new Collection id: ids.online
+    persist.collection db.online
     
     (require './presence')
       client: client
-    
-    loading.remove()
     
     modal.modal 'hide'
     
     charactersModal.modal 'show'
     
-    charactersModal.find('.create-character-btn').click ->
-      charactersModal.modal 'hide'
-      
-      createCharacterModal.modal 'show'
-    
-    createCharacterModal.find('.create-character-btn').click ->
-      createCharacterModal.modal 'hide'
-      
-      charactersModal.modal 'show'
-      
-      character = new Character
-        name: createCharacterModal.find('.name-input').val()
-        class: 'priest'
-      client.db.characters.add character
-    
-    characterModal.find('.play-btn').click ->
-      characterModal.modal 'hide'
-      
-      (require './play_character')
-        simulation: simulation
-        client: client
-        mouse: mouse
-        keyboard: keyboard
-        library: library
-        camera: camera
-    
-    db.characters.on 'add', ->
-      charactersModal.find('.characters').empty()
-      
-      for id, character of db.characters.members then do (id, character) =>
-        li = $ "<li>#{character.name}</li>"
-        li.on 'click', ->
-          db.character = character
-          
-          charactersModal.modal 'hide'
-          
-          characterModal.modal 'show'
-        
-        charactersModal.find('.characters').append li
+    (require './create_character') createCharacterModal: createCharacterModal, charactersModal: charactersModal, db: db
+    (require './play_character') createCharacterModal: createCharacterModal, charactersModal: charactersModal, db: db

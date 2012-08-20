@@ -1,10 +1,10 @@
 Collection = require '../collection'
+Database = require '../persist/database'
+
+persist = require '../persist'
 
 module.exports = ({client}) ->
-  client.db ?= {}
+  client.db = db = new Database
+  persist.client.database db
   
-  {db} = client
-  
-  db.characters ?= new Collection
-  
-  db.players ?= new Collection
+  db.users = db.collections.new key: 'users'

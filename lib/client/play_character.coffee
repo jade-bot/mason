@@ -2,7 +2,10 @@ SparseVolume = require '../volume/sparse/volume'
 SparseVolumeView = require '../volume/sparse/view'
 Mesh = require '../mesh'
 
-module.exports = ({simulation, camera, library, keyboard, client, mouse, pack}) ->
+module.exports = ({simulation, camera, library, keyboard, client, mouse, characterModal}) ->
+  characterModal.find('.play-btn').click ->
+    characterModal.modal 'hide'
+  
   {character} = client.db
   
   client.io.emit 'play', character.id

@@ -1,32 +1,15 @@
-redis = require 'redis'
+{SparseVolume, terraform, Collection, Database} = require '../../mason'
 
-{SparseVolume, terraform, Collection} = require '../../mason'
+persist = require '../persist'
 
 module.exports = ->
-  db = {}
-  db.map = {}
-  db.instances = {}
-  db.add = (entity) ->
-    db.drivers.redis.client.hmset entity.id, entity, (error) ->
-      db.map[entity.id] = entity
-      db.instances[entity.constructor.name.toLowerCase()] ?= {}
-      db.instances[entity.constructor.name.toLowerCase()][entity.id] = entity
-  
-  db.drivers = {}
-  db.drivers.redis = {}
-  db.drivers.redis.client = redis.createClient()
-  
-  for key, user of require '../../users'
-    db.add user
-    db.users ?= {}
-    db.users[user.alias] = user
+  db = new Database
+  persist.server.database db
   
   db.volume = volume = new SparseVolume
   terraform [0, 0, 0], [32, 32, 32], volume
-  
   (require './grass') volume
   
-  db.players = new Collection
-  db.online = new Collection
+  db.users = db.collections.new key: 'users'
   
   return db

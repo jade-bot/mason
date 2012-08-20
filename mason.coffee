@@ -31,3 +31,5 @@ mason.Character = require './lib/character'
 mason.terraform = require './lib/volume/terraform'
 
 mason.Collection = require './lib/collection'
+
+mason.Database = require './lib/persist/database'
