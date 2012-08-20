@@ -11,8 +11,7 @@ module.exports = ({Spool, Avatar, Axes, Client, Character, Collection}, resource
   axes = new Axes material: library.materials.line
   simulation.add axes
   
-  (require './database')
-    client: client
+  (require './database') client: client
   
   (require './auth')
     simulation: simulation

@@ -17,3 +17,8 @@ module.exports = class Collection extends Set
     model = new @model args
     @add model
     return model
+  
+  find: (callback) ->
+    for key, member of @members
+      return member if callback member
+    return

@@ -1,13 +1,6 @@
 mason = require './'
 
-resources =
-  materials: require './materials'
-  blocks: require './blocks'
-  textures: require './textures'
-  models: {}
-
-# $.ajax('/models/avatar.js').done (data) ->
-#   resources.models.avatar = JSON.parse data
+resources = require './resources'
 
 pages =
   # edit: require './lib/client/edit'

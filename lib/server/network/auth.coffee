@@ -1,21 +1,13 @@
-module.exports = ({io, socket}) ->
-  socket.on 'login', ({alias, secret}) ->
-    return unless alias in (Object.keys db.users)
+module.exports = ({io, db, socket}) ->
+  socket.on 'login', ({alias, secret}, callback) ->
+    errors = {}
     
-    console.log alias, secret
+    if (db.users.find (member) -> (member.alias is alias or member.email is alias) and member.secret is secret) then errors.alias = 'bad username, email or password'
+    if (db.users.find (member) -> (member.alias is alias or member.email is alias) and member.secret is secret) then errors.email = 'bad username, email or password'
+    if (db.users.find (member) -> (member.alias is alias or member.email is alias) and member.secret is secret) then errors.secret = 'bad username, email or password'
     
-    user = db.users[alias]
-    socket.user = user
-    
-    db.online.add user
-    
-    socket.emit 'login', user, online: db.online.id
-    
-    # can only play once logged in
-    socket.on 'play', (characterId) ->
-      player =
-        characterId: characterId
-        socket: socket
-        user: socket.user
-      
-      db.players.add player
+    unless (Object.keys errors).length is 0
+      callback 'bad alias, email or password'
+    else
+      user = db.users.find (member) -> (member.alias is alias or member.email is alias) and member.secret is secret
+      callback? null, user

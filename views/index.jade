@@ -2,6 +2,7 @@ html
   head
     title ToE: Theory of Everything
     link(href='/bootstrap/css/bootstrap.css', rel='stylesheet')
+    link(href='/bootstrap/css/darkstrap.css', rel='stylesheet')
     style
       body {
       padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -70,7 +71,7 @@ html
       .modal-footer
         button(class='btn btn-primary create-character-btn', href='#') Create Character
     
-    #login.modal.hide
+    #auth.modal.hide
       .modal-header
         button.close(type='button', data-dismiss='modal') ×
         h3 auth
@@ -79,31 +80,49 @@ html
           .span6.login-pane
             h3 login
             
-            p
-              label username or email
-              input.alias(value='user')
-            p
-              label password
-              input.secret(value='secret')
-            
-            p
-              a.btn.btn-primary.login-btn(href='#') Login
-              a.btn.forgot-btn(href='#') Forgot Password?
+            form
+              fieldset
+                .control-group.alias-control-group
+                  label username or email
+                  .controls
+                    input.alias(value='user')
+                    //- span(class="help-inline") Invalid
+                
+                .control-group.secret-control-group
+                  label password
+                  .controls
+                    input.secret(type='password', value='secret', style='height: auto;')
+                    //- span(class="help-inline") Invalid
+                
+                .form-actions
+                  a.btn.btn-primary.login-btn(href='#') Login
+                  a.btn.forgot-btn(href='#') Forgot Password?
           
           .span6.join-pane
             h3 join
             
-            p
-              label username
-              input.alias(value='')
-            p
-              label email
-              input.email(value='')
-            p
-              label password
-              input.secret(type='password', value='', style='height: auto;')
-            p
-              a.btn.btn-primary.join-btn(href='#') Join
+            form
+              fieldset
+                .control-group.alias-control-group
+                  label username
+                  .controls
+                    input.alias(type='email')
+                    span(class="help-inline")
+                
+                .control-group.email-control-group
+                  label email
+                  .controls
+                    input.email(type='email')
+                    span(class="help-inline")
+                
+                .control-group.secret-control-group
+                  label password
+                  .controls
+                    input.secret(type='password', style='height: auto;')
+                    span(class="help-inline")
+                
+                .form-actions
+                  a.btn.btn-primary.join-btn(href='#') Join
         
       .modal-footer
         

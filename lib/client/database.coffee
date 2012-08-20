@@ -5,6 +5,7 @@ persist = require '../persist'
 
 module.exports = ({client}) ->
   client.db = db = new Database
-  persist.client.database db
+  persist.client.database db, client
   
-  db.users = db.collections.new key: 'users'
+  client.io.on 'db', (packets) ->
+    persist.unpack.collection packets, db

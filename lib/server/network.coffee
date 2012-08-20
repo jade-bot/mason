@@ -5,3 +5,4 @@ module.exports = ({io, db}) ->
     (require './network/auth') io: io, socket: socket, db: db
     (require './network/edit') io: io, socket: socket, db: db
     (require './network/chat') io: io, socket: socket, db: db
+    (require './network/join') io: io, socket: socket, db: db

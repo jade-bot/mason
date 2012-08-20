@@ -6,8 +6,6 @@ fs = require 'fs'
 socket_io = require 'socket.io'
 uuid = require 'node-uuid'
 
-db = (require './lib/server/database')()
-
 app = express()
 
 app.configure =>
@@ -45,6 +43,8 @@ app.get '/', (req, res) -> res.render 'index'
 server = app.listen 80
 
 io = socket_io.listen server, 'log level': 1
+
+db = (require './lib/server/database') io: io
 
 (require './lib/server/network')
   io: io
