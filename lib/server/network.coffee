@@ -5,14 +5,27 @@ mail = require './mail'
 module.exports = ({io, db}) ->
   {volume, users} = db
   
+  # send new players the world
+  db.players.on 'add', (player) ->
+    player.socket.emit 'pack', volume.pack()
+    
+    player.socket.broadcast.emit 'player', player.user, player.characterId
+  
+  # let players set
   volume.on 'set', (x, y, z, voxel, chunk) ->
     io.sockets.emit 'set', x, y, z, voxel.index
   
+  # let players delete
   volume.on 'delete', (x, y, z) ->
     io.sockets.emit 'delete', x, y, z
   
   io.sockets.on 'connection', (socket) ->
     console.log 'socket'
+    
+    socket.on 'sub', (id) ->
+      entity = db.map[id]
+      entity.on 'add', (member) ->
+        socket.emit id, 'add', member.id
     
     socket.on 'login', ({alias, secret}) ->
       return unless alias in (Object.keys db.users)
@@ -22,7 +35,18 @@ module.exports = ({io, db}) ->
       user = db.users[alias]
       socket.user = user
       
-      socket.emit 'login', user, volume.pack()
+      db.online.add user
+      
+      socket.emit 'login', user, online: db.online.id
+      
+      # can only play once logged in
+      socket.on 'play', (characterId) ->
+        player =
+          characterId: characterId
+          socket: socket
+          user: socket.user
+        
+        db.players.add player
     
     socket.on 'move', (position) ->
       socket.broadcast.emit 'move', socket.user?.id, position

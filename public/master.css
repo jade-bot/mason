@@ -1,3 +1,14 @@
+.presence-list {
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  width: 25%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2000;
+}
+
 ul {
   padding: 0;
   margin: 0;
@@ -17,8 +28,28 @@ ul {
   padding: 4px 5px!important;
 }
 
-.toolbar .active {
+.active {
   -webkit-box-shadow:0 0 15px #ffffff;
+}
+
+.class [class^="icon-"], .class [class*=" icon-"] {
+  background-position: 0 0;
+}
+
+#character .classes .class {
+  display: inline;
+}
+
+.icon-priest {
+  background-image: url(/classes/priest.png);
+  width: 32px!important;
+  height: 32px;
+}
+
+.icon-mage {
+  background-image: url(/classes/mage.png);
+  width: 32px!important;
+  height: 32px;
 }
 
 .icon-dirt {

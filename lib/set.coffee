@@ -6,8 +6,7 @@ module.exports = class Set extends Entity
     
     @members = args.members or Object.create null
   
-  hash: (member) ->
-    member.id
+  hash: (member) -> member.id
   
   add: (member) ->
     @members[@hash member] = member

@@ -42,7 +42,6 @@ mat4.multiply = (mat, mat2, out) ->
   
   [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33] = mat
   
-  # Cache only the current line of the second matrix
   b0 = mat2[0]
   b1 = mat2[1]
   b2 = mat2[2]

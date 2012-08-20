@@ -1,6 +1,6 @@
 redis = require 'redis'
 
-{SparseVolume, terraform} = require '../../mason'
+{SparseVolume, terraform, Collection} = require '../../mason'
 
 module.exports = ->
   db = {}
@@ -25,5 +25,8 @@ module.exports = ->
   terraform [0, 0, 0], [32, 32, 32], volume
   
   (require './grass') volume
+  
+  db.players = new Collection
+  db.online = new Collection
   
   return db

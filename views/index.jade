@@ -25,11 +25,51 @@ html
     script(src='/noise.js')
     script(src='/jquery.js')
     script(src='/bootstrap/bootstrap.js')
-    script(src='/keymaster.js')
     script(src='/coffeescript.js')
     script(src='/socket.io/socket.io.js')
     script(src='/browserify.js')
   body
+    #create-character.modal.hide
+      .modal-header
+        button.close(type='button', data-dismiss='modal') ×
+        h3 character
+      .modal-body
+        label Class
+        ul.classes
+          li.class
+            i.icon-priest.active
+          li.class
+            i.icon-mage
+        p.name
+          label Name
+          input.name-input
+        p.actions
+          a.btn.btn-primary.create-character-btn(href='#') Create Character
+        
+      .modal-footer
+    
+    #character.modal.hide
+      .modal-header
+        button.close(type='button', data-dismiss='modal') ×
+        h3 character
+      .modal-body
+        p
+          i.icon-priest.active
+        p.name
+        p.actions
+          a.btn.btn-primary.play-btn(href='#') Play
+        
+      .modal-footer
+    
+    #characters.modal.hide
+      .modal-header
+        button.close(type='button', data-dismiss='modal') ×
+        h3 characters
+      ul.characters
+      
+      .modal-footer
+        button(class='btn btn-primary create-character-btn', href='#') Create Character
+    
     #login.modal.hide
       .modal-header
         button.close(type='button', data-dismiss='modal') ×
@@ -37,6 +77,8 @@ html
       .modal-body
         .row-fluid
           .span6.login-pane
+            h3 login
+            
             p
               label username or email
               input.alias(value='user')
@@ -49,6 +91,8 @@ html
               a.btn.forgot-btn(href='#') Forgot Password?
           
           .span6.join-pane
+            h3 join
+            
             p
               label username
               input.alias(value='')
@@ -57,7 +101,7 @@ html
               input.email(value='')
             p
               label password
-              input.secret(type='password', value='')
+              input.secret(type='password', value='', style='height: auto;')
             p
               a.btn.btn-primary.join-btn(href='#') Join
         

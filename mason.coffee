@@ -26,5 +26,8 @@ mason.Spool = require './lib/spool'
 mason.Axes = require './lib/axes'
 mason.Mesh =require './lib/mesh'
 mason.User = require './lib/user'
+mason.Character = require './lib/character'
 
 mason.terraform = require './lib/volume/terraform'
+
+mason.Collection = require './lib/collection'
