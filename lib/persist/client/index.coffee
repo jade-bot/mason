@@ -1,5 +1,4 @@
-module.exports = client = {}
-
-client.collection = require './collection'
-client.entity = require './entity'
-client.database = require './database'
+module.exports =
+  collection: require './collection'
+  entity: require './entity'
+  database: require './database'

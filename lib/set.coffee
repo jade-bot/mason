@@ -8,9 +8,9 @@ module.exports = class Set extends Entity
   
   hash: (member) -> member.id
   
-  add: (member) ->
+  add: (member, event) ->
     @members[@hash member] = member
-    @emit 'add', member
+    @emit 'add', member, event
     return member
   
   remove: (member) ->

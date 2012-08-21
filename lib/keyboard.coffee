@@ -6,15 +6,15 @@ module.exports = class Keyboard extends Entity
     
     @keys = map: {}
     
-    for field in @fields
-      @keys[field] = {}
+    @keys[field] = {} for field in @fields
     
     @map =
-      87: 'w'
-      83: 's'
-      65: 'a'
-      68: 'd'
       32: ' '
+      65: 'a'
+      66: 'b'
+      68: 'd'
+      83: 's'
+      87: 'w'
     
     @shift = off
   
@@ -22,16 +22,14 @@ module.exports = class Keyboard extends Entity
     target.addEventListener 'keydown', (event) =>
       @keys.map[@map[event.keyCode]] = Date.now()
 
-      for field in @fields
-        @keys[field][event[field]] = Date.now()
+      @keys[field][event[field]] = Date.now() for field in @fields
       
       @shift = event.shiftKey
     
     target.addEventListener 'keyup', (event) =>
       delete @keys.map[@map[event.keyCode]]
       
-      for field in @fields
-        delete @keys[field][event[field]]
+      delete @keys[field][event[field]] for field in @fields
       
       @shift = event.shiftKey
     

@@ -1,19 +1,16 @@
-https = require 'https'
 browserify = require 'browserify'
 express = require 'express'
 fileify = require 'fileify'
-fs = require 'fs'
 socket_io = require 'socket.io'
-uuid = require 'node-uuid'
 
 app = express()
 
 app.configure =>
-  app.set 'views', (__dirname + '/views')
+  app.set 'views', "#{__dirname}/views"
   app.set 'view engine', 'jade'
   
   app.use express.favicon()
-  app.use express.logger('dev')
+  app.use express.logger 'dev'
   app.use express.bodyParser()
   app.use express.methodOverride()
   
@@ -44,8 +41,10 @@ server = app.listen 80
 
 io = socket_io.listen server, 'log level': 1
 
-db = (require './lib/server/database') io: io
+io.sockets.on 'connection', (socket) ->
+  socket.on 'client', ->
+    socket.broadcast.emit 'client', id: socket.id
 
-(require './lib/server/network')
-  io: io
-  db: db
+db = (require './lib/server/database') io: io
+(require './lib/server/network') io: io, db: db
+(require './lib/server/game') io: io, db: db

@@ -1,6 +1,5 @@
-Entity = require '../entity'
-Collection = require '../collection'
-Driver = require './driver'
+Entity = require './entity'
+Collection = require './collection'
 
 module.exports = class Database extends Entity
   constructor: (args = {}) ->
@@ -13,11 +12,13 @@ module.exports = class Database extends Entity
       @collections.members[collection.id] = collection
       @collections.emit 'add', collection
       return collection
+    @collections.on 'add', (collection) =>
+      @[collection.key] = collection
+  
+  describe: ->
+    description = {}
     
-    @drivers = new Entity
-    @drivers.members = Object.create null
-    @drivers.new = =>
-      driver = new Driver arguments...
-      @drivers.members[driver.id] = driver
-      @drivers.emit 'add', driver
-      return driver
+    for key, collection of @collections.members
+      description[key] = collection.describe()
+    
+    return description

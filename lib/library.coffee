@@ -23,19 +23,18 @@ module.exports = class Library extends Entity
       material.image = @loadImage data.image, (error) ->
         material.emit 'load'
   
-  loadImage: (src, callback) ->
+  loadImage: (src, callback = ->) ->
     image = new Image
     
-    image.addEventListener 'load', ->
-      callback null
+    image.addEventListener 'load', -> callback null
     
     image.src = src
     
     return image
   
-  loadShader: (key, callback) ->
+  loadShader: (key, callback = ->) ->
     source = @shaderSources[key]
     
-    callback? null, source
+    callback null, source
     
     return source

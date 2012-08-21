@@ -2,15 +2,16 @@ SparseVolume = require '../volume/sparse/volume'
 SparseVolumeView = require '../volume/sparse/view'
 Mesh = require '../mesh'
 
-module.exports = ({simulation, camera, library, keyboard, client, mouse, characterModal}) ->
-  characterModal.find('.play-btn').click ->
-    characterModal.modal 'hide'
-  
-  {character} = client.db
+module.exports = ({client, character}) ->
+  {mouse, keyboard, library, simulation, camera} = client
   
   client.io.emit 'play', character.id
   
+  console.log 'playing'
+  
   client.io.on 'pack', (pack) ->
+    console.log 'packed'
+    
     volume = new SparseVolume
     volume.unpack pack
     

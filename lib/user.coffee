@@ -1,10 +1,13 @@
-Entity = require './entity'
+Model = require './model'
 
-module.exports = class User extends Entity
+Character = require './character'
+
+module.exports = class User extends Model
+  @property 'alias'
+  @property 'email'
+  @property 'secret'
+  
+  @hasMany Character, as: 'characters'
+  
   constructor: (args = {}) ->
     super
-    
-    @alias = args.alias or @id
-    @position = args.position or [16, 40, 16]
-    @email = args.email or 'test@test.test'
-    @secret = args.secret or 'secret'

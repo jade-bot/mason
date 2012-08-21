@@ -1,71 +1,72 @@
-persist =
-  server:
-    entity: require './entity'
-  unpack: require '../unpack'
-  pack: require '../pack'
+Entity = require '../../entity'
+
+persist = collection: require './collection'
+
+User = require '../../user'
 
 module.exports = (database, io) ->
-  redis = require 'redis'
-  
-  driver = database.drivers.new
-    key: 'redis'
-  driver.client = redis.createClient()
-  driver.pubsub = redis.createClient()
+  driver = new Entity
+  driver.key = 'memory'
   driver.map = {}
   
-  driver.subscribe = (channel, callback) ->
+  driver.storage = {}
+  
+  driver.types =
+    User: User
+  
+  driver.lookup = (id) ->
+    driver.storage[id]
+  
+  driver.store = (entity) ->
+    driver.storage[entity.id] = entity
+  
+  driver.hmset = (key, map, callback = ->) ->
+    type = map.type
+    
+    console.log key, map
+    
+    model = driver.lookup key
+    model ?= new driver.types[type]
+    model.unpack map
+    driver.store model
+    
+    do callback
+  
+  driver.publish = (channel, args...) ->
     driver.map[channel] ?= []
-    
+    listener channel, args... for listener in driver.map[channel]
+    return
+  
+  driver.subscribe = (channel, callback = ->) ->
+    driver.map[channel] ?= []
     driver.map[channel].push callback
-    
-    driver.pubsub.subscribe channel
-    
-    driver.pubsub.on 'message', (channel, message) ->
-      for subscriber in driver.map[channel]
-        subscriber message
-    
     return
   
   io.sockets.on 'connection', (socket) ->
-    socket.emit 'db', (persist.pack.collection database.collections)
-    
-    socket.on 'type', (key, callback = ->) ->
-      driver.client.type key, callback
-    
-    socket.on 'get', (key, callback = ->) ->
-      driver.client.get key, callback
-    
-    socket.on 'set', (key, value, callback = ->) ->
-      driver.client.set key, value, callback
-    
-    socket.on 'smembers', (key, callback = ->) ->
-      driver.client.smembers key, callback
-    
-    socket.on 'subscribe', (channel, callback = ->) ->
-      driver.subscribe channel, callback
+    socket.emit 'db', database.describe()
   
-  trackCollection = (collection) ->
-    collection.on 'add', (member) ->
-      driver.client.sadd collection.id, member.id
-      driver.client.publish collection.id, JSON.stringify ['sadd', member.id]
+  io.sockets.on 'connection', (socket) ->
     
-    driver.client.smembers collection.id, (error, memberIds) ->
-      for memberId in memberIds
-        member = collection.new id: memberId
-        persist.server.entity member, database
+    socket.on 'sadd', (key, member) ->
+      collection = driver.lookup key
+      model = driver.lookup member
+      collection.add model
+    
+    socket.on 'hmset', (key, map, callback = ->) ->
+      driver.hmset key, map, callback
+    
+    socket.on 'sub', (channel, callback = ->) ->
+      driver.subscribe channel, callback
+    
+    socket.on 'pub', (channel, args...) ->
+      if args[0] is 'sadd'
+        [op, member] = args
+        driver.publish channel, op, member
+      if args[0] is 'hmset'
+        [op, map] = args
+        driver.publish channel, op, map
+      return
   
   database.collections.on 'add', (collection) ->
-    if collection.key?
-      driver.client.type collection.key, (error, type) ->
-        console.log error if error
-        
-        if type? and type is 'string'
-          driver.client.get collection.key, (error, collectionId) ->
-            collection.id = collectionId
-            trackCollection collection
-        else
-          driver.client.set collection.key, collection.id, (error) ->
-            trackCollection collection
-    else
-      driver.client.set collection.key, collection.id, (error) ->
-        trackCollection collection
+    driver.store collection
+    persist.collection collection, driver, database

@@ -1,11 +1,8 @@
 Collection = require '../collection'
-Database = require '../persist/database'
+Database = require '../database'
 
 persist = require '../persist'
 
 module.exports = ({client}) ->
   client.db = db = new Database
-  persist.client.database db, client
-  
-  client.io.on 'db', (packets) ->
-    persist.unpack.collection packets, db
+  persist.client.database db, client, (users: require '../user')

@@ -3,7 +3,7 @@ mason = require './'
 resources = require './resources'
 
 pages =
-  # edit: require './lib/client/edit'
+  edit: require './lib/edit/index'
   play: require './lib/client/play'
 
 document.addEventListener 'DOMContentLoaded', ->

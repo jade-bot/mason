@@ -1,11 +1,9 @@
 User = require '../../user'
 
-mail = require '../mail'
+# mail = require '../mail'
 
 module.exports = ({socket, db, io}) ->
-  socket.on 'join', ({alias, email, secret}, callback) ->
-    console.log 'join', arguments...
-    
+  socket.on 'join', ({alias, email, secret}, callback = ->) ->
     errors = {}
     
     if (db.users.find (user) -> user.alias is alias) then errors.alias = 'alias in use'
@@ -26,4 +24,4 @@ module.exports = ({socket, db, io}) ->
         email: email
         secret: secret
       
-      callback null, user
+      callback null, user.pack()

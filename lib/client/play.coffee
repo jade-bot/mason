@@ -20,3 +20,5 @@ module.exports = ({Spool, Avatar, Axes, Client, Character, Collection}, resource
     client: client
     keyboard: keyboard
     mouse: mouse
+  
+  client.io.emit 'client'

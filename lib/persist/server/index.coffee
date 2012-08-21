@@ -1,5 +1,4 @@
-module.exports = server = {}
-
-server.collection = require './collection'
-server.entity = require './entity'
-server.database = require './database'
+module.exports =
+  collection: require './collection'
+  entity: require './entity'
+  database: require './database'

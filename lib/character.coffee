@@ -1,9 +1,9 @@
-Entity = require './entity'
+Model = require './model'
 
-module.exports = class Character extends Entity
+module.exports = class Character extends Model
+  @property 'name'
+  
+  @property 'class'
+  
   constructor: (args = {}) ->
     super
-    
-    @name = args.name
-    
-    @class = args.class

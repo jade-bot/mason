@@ -1,31 +1,34 @@
-html
+!!! 5
+html(lang='en')
   head
     title ToE: Theory of Everything
+    
     link(href='/bootstrap/css/bootstrap.css', rel='stylesheet')
-    link(href='/bootstrap/css/darkstrap.css', rel='stylesheet')
     style
       body {
-      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     link(href='/bootstrap/css/bootstrap-responsive.css', rel='stylesheet')
     style(type='text/css')
       body {
-      margin: 0;
-      /*background: url(/galaxy.jpg);*/
-      /*background-size: cover;*/
+        margin: 0;
+        /*background: url(/galaxy.jpg);*/
+        /*background-size: cover;*/
+        background: -webkit-linear-gradient(45deg,  #020031 0%,#6d3353 100%);
       }
       .canvas {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     link(href='/master.css', rel='stylesheet')
     link(href='/font-awesome/css/font-awesome.css', rel='stylesheet')
+    
     script(src='/noise.js')
     script(src='/jquery.js')
-    script(src='/bootstrap/bootstrap.js')
+    script(src='/bootstrap/js/bootstrap.js')
     script(src='/coffeescript.js')
     script(src='/socket.io/socket.io.js')
     script(src='/browserify.js')
@@ -79,6 +82,7 @@ html
         .row-fluid
           .span6.login-pane
             h3 login
+            button.test-btn(type='button') test
             
             form
               fieldset
@@ -86,13 +90,13 @@ html
                   label username or email
                   .controls
                     input.alias(value='user')
-                    //- span(class="help-inline") Invalid
+                    span(class="help-inline")
                 
                 .control-group.secret-control-group
                   label password
                   .controls
                     input.secret(type='password', value='secret', style='height: auto;')
-                    //- span(class="help-inline") Invalid
+                    span(class="help-inline")
                 
                 .form-actions
                   a.btn.btn-primary.login-btn(href='#') Login
@@ -100,6 +104,7 @@ html
           
           .span6.join-pane
             h3 join
+            button.test-btn(type='button') test
             
             form
               fieldset
@@ -126,7 +131,7 @@ html
         
       .modal-footer
         
-    .navbar.navbar-fixed-top
+    .navbar.navbar-fixed-top.navbar-inverse
       .navbar-inner
         .container
           a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
@@ -143,7 +148,8 @@ html
                 a(href='#edit')
                   i.icon-sitemap
           #userName
-    .navbar.navbar-fixed-bottom
+    
+    .navbar.navbar-fixed-bottom.navbar-inverse
       .navbar-inner
         .container
           ul.nav.toolbar
@@ -174,5 +180,24 @@ html
             li
               a(href='#', data-key='motor')
                 i.icon-motor
+          
+          ul.nav.bags.pull-right
+            li
+              a(href='#')
+                i.icon-bag
+            li
+              a(href='#')
+                i.icon-bag
+            li
+              a(href='#')
+                i.icon-bag
+            li
+              a(href='#')
+                i.icon-bag
+            li
+              a(href='#')
+                i.icon-bag
     
     canvas#canvas.canvas(width='500', height='500')
+    
+    .bag

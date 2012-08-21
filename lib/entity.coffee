@@ -1,5 +1,4 @@
 {EventEmitter} = require 'events'
-
 uuid = require 'node-uuid'
 
 module.exports = class Entity extends EventEmitter

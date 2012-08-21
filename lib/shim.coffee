@@ -1,2 +1,1 @@
-if window?
-  window.requestAnimationFrame = window.webkitRequestAnimationFrame
+if window? then window.requestAnimationFrame = window.webkitRequestAnimationFrame
