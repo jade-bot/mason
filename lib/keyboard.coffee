@@ -11,7 +11,7 @@ module.exports = class Keyboard extends Entity
     @map =
       32: ' '
       65: 'a'
-      66: 'b'
+      98: 'b'
       68: 'd'
       83: 's'
       87: 'w'

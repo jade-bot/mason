@@ -44,5 +44,3 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
     auth.emit 'auth', user
   
   auth.ui = (require './auth_ui') auth
-  
-  (require './bag_ui') keyboard: keyboard

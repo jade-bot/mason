@@ -11,6 +11,11 @@ module.exports = ({client, character}) ->
   
   players = {}
   
+  (require './bag')
+    client: client
+    character: character
+    keyboard: keyboard
+  
   io.emit 'play',
     id: character.id
     position: [camera.position[0], camera.position[1], camera.position[2]]

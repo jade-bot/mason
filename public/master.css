@@ -59,6 +59,27 @@ ul {
   z-index: 2000;
 }
 
+.toolbar li {
+    background-color: #eee;
+  text-align: center;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  min-height: 40px;
+  line-height: 40px;
+  width: 40px;
+}
+
+.bag [class*="span"] {
+  background-color: #eee;
+  text-align: center;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  min-height: 40px;
+  line-height: 40px;
+}
+
 .icon-bag {
   background-image: url(/bag.png);
   background-size: 32px 32px;
