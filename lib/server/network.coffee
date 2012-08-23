@@ -8,3 +8,4 @@ module.exports = ({io, db}) ->
     (require './network/join') io: io, socket: socket, db: db
     (require './network/position') io: io, socket: socket, db: db
     (require './network/play') io: io, socket: socket, db: db
+    (require './network/pickup') io: io, socket: socket, db: db

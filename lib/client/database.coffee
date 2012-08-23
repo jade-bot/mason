@@ -9,5 +9,5 @@ module.exports = ({client}) ->
     users: require '../user'
     loots: require '../loot'
   
-  db.users = db.collections.new key: 'users'
-  db.loots = db.collections.new key: 'loots'
+  db.users = db.collections.new key: 'users', mode: require '../user'
+  db.loots = db.collections.new key: 'loots', model: require '../loot'

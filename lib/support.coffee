@@ -17,6 +17,16 @@ support.voxelVectorToChunkKey = (vector) ->
   
   return "#{cx}:#{cy}:#{cz}"
 
+support.voxel = (x, y, z, vector) ->
+  vector[0] = Math.floor x
+  vector[1] = Math.floor y
+  vector[2] = Math.floor z
+
+support.voxelVector = (vector, out) ->
+  out[0] = Math.floor vector[0]
+  out[1] = Math.floor vector[1]
+  out[2] = Math.floor vector[2]
+
 support.voxelToChunkKey = (x, y, z) ->
   cx = Math.floor x / CX
   cy = Math.floor y / CY

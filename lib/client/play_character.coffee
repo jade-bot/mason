@@ -5,7 +5,7 @@ Mesh = require '../mesh'
 blocks = require '../../blocks'
 
 module.exports = ({client, character}) ->
-  {mouse, keyboard, library, simulation, camera, io} = client
+  {mouse, keyboard, library, simulation, camera, io, db} = client
   
   camera.position = [16, 40, 16]
   
@@ -17,10 +17,10 @@ module.exports = ({client, character}) ->
     rotation: [camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]]
   
   (require './loot')
-    io: io, simulation: simulation, Mesh: Mesh, library: library, SparseVolume: SparseVolume, blocks: blocks
+    io: io, simulation: simulation, Mesh: Mesh, library: library, SparseVolume: SparseVolume, blocks: blocks, db: db, client: client
   
   (require './avatars')
-    io: io, simulation: simulation, Mesh: Mesh, library: library, SparseVolume: SparseVolume, blocks: blocks
+    io: io, simulation: simulation, Mesh: Mesh, library: library, SparseVolume: SparseVolume, blocks: blocks, db: db, client: client
   
   io.on 'position', ({id, position, rotation}) ->
     if players[id]?

@@ -16,3 +16,8 @@ module.exports = class Simulation extends Entity
   
   add: ->
     @entities.push arguments...
+  
+  remove: (subject) ->
+    for item, index in @entities
+      if item is subject
+        @entities.splice index, 1
