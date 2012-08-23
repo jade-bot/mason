@@ -22,3 +22,6 @@ module.exports = class Database extends Entity
       description[key] = collection.describe()
     
     return description
+  
+  use: (driver) ->
+    driver.used this

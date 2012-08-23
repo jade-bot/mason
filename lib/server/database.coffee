@@ -1,6 +1,10 @@
-{Database, persist} = require '../../mason'
+{Database} = require '../../mason'
+
+persist = (require '../persist/server').drivers
 
 module.exports = ({io}) ->
   db = new Database
-  persist.server.database db, io
+  db.use new persist.disk.Driver
+  db.use new persist.memory.Driver
+  db.use new persist.socketio.Driver io: io
   return db

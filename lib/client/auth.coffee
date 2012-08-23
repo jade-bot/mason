@@ -13,6 +13,9 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
   
   auth.client = client
   
+  db.users.on 'add', (user) ->
+    persist.client.entity user, db.users, {}, db, client.io, ->
+  
   auth.join = (credentials, callback = ->) ->
     client.io.emit 'join', credentials, (errors) ->
       if errors? then callback errors
@@ -34,6 +37,7 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
   auth.on 'auth', (user) ->
     auth.user = user
     console.log user
+    db.users.add user
     (require './select_character') auth
   
   auth.auth = (user) ->
