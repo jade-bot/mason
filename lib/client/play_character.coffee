@@ -5,53 +5,37 @@ Mesh = require '../mesh'
 blocks = require '../../blocks'
 
 module.exports = ({client, character}) ->
-  {mouse, keyboard, library, simulation, camera} = client
+  {mouse, keyboard, library, simulation, camera, io} = client
   
   camera.position = [16, 40, 16]
   
   players = {}
   
-  client.io.emit 'play',
+  io.emit 'play',
     id: character.id
     position: [camera.position[0], camera.position[1], camera.position[2]]
     rotation: [camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]]
   
-  console.log 'playing'
+  (require './loot')
+    io: io, simulation: simulation, Mesh: Mesh, library: library, SparseVolume: SparseVolume, blocks: blocks
   
-  makeChar = ({id, position, rotation}) ->
-    console.log 'player'
-    
-    player = new Mesh material: library.materials.terrain, position: position, rotation: rotation
-    player.id = id
-    player.volume = new SparseVolume
-    player.push = ->
-      player.reset()
-      (require '../voxel/extract') blocks.stone, 0, 0, 0, player.volume, player
-      player.dirty = yes
-    player.push()
-    players[id] = player
-    simulation.add player
+  (require './avatars')
+    io: io, simulation: simulation, Mesh: Mesh, library: library, SparseVolume: SparseVolume, blocks: blocks
   
-  client.io.on 'play', (char) ->
-    makeChar char
-  
-  client.io.on 'player', (char) ->
-    makeChar char
-  
-  client.io.on 'position', ({id, position, rotation}) ->
+  io.on 'position', ({id, position, rotation}) ->
     if players[id]?
       vec3.set position, players[id].position
       quat4.set rotation, players[id].rotation
   
   setInterval =>
-    client.io.emit 'position',
+    io.emit 'position',
       id: character.id
       position: [camera.position[0], camera.position[1], camera.position[2]]
       rotation: [camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]]
     
   , 1000 / 4
   
-  client.io.on 'pack', (pack) ->
+  io.on 'pack', (pack) ->
     console.log 'packed'
     
     volume = new SparseVolume

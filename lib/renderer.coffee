@@ -131,6 +131,10 @@ module.exports = class Renderer extends Entity
       
       @gl.useProgram program
       
+      # mat4.scale mvMatrix, entity.scale or [1, 1, 1]
+      
+      # mat4.multiply mvMatrix, entity.model
+      
       @gl.uniformMatrix4fv uniforms.projection, false, camera.projection
       @gl.uniformMatrix4fv uniforms.view, false, camera.view
       @gl.uniformMatrix4fv uniforms.model, false, entity.model

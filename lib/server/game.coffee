@@ -1,4 +1,4 @@
-{SparseVolume, User, terraform} = require '../../mason'
+{SparseVolume, User, Loot, terraform} = require '../../mason'
 
 module.exports = ({db, io}) ->
   db.volume = volume = new SparseVolume
@@ -6,3 +6,4 @@ module.exports = ({db, io}) ->
   (require './grass') volume
   
   db.collections.new key: 'users', model: User
+  db.collections.new key: 'loots', model: Loot

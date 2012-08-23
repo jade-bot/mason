@@ -29,7 +29,10 @@ module.exports = class Body extends Entity
     @sync()
   
   sync: (time) ->
-    mat4.fromRotationTranslation @rotation, @position, @model
+    mat4.fromRotationTranslation @rotation, @position, tempMat4
+    mat4.identity @model
+    mat4.scale @model, @scale, @model
+    mat4.multiply @model, tempMat4
     quat4.multiplyVec3 @rotation, @_up, @up
     quat4.multiplyVec3 @rotation, @_right, @right
     quat4.multiplyVec3 @rotation, @_forward, @forward

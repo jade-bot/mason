@@ -53,14 +53,19 @@ extractFace = (face, i, j, k, type, mesh, neighbors) ->
   
   mesh.count += 6
 
-module.exports = extract = (voxel, i, j, k, volume, mesh) ->
+module.exports = extract = (voxel, i, j, k, volume, mesh, extractTemplate) ->
   for x in [-1..1]
     for y in [-1..1]
       for z in [-1..1]
         continue if y is 0 and y is 0 and z is 0
         neighbors[support.chunkKey x, y, z] = volume.get i + x, j + y, k + z
   
-  for face in template.faces
+  temp = template
+  
+  if extractTemplate?
+    temp = extractTemplate
+  
+  for face in temp.faces
     # continue unless (vec3.dot face.normal, camera.forward) > 0
     neighbor = volume.get i + face.normal[0], j + face.normal[1], k + face.normal[2]
     continue if neighbor? and not neighbor.transparent

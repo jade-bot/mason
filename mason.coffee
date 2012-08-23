@@ -42,3 +42,5 @@ mason.Set = require './lib/set'
 mason.Collection = require './lib/collection'
 
 mason.Database = require './lib/database'
+
+mason.Loot = require './lib/loot'
