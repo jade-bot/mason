@@ -2,12 +2,48 @@ SparseVolume = require '../volume/sparse/volume'
 SparseVolumeView = require '../volume/sparse/view'
 Mesh = require '../mesh'
 
+blocks = require '../../blocks'
+
 module.exports = ({client, character}) ->
   {mouse, keyboard, library, simulation, camera} = client
   
-  client.io.emit 'play', character.id
+  camera.position = [16, 40, 16]
+  
+  players = {}
+  
+  client.io.emit 'play',
+    id: character.id
+    position: [camera.position[0], camera.position[1], camera.position[2]]
   
   console.log 'playing'
+  
+  client.io.on 'play', ({id, position, rotation}) ->
+    console.log 'player'
+    
+    player = new Mesh material: library.materials.terrain, position: position, rotation: rotation
+    player.id = id
+    player.blend = on
+    player.volume = new SparseVolume
+    player.push = ->
+      player.reset()
+      (require '../voxel/extract') blocks.stone, 0, 0, 0, player.volume, player
+      player.dirty = yes
+    player.push()
+    players[id] = player
+    simulation.add player
+  
+  client.io.on 'position', ({id, position, rotation}) ->
+    if players[id]?
+      vec3.set position, players[id].position
+      quat4.set rotation, players[id].rotation
+  
+  setInterval =>
+    client.io.emit 'position',
+      id: character.id
+      position: [camera.position[0], camera.position[1], camera.position[2]]
+      rotation: [camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]]
+    
+  , 1000 / 4
   
   client.io.on 'pack', (pack) ->
     console.log 'packed'
@@ -53,5 +89,3 @@ module.exports = ({client, character}) ->
      
     camera.on 'point', (x, y, z) ->
       ghost.position[0] = x ; ghost.position[1] = y ; ghost.position[2] = z
-    
-    camera.position = [16, 40, 16]
