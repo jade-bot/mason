@@ -14,15 +14,15 @@ module.exports = ({client, character}) ->
   client.io.emit 'play',
     id: character.id
     position: [camera.position[0], camera.position[1], camera.position[2]]
+    rotation: [camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]]
   
   console.log 'playing'
   
-  client.io.on 'play', ({id, position, rotation}) ->
+  makeChar = ({id, position, rotation}) ->
     console.log 'player'
     
     player = new Mesh material: library.materials.terrain, position: position, rotation: rotation
     player.id = id
-    player.blend = on
     player.volume = new SparseVolume
     player.push = ->
       player.reset()
@@ -31,6 +31,12 @@ module.exports = ({client, character}) ->
     player.push()
     players[id] = player
     simulation.add player
+  
+  client.io.on 'play', (char) ->
+    makeChar char
+  
+  client.io.on 'player', (char) ->
+    makeChar char
   
   client.io.on 'position', ({id, position, rotation}) ->
     if players[id]?
