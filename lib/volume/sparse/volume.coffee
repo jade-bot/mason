@@ -27,8 +27,8 @@ module.exports = class SparseVolume extends Entity
       if k is  0 then @chunks[support.chunkKey a, b, c - 1]?.emit 'neighbor'
       if k is 15 then @chunks[support.chunkKey a, b, c + 1]?.emit 'neighbor'
     
-    @on 'set', => @emit 'change'
-    @on 'delete', => @emit 'change'
+    @on 'set', => @emit 'change', arguments...
+    @on 'delete', => @emit 'change', arguments...
   
   empty: ->
     @chunks = {}
