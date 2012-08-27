@@ -25,37 +25,36 @@ module.exports = class Disk extends Driver
     @writeCollection collection
   
   readCollection: (collection) ->
-    try
-      if collection.key?
-        collectionId = fs.readFileSync (@collectionKeyPath collection), 'utf8'
-        
-        console.log collectionId
-        
-        collection.id = collectionId
-      else
-        collectionId = collection.id
+    # try
+    if collection.key?
+      collectionId = fs.readFileSync (@collectionKeyPath collection), 'utf8'
       
-      # console.log collectionId
+      console.log collectionId
       
-      ids = fs.readdirSync (@collectionIdPath collectionId)
-      console.log 'ids', ids
+      collection.id = collectionId
+    else
+      collectionId = collection.id
+    
+    # console.log collectionId
+    
+    ids = fs.readdirSync (@collectionIdPath collectionId)
+    console.log 'ids', ids
+    
+    for id in ids
+      pack = fs.readFileSync (@collectionEntityIdPath collection, id), 'utf8'
+      pack = JSON.parse pack
+      console.log pack
       
-      for id in ids
-        pack = fs.readFileSync (@collectionEntityIdPath collection, id), 'utf8'
-        pack = JSON.parse pack
-        console.log pack
-        
-        types =
-          User: require '../../../../user'
-          Character: require '../../../../character'
-        
-        model = new types[pack.type]
-        model.unpack pack
-        collection.add model
+      types =
+        User: require '../../../../user'
+        Character: require '../../../../character'
       
-    catch e
-      console.log e
-      return
+      model = new types[pack.type]
+      model.unpack pack
+      collection.add model
+      
+    # catch e
+    # console.log e
   
   writeCollection: (collection) ->
     if collection.key?

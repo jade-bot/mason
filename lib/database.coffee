@@ -14,6 +14,8 @@ module.exports = class Database extends Entity
       return collection
     @collections.on 'add', (collection) =>
       @[collection.key] = collection
+    
+    @drivers = {}
   
   describe: ->
     description = {}
@@ -24,4 +26,5 @@ module.exports = class Database extends Entity
     return description
   
   use: (driver) ->
+    @drivers[driver.key] = driver
     driver.used this

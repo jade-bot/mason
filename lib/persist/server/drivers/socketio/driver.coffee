@@ -10,7 +10,7 @@ module.exports = class SocketIO extends Driver
     @db = database
     
     @io.sockets.on 'connection', (socket) ->
-    # socket.emit 'db', database.describe()
+      socket.emit 'db', database.describe()
     
     @io.sockets.on 'connection', (socket) =>
       socket.on 'get', (url, callback) =>
@@ -23,6 +23,17 @@ module.exports = class SocketIO extends Driver
         ids = Object.keys @db[hash].members[key][field].members
         
         callback @db[hash].members[key][field].members
+      
+      socket.on 'hgetall', (key, callback = ->) =>
+        entity = @db.drivers.memory.storage[key]
+        unless entity? then callback 'not found'
+        else callback null, entity.pack()
+      
+      socket.on 'smembers', (key, callback = ->) =>
+        set = @db.drivers.memory.storage[key]
+        console.log 'smembers', @db.drivers.memory.storage
+        unless set? then callback 'not found'
+        else callback null, (Object.keys set.members)
     
   # socket.on 'sadd', (key, member) ->
   #     collection = driver.lookup key

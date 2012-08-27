@@ -34,9 +34,6 @@ module.exports = ({client, character}) ->
       vec3.set position, players[id].position
       quat4.set rotation, players[id].rotation
   
-  wolf = new Wolf position: [0, 40, 0], material: library.materials.wolf
-  simulation.add wolf
-  
   setInterval =>
     io.emit 'position',
       id: character.id

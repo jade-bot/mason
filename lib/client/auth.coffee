@@ -13,9 +13,6 @@ module.exports = ({simulation, client, keyboard, mouse, camera, library}) ->
   
   auth.client = client
   
-  db.users.on 'add', (user) ->
-    persist.client.entity user, db.users, {}, db, client.io, ->
-  
   auth.join = (credentials, callback = ->) ->
     client.io.emit 'join', credentials, (errors) ->
       if errors? then callback errors
