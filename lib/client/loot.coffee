@@ -46,8 +46,8 @@ module.exports = ({io, simulation, Mesh, library, SparseVolume, blocks, db, clie
       if loot.x is x and loot.y is y and loot.z is z
         db.loots.remove loot
         simulation.remove loot.mesh
-    
-    client.bag.add blocks.map[loot.index].key
+        
+        client.bag.add blocks.map[loot.index]
   
   io.on 'loot', (x, y, z, type) ->
     makeLoot x, y, z, blocks.map[type]

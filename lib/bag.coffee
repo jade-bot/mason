@@ -5,6 +5,9 @@ module.exports = class Bag extends Entity
     super
     
     @items = args.items or []
+    
+    @on 'add', (item) ->
+      console.log 'add', item
   
   add: (item) ->
     @items.push item

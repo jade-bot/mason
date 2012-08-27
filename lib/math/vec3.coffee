@@ -7,6 +7,7 @@ module.exports = vec3 =
   zUnitInv: [0, 0, -1]
 
 MatrixArray = require './type'
+{EPSILON} = (require './precision').FLOAT
 
 vec3.create = (vec) ->
   out = new MatrixArray 3
@@ -15,6 +16,13 @@ vec3.create = (vec) ->
   else out[0] = out[1] = out[2] = 0
   
   out
+
+vec3.equal = (a, b) ->
+  return a is b or (
+    Math.abs(a[0] - b[0]) < EPSILON and
+    Math.abs(a[1] - b[1]) < EPSILON and
+    Math.abs(a[2] - b[2]) < EPSILON
+  )
 
 vec3.add = (vec, vec2, out) ->
   if not out or vec is out

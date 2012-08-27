@@ -2,6 +2,8 @@ SparseVolume = require '../volume/sparse/volume'
 SparseVolumeView = require '../volume/sparse/view'
 Mesh = require '../mesh'
 
+Wolf = require '../wolf'
+
 blocks = require '../../blocks'
 
 module.exports = ({client, character}) ->
@@ -31,6 +33,9 @@ module.exports = ({client, character}) ->
     if players[id]?
       vec3.set position, players[id].position
       quat4.set rotation, players[id].rotation
+  
+  wolf = new Wolf position: [0, 40, 0], material: library.materials.wolf
+  simulation.add wolf
   
   setInterval =>
     io.emit 'position',
@@ -66,10 +71,11 @@ module.exports = ({client, character}) ->
       client: client
       volume: volume
       camera: camera
-     
+    
     (require './ui')
       mouse: mouse
       client: client
+      keyboard: keyboard
      
     ghost = new Mesh material: library.materials.terrain
     ghost.blend = on

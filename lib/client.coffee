@@ -28,6 +28,7 @@ module.exports = class Client extends Entity
     @library.on 'load', =>
       # (require './texture_renderer') @library
       @initialize()
+      @emit 'load'
     
     @io = io.connect()
     

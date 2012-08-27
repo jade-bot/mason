@@ -1,6 +1,7 @@
 module.exports = quat4 = {}
 
 MatrixArray = require './type'
+{EPSILON} = (require './precision').FLOAT
 
 quat4.create = (quat) ->
   out = new MatrixArray 4
@@ -13,6 +14,14 @@ quat4.create = (quat) ->
   else
     out[0] = out[1] = out[2] = out[3] = 0
   out
+
+quat4.equal = (a, b) ->
+  return a is b or (
+    Math.abs(a[0] - b[0]) < FLOAT_EPSILON and
+    Math.abs(a[1] - b[1]) < FLOAT_EPSILON and
+    Math.abs(a[2] - b[2]) < FLOAT_EPSILON and
+    Math.abs(a[3] - b[3]) < FLOAT_EPSILON
+  )
 
 quat4.toAngleAxis = (src, out) ->
   out = src  unless out
@@ -140,6 +149,21 @@ quat4.normalize = (quat, out) ->
   out[3] = w * len
 
   out
+
+quat4.yaw = (quat) ->
+  [x, y, z, w] = quat
+  
+  2 * Math.acos w
+
+quat4.pitch = (quat) ->
+  [x, y, z, w] = quat
+  
+  Math.atan2 2 * (y*z + w*x), w*w - x*x - y*y + z*z
+
+quat4.roll = (quat) ->
+  [x, y, z, w] = quat
+  
+  Math.atan2 2 * (x * y + w * z), w * w + x * x - y * y - z * z
 
 quat4.fromAngleAxis = (angle, axis, out) ->
   out = quat4.create() unless out

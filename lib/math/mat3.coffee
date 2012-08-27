@@ -1,6 +1,7 @@
 module.exports = mat3 = {}
 
 MatrixArray = require './type'
+{EPSILON} = (require './precision').FLOAT
 
 mat3.create = (mat) ->
   out = new MatrixArray 9
@@ -19,6 +20,19 @@ mat3.create = (mat) ->
     out[0] = out[1] = out[2] = out[3] = out[4] = out[5] = out[6] = out[7] = out[8] = 0
   
   out
+
+mat3.equal = (a, b) ->
+  return a is b or (
+    Math.abs(a[0] - b[0]) < EPSILON and
+    Math.abs(a[1] - b[1]) < EPSILON and 
+    Math.abs(a[2] - b[2]) < EPSILON and
+    Math.abs(a[3] - b[3]) < EPSILON and
+    Math.abs(a[4] - b[4]) < EPSILON and
+    Math.abs(a[5] - b[5]) < EPSILON and
+    Math.abs(a[6] - b[6]) < EPSILON and
+    Math.abs(a[7] - b[7]) < EPSILON and
+    Math.abs(a[8] - b[8]) < EPSILON
+  )
 
 mat3.transpose = (mat, out) ->
   

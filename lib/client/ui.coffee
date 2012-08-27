@@ -1,6 +1,6 @@
 blocks = require '../../blocks'
 
-module.exports = ({client, mouse}) ->
+module.exports = ({client, mouse, keyboard}) ->
   selected = 0
   tools = {}
   
@@ -40,3 +40,16 @@ module.exports = ({client, mouse}) ->
     tools[selected].find('i').addClass 'active'
     
     client.emit 'tool'
+  
+  toolmap = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+  for toolkey, index in toolmap then do (toolkey, index) ->
+    keyboard.on 'press', (event) ->
+      if event.key is toolkey
+        tool = tools[index]
+        
+        client.brush = blocks[tool.data 'key']
+        
+        ($ '.toolbar a i').removeClass 'active'
+        tools[selected].find('i').addClass 'active'
+        
+        client.emit 'tool'

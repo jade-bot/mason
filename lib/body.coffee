@@ -26,6 +26,8 @@ module.exports = class Body extends Entity
     @forward ?= args.forward or [0, 0, 1]
     @_forward ?= [0, 0, 1]
     
+    @delta = vec3.create()
+    
     @sync()
   
   sync: (time) ->
@@ -58,6 +60,8 @@ module.exports = class Body extends Entity
   translateX: (distance) -> @translate distance, vec3.xUnit
   translateY: (distance) -> @translate distance, vec3.yUnit
   translateZ: (distance) -> @translate distance, vec3.zUnit
+  
+  # translateXPlane: (distance) ->
   
   rotate: (angle, axis) ->
     quat4.fromAngleAxis angle, axis, tempQuat4

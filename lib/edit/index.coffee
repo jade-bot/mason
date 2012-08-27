@@ -1,32 +1,47 @@
-module.exports = (mason, resources, page) ->
+blocks = require '../../blocks'
+
+module.exports = ({Spool, Avatar, Axes, Client, Character, Collection, Cube}, resources) ->
   ($ '.navbar').hide()
   
-  grid = $ """
-  <div class="row-fluid show-grid network-grid">
-    <div class="span6 server">
-      <p><i class="icon-hdd"></i></p>
-      <ul class="collections"></ul>
-    </div>
-    <div class="span6 client">
-      <p><i class="icon-folder-close"></i></p>
-      <p class="id"></p>
+  client = new Client resources: resources
+  {simulation, library, camera, keyboard, mouse} = client
+  
+  camera.position = [5, 5, 5]
+  camera.lookAt simulation.origin
+  
+  axes = new Axes material: library.materials.line
+  simulation.add axes
+  
+  toolbar = $ """
+  <div class="navbar navbar-fixed-bottom navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <ul class="nav toolbar">
+          <!--<li><a href="#" data-key="dirt"></a></li>-->
+        </ul>
+      </div>
     </div>
   </div>
   """
   
-  grid.appendTo document.body
+  toolbar.appendTo document.body
   
-  socket = io.connect()
+  tools = {}
+  tools.cube = ->
+    cube = new Cube material: library.materials.line
+    simulation.add cube
   
-  clientSpan = grid.find '.client'
-  clientSpan.hide()
+  for tool in ['cube']
+    li = $ '<li>'
+    li.text 'cube'
+    toolbar.find('.toolbar').append li
+    
+    li.click ->
+      tools[tool]()
   
-  socket.on 'client', (client) ->
-    clientSpan.show()
-    clientSpan.find('.id').text client.id
-  
-  socket.on 'db', (packet) ->
-    for key, pack of packet
-      li = $ '<li>'
-      li.text "#{pack.key} (#{pack.id})"
-      grid.find('.collections').append li
+  client.on 'load', ->
+    (require './pick')
+      simulation: simulation
+      camera: camera
+      client: client
+      mouse: mouse

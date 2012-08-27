@@ -1,5 +1,12 @@
 blocks = require '../../blocks'
 
+intersect = require '../intersect'
+
+collision = require './collision'
+
+tempVec3 = vec3.create()
+move = vec3.create()
+
 findCell = (position, cell) ->
   cell[0] = Math.floor position[0]
   cell[1] = Math.floor position[1]
@@ -12,42 +19,33 @@ sameCell = (a, b) ->
   return true
 
 module.exports = ({volume, simulation, subject}) ->
-  simulation.gravity = [0, -9.81 / 1000, 0]
+  simulation.gravity = [0, -9.81, 0]
+  
+  subject.track =
+    onGround: false
   
   simulation.on 'tick', ->
     for entity in simulation.entities when entity.dynamic
-      vec3.add entity.velocity, simulation.gravity
-      vec3.add entity.position, entity.velocity
-  
-  position = [0, 0, 0]
-  
-  cell = [0, 0, 0]
-  lastCell = [0, 0, 0]
-  
-  findCell subject.position, cell
-  findCell subject.position, lastCell
-  
-  subject.on 'request:movement', ->
-    position[0] = subject.position[0]
-    position[1] = subject.position[1] - 1.6
-    position[2] = subject.position[2]
-    
-    findCell position, cell
-    
-    content = volume.getVector cell
-    
-    if content?
-      subject.position[1] = cell[1] + 1 + 1.6
-      subject.velocity[1] = 0
-    
-    position[0] = subject.position[0]
-    position[1] = subject.position[1] - 1.1
-    position[2] = subject.position[2]
-    
-    findCell position, cell
-    
-    content = volume.getVector cell
-    
-    if content?
-      subject.position[1] = cell[1] + 1 + 1.6
-      subject.velocity[1] = 0
+      unless entity.onGround?
+        vec3.add entity.velocity, simulation.gravity
+      
+      # vec3.set entity.velocity, entity.delta
+      vec3.set entity.velocity, tempVec3
+      vec3.scale tempVec3, 0.001
+      
+      vec3.add entity.delta, tempVec3, move
+      
+      # vec3.add entity.position, entity.velocity
+      
+      if entity.track?
+        for axis in [0..2]
+          from = subject.position[axis]
+          subject.position[axis] += move[axis]
+          if collision.collide entity, volume
+            subject.position[axis] = from
+            if axis is 1
+              subject.track.onGround = yes
+              subject.velocity[1] = 0
+          else
+            if axis is 1
+              subject.track.onGround = no

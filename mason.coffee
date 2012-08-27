@@ -43,4 +43,8 @@ mason.Collection = require './lib/collection'
 
 mason.Database = require './lib/database'
 
+mason.Cube = require './lib/cube'
+
 mason.Loot = require './lib/loot'
+
+mason.Wolf = require './lib/wolf'

@@ -1,6 +1,7 @@
 module.exports = mat4 = {}
 
 MatrixArray = require './type'
+{EPSILON} = (require './precision').FLOAT
 
 mat4.create = (mat) ->
   out = new MatrixArray 16
@@ -9,6 +10,26 @@ mat4.create = (mat) ->
     [out[0], out[1], out[2], out[3], out[4], out[5], out[6], out[7], out[8], out[9], out[10], out[11], out[12], out[13], out[14], out[15]] = mat
   
   out
+
+mat4.equal = (a, b) ->
+  return a is b or (
+    Math.abs(a[0] - b[0]) < EPSILON and
+    Math.abs(a[1] - b[1]) < EPSILON and
+    Math.abs(a[2] - b[2]) < EPSILON and
+    Math.abs(a[3] - b[3]) < EPSILON and
+    Math.abs(a[4] - b[4]) < EPSILON and
+    Math.abs(a[5] - b[5]) < EPSILON and
+    Math.abs(a[6] - b[6]) < EPSILON and
+    Math.abs(a[7] - b[7]) < EPSILON and
+    Math.abs(a[8] - b[8]) < EPSILON and
+    Math.abs(a[9] - b[9]) < EPSILON and
+    Math.abs(a[10] - b[10]) < EPSILON and
+    Math.abs(a[11] - b[11]) < EPSILON and
+    Math.abs(a[12] - b[12]) < EPSILON and
+    Math.abs(a[13] - b[13]) < EPSILON and
+    Math.abs(a[14] - b[14]) < EPSILON and
+    Math.abs(a[15] - b[15]) < EPSILON
+  )
 
 mat4.identity = (out) ->
   out ?= mat4.create()
