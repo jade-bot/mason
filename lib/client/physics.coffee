@@ -29,14 +29,11 @@ module.exports = ({volume, simulation, subject}) ->
       unless entity.onGround?
         vec3.add entity.velocity, simulation.gravity
       
-      # vec3.set entity.velocity, entity.delta
       vec3.set entity.velocity, tempVec3
       vec3.scale tempVec3, 0.001
       
       vec3.add entity.delta, tempVec3, move
-      
-      # vec3.add entity.position, entity.velocity
-      
+            
       if entity.track?
         for axis in [0..2]
           from = subject.position[axis]
